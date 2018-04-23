@@ -17,3 +17,6 @@
 
 <!-- Custom stylesheet - for your changes-->
 <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+
+{{-- Sweet alert stylesheet --}}
+<link rel="stylesheet" href="{{ asset('css/sweetalert2.min.css') }}">

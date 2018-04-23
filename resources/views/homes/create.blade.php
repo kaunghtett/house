@@ -131,7 +131,7 @@
                 <hr class="line mt-5 mb-5">
 
                 <!-- Gallery -->
-                <h2 class="h3 mb-4">Gallery or Video</h2>
+                <h2 class="h3 mb-4">Gallery</h2>
                 <div class="row">
                     <div class="form-group col-lg-5">
                         <label class="pl-0 mb-3">Featured Image *</label>
@@ -199,10 +199,10 @@
 
                     <div class="form-group col-lg-4">
                         <label>Township *</label>
-                        <input type="text" name="twonship" class="form-control{{  $errors->has('twonship') ? ' is_invalid' : '' }}" placeholder="eg. Kamayut" value="{{ old('twonship') }}" required>
+                        <input type="text" name="township" class="form-control{{  $errors->has('twonship') ? ' is_invalid' : '' }}" placeholder="eg. Kamayut" value="{{ old('twonship') }}" required>
 
                         {{-- error msg --}}
-                        @if ($errors->has('twonship'))
+                        @if ($errors->has('township'))
                             <span class="invalid-feedback">
                                 <strong>{{ $errors->first('twonship') }}</strong>
                             </span>
@@ -307,17 +307,17 @@
                         </div>
                     </div>
                 </div>
-                <hr class="line mt-5 mb-5">
+                {{-- <hr class="line mt-5 mb-5"> --}}
 
                 <!-- Floor Plan-->
-                <h2 class="h3 mb-4">Plan</h2>
+                {{-- <h2 class="h3 mb-4">Plan</h2>
                 <div class="row">
                     <div class="form-group col-lg-12">
                         <div class="upload-btn-wrapper d-block"><i class="fa fa-image d-block"></i>Upload Plan Images
                             <input type="file" name="floor_images[]" multiple="multiple">
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <div class="row mt-4">
                     <div class="col-lg-12">
                         <button type="submit" class="btn btn-gradient wide">Submit Property</button>

@@ -41,6 +41,9 @@
     <!-- Javascript files-->
     @include ('layouts.scripts')
 
+    {{-- sweetalert --}}
+    @include('sweet::alert')
+
     @yield ('js')
 
 </body>

@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Gallery;
 use App\House;
+use App\HouseDetail;
 use App\HouseFeature;
 use App\HouseType;
+use App\Location;
 use App\Region;
 use Illuminate\Http\Request;
 
@@ -47,7 +50,75 @@ class HouseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $features = implode(', ', $request->features);
+        //house basic
+        $house = House::create([
+            'user_id' => auth()->id(),
+            'title' => $request->title,
+            'house_type_id' => $request->house_type_id,
+            'period' => $request->period,
+            'price' => $request->price,
+            'area' => $request->area,
+            'room' => $request->rooms,
+            'description' => $request->description,
+            'features' => $features,
+        ]);
+
+        $house_id = $house->id;
+
+        $feature_image = $request->feature_image;
+        $feature_extension = $feature_image->getClientOriginalExtension();
+        $feature_image_name = $house_id . '-feature-image' . '.' .
+                                $feature_extension;
+        // save to database (galleries)
+        Gallery::create([
+            'house_id' => $house_id,
+            'image_name' => $feature_image_name,
+            'extension' => $feature_extension,
+            'is_featured' => true,
+        ]);
+        // store image in storage/public/photos/features/
+        $feature_image->storeAs('public/photos/features/',
+                                $feature_image_name);
+
+        $images = $request->images;
+        foreach ($images as $index => $image) {
+            $image_extension = $image->getClientOriginalExtension();
+            $image_name = $house_id . '-house-image' . $index . '.' .
+                            $image_extension;
+
+            Gallery::create([
+                'house_id' => $house_id,
+                'image_name' => $image_name,
+                'extension' => $image_extension,
+            ]);
+
+            $image->storeAs('public/photos', $image_name);
+        }
+
+        //house details
+        HouseDetail::create([
+            'house_id' => $house_id,
+            'building_year' => $request->building_year,
+            'bathrooms' => $request->bathrooms,
+            'bedrooms' => $request->bedrooms,
+            'parking' => $request->parking,
+            'water' => $request->water,
+            'exercise_room' => $request->exercise_room,
+        ]);
+
+        //locations
+        Location::create([
+            'house_id' => $house_id,
+            'address' => $request->address,
+            'street' => $request->street,
+            'township' => $request->township,
+            'region_id' => $request->region,
+        ]);
+
+        alert()->success('Successfully', 'A New House is created successfully.');
+
+        return redirect()->route('home');
     }
 
     /**
