@@ -14,9 +14,7 @@
 <link rel="stylesheet" href="{{ asset('css/gallery.css') }}">
 <!-- theme stylesheet-->
 <link rel="stylesheet" href="{{ asset('css/style.default.css') }}">
+<link rel="stylesheet" href="{{ asset('css/sweetalert.min.css') }}">
 
 <!-- Custom stylesheet - for your changes-->
 <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
-
-{{-- Sweet alert stylesheet --}}
-<link rel="stylesheet" href="{{ asset('css/sweetalert2.min.css') }}">

@@ -131,7 +131,7 @@
                 <hr class="line mt-5 mb-5">
 
                 <!-- Gallery -->
-                <h2 class="h3 mb-4">Gallery</h2>
+                <h2 class="h3 mb-4">Gallery or Video</h2>
                 <div class="row">
                     <div class="form-group col-lg-5">
                         <label class="pl-0 mb-3">Featured Image *</label>
@@ -307,7 +307,7 @@
                         </div>
                     </div>
                 </div>
-                {{-- <hr class="line mt-5 mb-5"> --}}
+                <hr class="line mt-5 mb-5">
 
                 <!-- Floor Plan-->
                 {{-- <h2 class="h3 mb-4">Plan</h2>

@@ -10,6 +10,7 @@ use App\HouseType;
 use App\Location;
 use App\Region;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class HouseController extends Controller
 {
@@ -66,34 +67,42 @@ class HouseController extends Controller
 
         $house_id = $house->id;
 
+        //featured image
         $feature_image = $request->feature_image;
         $feature_extension = $feature_image->getClientOriginalExtension();
         $feature_image_name = $house_id . '-feature-image' . '.' .
                                 $feature_extension;
-        // save to database (galleries)
+
+        $thumb_featured_img = Image::make($feature_image->getRealPath());
+        $thumb_featured_img->resize(100,100)->save(storage_path('app/public/photos/thumbnails/' . $feature_image_name));
+
+        // store image in storage/public/photos/features/
+        $feature_image->storeAs('public/photos/features/',
+                                $feature_image_name);
+         // save to database (galleries)
         Gallery::create([
             'house_id' => $house_id,
             'image_name' => $feature_image_name,
             'extension' => $feature_extension,
             'is_featured' => true,
         ]);
-        // store image in storage/public/photos/features/
-        $feature_image->storeAs('public/photos/features/',
-                                $feature_image_name);
 
+        // other images
         $images = $request->images;
         foreach ($images as $index => $image) {
             $image_extension = $image->getClientOriginalExtension();
             $image_name = $house_id . '-house-image' . $index . '.' .
                             $image_extension;
 
+            $thumb_img = Image::make($image->getRealPath());
+            $thumb_img->resize(100,100)->save(storage_path('app/public/photos/thumbnails/' . $image_name));
+            $image->storeAs('public/photos', $image_name);
+
             Gallery::create([
                 'house_id' => $house_id,
                 'image_name' => $image_name,
                 'extension' => $image_extension,
             ]);
-
-            $image->storeAs('public/photos', $image_name);
         }
 
         //house details
@@ -129,7 +138,8 @@ class HouseController extends Controller
      */
     public function show(House $house)
     {
-        //
+        $location = Location::where('house_id', $house->id)->first();
+        return view('homes.show', compact('house', 'location'));
     }
 
     /**

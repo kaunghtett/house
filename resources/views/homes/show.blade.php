@@ -6,17 +6,17 @@
         <div class="container">
             <nav aria-label="breadcrumb" class="mb-3">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                    <li class="breadcrumb-item"><a href="property.html">Property</a></li>
-                    <li aria-current="page" class="breadcrumb-item active">Property Single</li>
+                    <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Property</a></li>
+                    <li aria-current="page" class="breadcrumb-item active">{{ $house->title }}</li>
                 </ol>
             </nav>
             <header>
                 <h1 class="h2 d-flex align-items-center">
-                    <span>Property Single</span>
-                    <div class="badge badge-primary">For Sale</div>
+                    <span>{{ $house->title }}</span>
+                    <div class="badge badge-primary">For Rent</div>
                 </h1>
-                <p class="template-text">KT89B Hampton Court, England, United Kingdom</p>
+                <p class="template-text">{{ $location->address }}</p>
             </header>
 
             <div class="row">

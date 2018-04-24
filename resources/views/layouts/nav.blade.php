@@ -1,6 +1,6 @@
 <!-- Navbar-->
 <nav class="navbar navbar-expand-lg">
-    <div class="container"><a href="index.html" class="navbar-brand"><img src="{{ asset('img/logo-light.svg') }}" alt="..." width="180" class="img-fluid"></a>
+    <div class="container"><a href="{{ url('/') }}" class="navbar-brand"><img src="{{ asset('img/logo-light.svg') }}" alt="..." width="180" class="img-fluid"></a>
         <button type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler navbar-toggler-right"><span></span><span></span><span></span></button>
         <div id="navbarSupportedContent" class="collapse navbar-collapse">
             <ul class="navbar-nav mx-auto">
@@ -20,7 +20,7 @@
                     <a href="agents.html" class="nav-link">Agents</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/gallery') }}" class="nav-link">Gallery</a>
+                    <a href="gallery.html" class="nav-link">Gallery</a>
                 </li>
             </ul>
             <ul class="secondary-nav-menu list-inline ml-auto mb-0">

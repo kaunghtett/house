@@ -20,7 +20,7 @@
                     <h2 class="has-line">New Account</h2>
                     <h4 class="text-thin">Not our registered user yet?</h4>
                     <br>
-                    <form action="#" method="post" class="login-form">
+                    <form action="{{ route('register') }}" method="post" class="login-form">
                         {{ csrf_field() }}
 
                         <div class="form-group">
@@ -41,6 +41,28 @@
                             @if ($errors->has('email'))
                                 <span class="invalid-feedback">
                                     <strong>{{ $errors->first('email') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+
+                        <div class="form-group">
+                            <input type="text" name="address" placeholder="Type your address" class="form-control{{ $errors->has('address') ? ' is-invalid' : '' }}" value="{{ old('address') }}" required>
+
+                            {{-- error msg --}}
+                            @if ($errors->has('address'))
+                                <span class="invalid-feedback">
+                                    <strong>{{ $errors->first('address') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+
+                        <div class="form-group">
+                            <input type="text" name="phone_no" placeholder="Type your phone number" class="form-control{{ $errors->has('phone_no') ? ' is-invalid' : '' }}" value="{{ old('phone_no') }}" required>
+
+                            {{-- error msg --}}
+                            @if ($errors->has('phone_no'))
+                                <span class="invalid-feedback">
+                                    <strong>{{ $errors->first('phone_no') }}</strong>
                                 </span>
                             @endif
                         </div>
@@ -70,8 +92,12 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h4 class="text-thin">Register with:</h4>
+                    <a href="#" class="btn btn-gradient btn-sm mr-3"><i class="fa fa-facebook"></i> &nbsp;&nbsp;Facebook</a>
+                    <a href="#" class="btn btn-gradient btn-sm mr-3"><i class="fa fa-twitter"></i> &nbsp;&nbsp;Twitter</a>
+                    <a href="#" class="btn btn-gradient btn-sm"><i class="fa fa-google"></i> &nbsp;&nbsp;Google</a>
                 </div>
             </div>
         </div>
     </section>
 @endsection
+

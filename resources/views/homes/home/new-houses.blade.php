@@ -2,7 +2,7 @@
 <section class="new-properties bg-black-3">
     <div class="container">
         <header class="text-center">
-            <h2>New houses <span class="text-primary">for sale</span></h2>
+            <h2>New houses <span class="text-primary">for rent</span></h2>
             <div class="row">
                 <p class="template-text col-lg-8 mx-auto">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias.</p>
             </div>
