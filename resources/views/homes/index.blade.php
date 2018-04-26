@@ -29,5 +29,5 @@
     @include ('homes.home.testimonials')
 
     <!-- Clients Section -->
-    @include ('homes.home.clients')
+    {{-- @include ('homes.home.clients') --}}
 @endsection

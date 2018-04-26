@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class HouseType extends Model
 {
-    protected $fillable = ['name'];
+    protected $fillable = ['type_name'];
 }

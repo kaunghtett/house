@@ -18,6 +18,7 @@ class CreateHousesTable extends Migration
             $table->integer('user_id');
             $table->string('title');
             $table->integer('house_type_id');
+            $table->integer('house_detail_id');
             $table->string('period');
             $table->integer('price');
             $table->integer('area');

@@ -19,7 +19,9 @@ Route::get('/houses/create', 'HouseController@create');
 Route::post('/houses', 'HouseController@store');
 Route::get('/houses/{house}', 'HouseController@show');
 
-Route::get('gallery', function() {
-    return view('homes.gallery');
-});
+// Review Route
+Route::post('/houses/{house}/reviews', 'ReviewController@store');
+// Message Route
+Route::post('/houses/{house}/message', 'MessageController@store');
+
 

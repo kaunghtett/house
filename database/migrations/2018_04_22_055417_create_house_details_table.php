@@ -14,7 +14,7 @@ class CreateHouseDetailsTable extends Migration
     public function up()
     {
         Schema::create('house_details', function (Blueprint $table) {
-            $table->integer('house_id');
+            $table->increments('id');
             $table->string('building_year');
             $table->integer('bathrooms');
             $table->integer('bedrooms');

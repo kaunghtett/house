@@ -44,7 +44,7 @@
                         <label>Property Type *</label>
                         <select id="types" name="house_type_id" class="selectpicker">
                             @foreach ($types as $type)
-                                <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                <option value="{{ $type->id }}">{{ $type->type_name }}</option>
                             @endforeach
                             {{-- <option value="houses">Houses</option>
                             <option value="commercial">Commercial</option>
@@ -62,8 +62,8 @@
                     <div class="form-group col-lg-3">
                         <label>Rental Period *</label>
                         <select id="period" name="period" class="selectpicker">
-                            <option value="monthly">Monthly</option>
-                            <option value="yearly">Yearly</option>
+                            <option value="month">Monthly</option>
+                            <option value="year">Yearly</option>
                         </select>
 
                         {{-- error msg --}}
@@ -307,7 +307,7 @@
                         </div>
                     </div>
                 </div>
-                <hr class="line mt-5 mb-5">
+                {{-- <hr class="line mt-5 mb-5"> --}}
 
                 <!-- Floor Plan-->
                 {{-- <h2 class="h3 mb-4">Plan</h2>
