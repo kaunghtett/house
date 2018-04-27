@@ -22,7 +22,7 @@ class CreateHousesTable extends Migration
             $table->string('period');
             $table->integer('price');
             $table->integer('area');
-            $table->string('room');
+            $table->string('rooms');
             $table->text('description');
             $table->string('features');
             $table->timestamps();

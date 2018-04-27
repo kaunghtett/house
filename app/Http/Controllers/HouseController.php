@@ -71,7 +71,7 @@ class HouseController extends Controller
             'period' => $request->period,
             'price' => $request->price,
             'area' => $request->area,
-            'room' => $request->rooms,
+            'rooms' => $request->rooms,
             'description' => $request->description,
             'features' => $features,
         ]);
@@ -175,7 +175,17 @@ class HouseController extends Controller
      */
     public function edit(House $house)
     {
-        //
+        // dd($house);
+        $types = HouseType::all();
+        $house_type_id = $house->HouseType->id;
+        $houseDetail = $house->houseDetail;
+        $location = $house->location;
+        $regions = Region::all();
+        $features = HouseFeature::all();
+        $path = asset('/storage/photos/');
+        $feature_images = Gallery::where('house_id', $house->id)->where('is_featured', 1)->get();
+        $images = Gallery::where('house_id', $house->id)->where('is_featured', 0)->get();
+        return view('homes.edit', compact('house', 'types', 'house_type_id', 'houseDetail', 'location', 'regions', 'features', 'feature_images', 'images', 'path'));
     }
 
     /**

@@ -131,12 +131,13 @@
                 <hr class="line mt-5 mb-5">
 
                 <!-- Gallery -->
-                <h2 class="h3 mb-4">Gallery or Video</h2>
+                <h2 class="h3 mb-4">Gallery</h2>
                 <div class="row">
                     <div class="form-group col-lg-5">
                         <label class="pl-0 mb-3">Featured Image *</label>
-                        <div class="upload-btn-wrapper d-block"><i class="fa fa-image d-block"></i>Upload Featured Image
-                            <input type="file" name="feature_image">
+                        <input type="file" name="feature_image" class="form-control radius-sm" onchange="previewFile();">
+                        <div id="image_preview" class="image-preview">
+                            <p class="template-text">No File Choosen</p>
                         </div>
 
                         {{-- error msg --}}
@@ -149,8 +150,9 @@
 
                     <div class="form-group col-lg-7">
                         <label class="pl-0 mb-3">All Images *</label>
-                        <div class="upload-btn-wrapper d-block"><i class="fa fa-image d-block"></i>Upload Images
-                            <input type="file" name="images[]" multiple="multiple">
+                        <input type="file" id="images" onchange="previewImages();" name="images[]" class="form-control radius-sm" multiple="multiple">
+                        <div id="images_preview" class="image-preview">
+                            <p class="template-text">No File Choosen</p>
                         </div>
 
                         {{-- error msg --}}
@@ -329,6 +331,26 @@
 @endsection
 
 @section ('js')
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBu5nZKbeK-WHQ70oqOWo-_4VmwOwKP9YQ"></script>
-    <script src="{{ asset('js/submit-property-map.js')}}"></script>
+    {{-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBu5nZKbeK-WHQ70oqOWo-_4VmwOwKP9YQ"></script>
+    <script src="{{ asset('js/submit-property-map.js')}}"></script> --}}
+    <script>
+        function previewFile() {
+            if($('#feature_image').length) {
+                $('#feature_image').remove();
+            }
+            $('#image_preview > p').text("A feature image choosen");
+            $('#image_preview').append("<img height='100px' id='feature_image' src='"+URL.createObjectURL(event.target.files[0])+"'>");
+        }
+
+        function previewImages() {
+            var total_file=document.getElementById("images").files.length;
+            if($('.image').length) {
+                $('.image').remove();
+            }
+            $('#images_preview > p').text(total_file + " images choosen");
+            for(var i=0;i<total_file;i++) {
+                $('#images_preview').append("<img height='100px' class='pr-3 image' src='"+URL.createObjectURL(event.target.files[i])+"'>");
+            }
+        }
+    </script>
 @endsection
