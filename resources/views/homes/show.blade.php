@@ -7,8 +7,8 @@
         <div class="container">
             <nav aria-label="breadcrumb" class="mb-3">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#">Property</a></li>
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/property">Property</a></li>
                     <li aria-current="page" class="breadcrumb-item active">{{ $house->title }}</li>
                 </ol>
             </nav>

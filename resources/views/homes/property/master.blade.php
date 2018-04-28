@@ -19,7 +19,10 @@
                 </div>
 
                 <div class="view d-flex align-items-center"><strong>View</strong>
-                    @yield ('view')
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item"><a href="/property" class="{{ isActiveURL('/property') }}"><i class="fa fa-th-large"></i></a></li>
+                        <li class="list-inline-item"><a href="/property/list" class="{{ isActiveURL('/property/list') }}"><i class="fa fa-th-list"></i></a></li>
+                    </ul>
                 </div>
             </div>
 

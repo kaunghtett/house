@@ -7,18 +7,10 @@
 @section ('breadcrumb')
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="test">Home</a></li>
-            <li class="breadcrumb-item"><a href="property.html">Property</a></li>
-            <li aria-current="page" class="breadcrumb-item active">Property Grid Sidebar</li>
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active">Property</li>
         </ol>
     </nav>
-@endsection
-
-@section ('view')
-    <ul class="list-inline mb-0">
-        <li class="list-inline-item"><a href="#" class="active"><i class="fa fa-th-large"></i></a></li>
-        <li class="list-inline-item"><a href="property-list"><i class="fa fa-th-list"></i></a></li>
-    </ul>
 @endsection
 
 @section ('listings')
@@ -29,7 +21,7 @@
                 <div class="property-listing-item">
                     <div class="image">
                         <img src="img/property-listing-1.jpeg" alt=" The Chalet Estate" class="img-fluid">
-                        <div class="price">$4800/Mo</div>
+                        <div class="price">$4800/Month</div>
                     </div>
                     <div class="info">
                         <div class="badge badge-primary">For Rent</div>

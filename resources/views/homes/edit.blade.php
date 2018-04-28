@@ -3,11 +3,13 @@
 @section ('content')
     <section class="hero-page bg-black-3">
         <div class="container">
-            <h1 class="h2">Submit New Property</h1>
+            <h1 class="h2">Edit {{ $house->title }}</h1>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
-                    <li aria-current="page" class="breadcrumb-item active">Submit Property</li>
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/houses/{{ $house
+                    ->id }}">{{ $house->title }}</a></li>
+                    <li aria-current="page" class="breadcrumb-item active">Edit</li>
                 </ol>
             </nav>
         </div>
@@ -18,6 +20,7 @@
         <div class="container">
             <!-- Basic Information -->
             <h2 class="h3 mb-4">Basic Information</h2>
+
             <form action="/houses/{{ $house->id }}" method="post" enctype="multipart/form-data">
                 @method('PATCH')
                 {{ csrf_field() }}
@@ -25,13 +28,13 @@
                 <div class="row">
                     <div class="form-group col-lg-6">
                         <label>Property Title *</label>
-                        <input type="text" name="title" placeholder="Perfcet House For Rent" class="form-control{{ $errors->has('title') ? ' is-invalid' : '' }}" value="{{ old('title', $house->title) }}" required>
+                        <input type="text" name="title" placeholder="Perfcet House For Rent" class="form-control" value="{{ old('title', $house->title) }}">
 
                         {{-- error msg --}}
                         @if ($errors->has('title'))
-                            <span class="invalid-feedback">
-                                <strong>{{ $errors->first('title') }}</strong>
-                            </span>
+                            <div class="text-danger font-italic">
+                                {{ $errors->first('title') }}
+                            </div>
                         @endif
                     </div>
                     {{-- <div class="form-group col-lg-3">
@@ -56,81 +59,80 @@
 
                         {{-- error msg --}}
                         @if ($errors->has('house_type_id'))
-                            <span class="invalid-feedback">
-                                <strong>{{ $errors->first('house_type_id') }}</strong>
-                            </span>
+                            <div class="text-danger font-italic">
+                                {{ $errors->first('house_type_id') }}
+                            </div>
                         @endif
                     </div>
 
                     <div class="form-group col-lg-3">
                         <label>Rental Period *</label>
                         <select id="period" name="period" class="selectpicker">
-                            <option value="month" {{ old('period' . 'ly', $house->period . 'ly') == 'monthly' ? 'selected' : '' }}>Monthly</option>
-                            <option value="year" {{ old('period' . 'ly', $house->period . 'ly') == 'yearly' ? 'selected' : '' }}>Yearly</option>
+                            <option value="month" {{ old('period', $house->period) == 'month' ? 'selected' : '' }}>Monthly</option>
+                            <option value="year" {{ old('period', $house->period) == 'year' ? 'selected' : '' }}>Yearly</option>
                         </select>
 
                         {{-- error msg --}}
                         @if ($errors->has('period'))
-                            <span class="invalid-feedback">
-                                <strong>{{ $errors->first('period') }}</strong>
-                            </span>
+                            <div class="text-danger font-italic">
+                                {{ $errors->first('period') }}
+                            </div>
                         @endif
                     </div>
 
                     <div class="form-group col-lg-3">
                         <label>Property Price *</label>
-                        <input type="text" name="price" placeholder="MMK" class="form-control{{ $errors->has('price') ? ' is-invalid' : '' }} placeholder-right" value="{{ old('price', $house->price) }}" required>
+                        <input type="text" name="price" placeholder="MMK" class="form-control placeholder-right" value="{{ old('price', $house->price) }}" required>
 
                         {{-- error msg --}}
                         @if ($errors->has('price'))
-                            <span class="invalid-feedback">
-                                <strong>{{ $errors->first('price') }}</strong>
-                            </span>
+                            <div class="text-danger font-italic">
+                                {{ $errors->first('price') }}
+                            </div>
                         @endif
                     </div>
 
                     <div class="form-group col-lg-3">
                         <label>Property Area *</label>
-                        <input type="text" name="area" placeholder="sqft" class="form-control{{ $errors->has('area') ? ' is-invalid' : '' }} placeholder-right" value="{{ old('area', $house->area) }}" required>
+                        <input type="text" name="area" placeholder="sqft" class="form-control placeholder-right" value="{{ old('area', $house->area) }}" required>
 
                         {{-- error msg --}}
                         @if ($errors->has('area'))
-                            <span class="invalid-feedback">
-                                <strong>{{ $errors->first('area') }}</strong>
-                            </span>
+                            <div class="text-danger font-italic">
+                                {{ $errors->first('area') }}
+                            </div>
                         @endif
                     </div>
 
                     <div class="form-group col-lg-3">
                         <label>Property Room *</label>
                         <select name="rooms" class="selectpicker">
-                            <option value="{{ old('rooms', $house->rooms) }}">{{ old('rooms', $house->rooms) }}</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="more-than-5">More than 4</option>
+                            <option value="1" {{ old('rooms', $house->rooms) == 1 ? 'selected' : '' }}>1</option>
+                            <option value="2" {{ old('rooms', $house->rooms) == 2 ? 'selected' : '' }}>2</option>
+                            <option value="3" {{ old('rooms', $house->rooms) == 3 ? 'selected' : '' }}>3</option>
+                            <option value="4" {{ old('rooms', $house->rooms) == 4 ? 'selected' : '' }}>4</option>
+                            <option value="more-than-5" {{ old('rooms', $house->rooms) == 'more-than-5' ? 'selected' : '' }}>More than 4</option>
                         </select>
 
                         {{-- error msg --}}
                         @if ($errors->has('rooms'))
-                            <span class="invalid-feedback">
-                                <strong>{{ $errors->first('rooms') }}</strong>
-                            </span>
+                            <div class="text-danger font-italic">
+                                {{ $errors->first('rooms') }}
+                            </div>
                         @endif
                     </div>
 
                     <div class="form-group col-lg-12">
                         <label>Property Description *</label>
-                        <textarea name="description" placeholder="description" class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }} radius-sm">{{ old('description', $house->description) }}</textarea>
-                    </div>
+                        <textarea name="description" placeholder="description" class="form-control radius-sm">{{ old('description', $house->description) }}</textarea>
 
-                    {{-- error msg --}}
-                    @if ($errors->has('description'))
-                        <span class="invalid-feedback">
-                            <strong>{{ $errors->first('description') }}</strong>
-                        </span>
-                    @endif
+                        {{-- error msg --}}
+                        @if ($errors->has('description'))
+                            <div class="text-danger font-italic">
+                                {{ $errors->first('description') }}
+                            </div>
+                        @endif
+                    </div>
                 </div>
                 <hr class="line mt-5 mb-5">
 
@@ -140,43 +142,48 @@
                     <div class="form-group col-lg-5">
                         <label class="pl-0 mb-3">Featured Image *</label>
                         <input type="file" name="feature_image" class="form-control radius-sm" onchange="previewFile();">
+
+                        {{-- error msg --}}
+                        @if ($errors->has('images'))
+                            <div class="text-danger font-italic">
+                                {{ $errors->first('images') }}
+                            </div>
+                        @endif
+                        {{-- Previous Image --}}
                         <div class="image-preview" id="image_previous">
                             <p class="template-text">Previous A Featured Image</p>
                             @foreach ($feature_images as $feature_image)
-                                <img src="{{ $path . '/' . $feature_image->image_name . '.' . $feature_image->extension }}" height="100px"  class="figure-img rounded pr-3" alt="{{ $feature_image->image_name }}">
+                                <img src="{{ $path . '/' . $feature_image->image_name . '.' . $feature_image->extension }}" height="100px"  class="figure-img pr-3" alt="{{ $feature_image->image_name }}">
                             @endforeach
                         </div>
+                        {{-- Preview --}}
                         <div id="image_preview" class="image-preview d-none">
                             <p class="template-text">No File Choosen</p>
                         </div>
 
-                        {{-- error msg --}}
-                        @if ($errors->has('feature_image'))
-                            <span class="invalid-feedback">
-                                <strong>{{ $errors->first('feature_image') }}</strong>
-                            </span>
-                        @endif
                     </div>
 
                     <div class="form-group col-lg-7">
                         <label class="pl-0 mb-3">All Images *</label>
                         <input type="file" id="images" onchange="previewImages();" name="images[]" class="form-control radius-sm" multiple="multiple">
-                        <div class="image-preview" id="images_previous">
-                            <p class="template-text">Previous Images</p>
-                            @foreach ($images as $image)
-                                <img src="{{ $path . '/' . $image->image_name . '.' . $image->extension }}" height="100px"  class="figure-img rounded pr-3" alt="{{ $image->image_name }}">
-                            @endforeach
-                        </div>
-                        <div id="images_preview" class="image-preview d-none">
-                            <p class="template-text">No File Choosen</p>
-                        </div>
 
                         {{-- error msg --}}
                         @if ($errors->has('images'))
-                            <span class="invalid-feedback">
-                                <strong>{{ $errors->first('images') }}</strong>
-                            </span>
+                            <div class="text-danger font-italic">
+                                {{ $errors->first('images') }}
+                            </div>
                         @endif
+                        {{-- Previous --}}
+                        <div class="image-preview" id="images_previous">
+                            <p class="template-text">Previous Images</p>
+                            @foreach ($images as $image)
+                                <img src="{{ $path . '/' . $image->image_name . '.' . $image->extension }}" height="100px"  class="figure-img pr-3" alt="{{ $image->image_name }}">
+                            @endforeach
+                        </div>
+                        {{-- Preview --}}
+                        <div id="images_preview" class="image-preview d-none">
+                            <p class="template-text">No File Choosen</p>
+                        </div>
                     </div>
                 </div>
                 <hr class="line mt-5 mb-5">
@@ -193,37 +200,37 @@
                     </div> --}}
                     <div class="form-group col-lg-12">
                         <label>Friendly Address *</label>
-                        <input type="text" name="address" class="form-control{{  $errors->has('address') ? ' is_invalid' : '' }}" placeholder="No, Street, Township, Region" value="{{ old('address', $location->address) }}" required>
+                        <input type="text" name="address" class="form-control" placeholder="No, Street, Township, Region" value="{{ old('address', $location->address) }}" required>
 
                         {{-- error msg --}}
                         @if ($errors->has('address'))
-                            <span class="invalid-feedback">
-                                <strong>{{ $errors->first('address') }}</strong>
-                            </span>
+                            <div class="text-danger font-italic">
+                                {{ $errors->first('address') }}
+                            </div>
                         @endif
                     </div>
 
                     <div class="form-group col-lg-4">
                         <label>Street *</label>
-                        <input type="text" name="street" class="form-control{{  $errors->has('street') ? ' is_invalid' : '' }}" placeholder="eg. Hledan" value="{{ old('street', $location->street) }}" required>
+                        <input type="text" name="street" class="form-control" placeholder="eg. Hledan" value="{{ old('street', $location->street) }}" required>
 
                         {{-- error msg --}}
                         @if ($errors->has('street'))
-                            <span class="invalid-feedback">
-                                <strong>{{ $errors->first('street') }}</strong>
-                            </span>
+                            <div class="text-danger font-italic">
+                                {{ $errors->first('street') }}
+                            </div>
                         @endif
                     </div>
 
                     <div class="form-group col-lg-4">
                         <label>Township *</label>
-                        <input type="text" name="township" class="form-control{{  $errors->has('township') ? ' is_invalid' : '' }}" placeholder="eg. Kamayut" value="{{ old('township', $location->township) }}" required>
+                        <input type="text" name="township" class="form-control" placeholder="eg. Kamayut" value="{{ old('township', $location->township) }}" required>
 
                         {{-- error msg --}}
                         @if ($errors->has('township'))
-                            <span class="invalid-feedback">
-                                <strong>{{ $errors->first('township') }}</strong>
-                            </span>
+                            <div class="text-danger font-italic">
+                                {{ $errors->first('township') }}
+                            </div>
                         @endif
                     </div>
 
@@ -234,6 +241,13 @@
                                 <option value="{{ $region->id }}" {{ old('region', $location->region_id) == $region->id ? 'selected' : '' }}>{{ $region->name }}</option>
                             @endforeach
                         </select>
+
+                        {{-- error msg --}}
+                        @if ($errors->has('region'))
+                            <div class="text-danger font-italic">
+                                {{ $errors->first('region') }}
+                            </div>
+                        @endif
                     </div>
                 </div>
                 <hr class="line mt-5 mb-5">
@@ -244,31 +258,49 @@
                     <div class="form-group col-lg-4">
                         <label>Building Year *</label>
                         <select name="building_year" class="selectpicker">
-                            <option value="{{ old('building_year', $houseDetail->building_year) }}">{{ old('building_year', $houseDetail->building_year) }}</option>
-                            <option value="1990 - 1999">1990 - 1999</option>
-                            <option value="1999 - 2009">1999 - 2009</option>
-                            <option value="2009 - 2019">2009 - 2019</option>
+                            <option value="1990-1999" {{ old('building_year', $houseDetail->building_year) == '1990-1999' ? 'selected' : '' }}>1990 - 1999</option>
+                            <option value="1999-2009" {{ old('building_year', $houseDetail->building_year) == '1999-2009' ? 'selected' : '' }}>1999 - 2009</option>
+                            <option value="2009-2019" {{ old('building_year', $houseDetail->building_year) == '2009-2019' ? 'selected' : '' }}>2009 - 2019</option>
                         </select>
+
+                        {{-- error msg --}}
+                        @if ($errors->has('building_year'))
+                            <div class="text-danger font-italic">
+                                {{ $errors->first('building_year') }}
+                            </div>
+                        @endif
                     </div>
                     <div class="form-group col-lg-4">
                         <label>Bathrooms *</label>
                         <select name="bathrooms" class="selectpicker">
-                            <option value="{{ old('bathrooms', $houseDetail->bathrooms) }}">{{ old('bathrooms', $houseDetail->bathrooms) }}</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
+                            <option value="1" {{ old('bathrooms', $houseDetail->bathrooms) == 1 ? 'selected' : '' }}>1</option>
+                            <option value="2" {{ old('bathrooms', $houseDetail->bathrooms) == 2 ? 'selected' : '' }}>2</option>
+                            <option value="3" {{ old('bathrooms', $houseDetail->bathrooms) == 3 ? 'selected' : '' }}>3</option>
+                            <option value="4" {{ old('bathrooms', $houseDetail->bathrooms) == 4 ? 'selected' : '' }}>4</option>
                         </select>
+
+                        {{-- error msg --}}
+                        @if ($errors->has('bathrooms'))
+                            <div class="text-danger font-italic">
+                                {{ $errors->first('bathrooms') }}
+                            </div>
+                        @endif
                     </div>
                     <div class="form-group col-lg-4">
                         <label>Bedrooms *</label>
                         <select name="bedrooms" class="selectpicker">
-                            <option value="{{ old('bedrooms', $houseDetail->bedrooms) }}">{{ old('bedrooms', $houseDetail->bedrooms) }}</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
+                            <option value="1" {{ old('bedrooms', $houseDetail->bedrooms) == 1 ? 'selected' : '' }}>1</option>
+                            <option value="2" {{ old('bedrooms', $houseDetail->bedrooms) == 2 ? 'selected' : '' }}>2</option>
+                            <option value="3" {{ old('bedrooms', $houseDetail->bedrooms) == 3 ? 'selected' : '' }}>3</option>
+                            <option value="4" {{ old('bedrooms', $houseDetail->bedrooms) == 4 ? 'selected' : '' }}>4</option>
                         </select>
+
+                        {{-- error msg --}}
+                        @if ($errors->has('bedrooms'))
+                            <div class="text-danger font-italic">
+                                {{ $errors->first('bedrooms') }}
+                            </div>
+                        @endif
                     </div>
                     {{-- <div class="form-group col-lg-4">
                         <label>Lot Size *</label>
@@ -277,10 +309,16 @@
                     <div class="form-group col-lg-4">
                         <label>Parking *</label>
                         <select name="parking" class="selectpicker">
-                            <option value="{{ old('parking', $houseDetail->parking) }}">{{ old('parking', $houseDetail->parking) == 1 ? 'Yes' : 'No' }}</option>
-                            <option value="1">Yes</option>
-                            <option value="0">No</option>
+                            <option value="1" {{ old('parking', $houseDetail->parking) == 1 ? 'selected' : '' }}>Yes</option>
+                            <option value="0" {{ old('parking', $houseDetail->parking) == 0 ? 'selected' : '' }}>No</option>
                         </select>
+
+                        {{-- error msg --}}
+                        @if ($errors->has('parking'))
+                            <div class="text-danger font-italic">
+                                {{ $errors->first('parking') }}
+                            </div>
+                        @endif
                     </div>
                     {{-- <div class="form-group col-lg-4">
                         <label>Cooling *</label>
@@ -294,17 +332,30 @@
                     <div class="form-group col-lg-4">
                         <label>Water *</label>
                         <select name="water" class="selectpicker">
-                            <option value="{{ old('water', $houseDetail->water) }}">{{ old('water', $houseDetail->water) == 1 ? 'Yes' : 'No' }}</option>
-                            <option value="1">Yes</option>
-                            <option value="0">No</option>
+                            <option value="1" {{ old('water', $houseDetail->water) == 1 ? 'selected' : '' }}>Yes</option>
+                            <option value="0" {{ old('water', $houseDetail->water) == 0 ? 'selected' : '' }}>No</option>
                         </select>
+
+                        {{-- error msg --}}
+                        @if ($errors->has('water'))
+                            <div class="text-danger font-italic">
+                                {{ $errors->first('water') }}
+                            </div>
+                        @endif
                     </div>
                     <div class="form-group col-lg-4">
                         <label>Exercise Room *</label>
                         <select name="exercise_room" class="selectpicker">
-                            <option value="1">Yes</option>
-                            <option value="0">No</option>
+                            <option value="1" {{ old('exercise_room', $houseDetail->exercise_room) == 1 ? 'selected' : '' }}>Yes</option>
+                            <option value="0" {{ old('exercise_room', $houseDetail->exercise_room) == 0 ? 'selected' : '' }}>No</option>
                         </select>
+
+                        {{-- error msg --}}
+                        @if ($errors->has('exercise_room'))
+                            <div class="text-danger font-italic">
+                                {{ $errors->first('exercise_room') }}
+                            </div>
+                        @endif
                     </div>
                 </div>
                 <hr class="line mt-5 mb-5">
@@ -323,9 +374,9 @@
 
                                 {{-- error msg --}}
                                 @if ($errors->has('features'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('features') }}</strong>
-                                    </span>
+                                    <div class="text-danger font-italic">
+                                        {{ $errors->first('features') }}
+                                    </div>
                                 @endif
                             </div>
                         </div>

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class HouseRequest extends FormRequest
+class HouseUpdateFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -42,10 +42,9 @@ class HouseRequest extends FormRequest
             'water' => 'required|boolean',
             'exercise_room' => 'required|boolean',
             'features' => 'required|nullable',
-            'feature_image' => 'required|image|mimes:jpeg,jpg,png|max:2000',
-            'images' => 'required',
+            'feature_image' => 'image|mimes:jpeg,jpg,png|max:2000',
             'images*' => 'image|mimes:jpeg,jpg,png|max:2000',
-            // 'floor_images*' => 'required|image|mimes:jpeg,jpg,png|max:2000',
+            // 'floor_images*' => 'required|image|mimes:jpeg,jpg,png|max:2000','
         ];
     }
 }

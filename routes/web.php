@@ -14,16 +14,29 @@
 Auth::routes();
 
 // Houses Route
+Route::resource('houses', 'HouseController')->except('index');
 Route::get('/', 'HouseController@index')->name('home');
-Route::get('/houses/create', 'HouseController@create');
-Route::post('/houses', 'HouseController@store');
-Route::get('/houses/{house}', 'HouseController@show');
-Route::get('/houses/{house}/edit', 'HouseController@edit');
+
+//Gallery Route
+Route::get('/gallery', 'GalleryController@show');
 
 // Review Route
 Route::post('/houses/{house}/reviews', 'ReviewController@store');
 // Message Route
 Route::post('/houses/{house}/message', 'MessageController@store');
+// About for App
+Route::get('/about', function() {
+    return view('homes.about');
+});
+
+// Property route (test)
+Route::get('/property', function() {
+    return view('homes.property.property-grid');
+});
+
+Route::get('/property/list', function() {
+    return view('homes.property.property-list');
+});
 
 
 Route::get('/houses/backend/admin/guest/{user}', 'GuestController@index');

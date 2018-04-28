@@ -4,7 +4,6 @@
         <div class="row">
             <div class="col-lg-6 d-none d-lg-block menu-left">
                 <ul class="list-inline">
-                    <li class="list-inline-item"><a href="#">About</a></li>
                     <li class="list-inline-item"><a href="#">Contact Us</a></li>
                 </ul>
             </div>

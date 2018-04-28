@@ -7,18 +7,11 @@
 @section ('breadcrumb')
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="test">Home</a></li>
-            <li class="breadcrumb-item"><a href="#">Property</a></li>
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/property">Property</a></li>
             <li aria-current="page" class="breadcrumb-item active">Property List Sidebar</li>
         </ol>
     </nav>
-@endsection
-
-@section ('view')
-    <ul class="list-inline mb-0">
-        <li class="list-inline-item"><a href="property-grid"><i class="fa fa-th-large"></i></a></li>
-        <li class="list-inline-item"><a href="#" class="active"><i class="fa fa-th-list"></i></a></li>
-    </ul>
 @endsection
 
 @section ('listings')
