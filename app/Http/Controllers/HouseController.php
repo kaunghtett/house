@@ -158,6 +158,7 @@ class HouseController extends Controller
         $related_locations = Location::where('township', $related_township)
                             ->where('region_id', $related_region_id)
                             ->where('house_id', '!=', $house->id)
+                            ->limit(3)
                             ->get();
         $collections = [];
 

@@ -8,7 +8,7 @@
             <nav aria-label="breadcrumb" class="mb-3">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/">Home</a></li>
-                <li class="breadcrumb-item"><a href="/property">Property</a></li>
+                <li class="breadcrumb-item"><a href="/gallery">Gallery</a></li>
                     <li aria-current="page" class="breadcrumb-item active">{{ $house->title }}</li>
                 </ol>
             </nav>
@@ -170,13 +170,13 @@
 
                     <div class="form-group row">
                         <div class="col-lg-6">
-                            <textarea name="body" id="body" class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }} radius-sm" value="{{ old('description') }} rows="5" placeholder="Your review here"></textarea>
+                            <textarea name="body" id="body" class="form-control radius-sm" value="{{ old('body') }}" rows="5" placeholder="Your review here"></textarea>
 
                             {{-- error msg --}}
-                            @if ($errors->has('description'))
-                                <span class="invalid-feedback">
-                                    <strong>{{ $errors->first('description') }}</strong>
-                                </span>
+                            @if ($errors->has('body'))
+                                <div class="text-danger font-italic">
+                                    {{ $errors->first('body') }}
+                                </div>
                             @endif
                         </div>
                         <div class="w-100"></div>

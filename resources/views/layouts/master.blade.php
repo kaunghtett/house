@@ -31,7 +31,9 @@
         @include ('layouts.nav')
     </header>
 
-    @yield ('content')
+    <div id="app">
+        @yield ('content')
+    </div>
 
     <!-- Scroll Top Button -->
     <div id="scrollTopButton"><i class="fa fa-long-arrow-up"></i></div>

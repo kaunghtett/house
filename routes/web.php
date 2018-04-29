@@ -18,7 +18,8 @@ Route::resource('houses', 'HouseController')->except('index');
 Route::get('/', 'HouseController@index')->name('home');
 
 //Gallery Route
-Route::get('/gallery', 'GalleryController@show');
+Route::get('/gallery', 'GalleryController@index');
+Route::get('/gallery/data/{number}', 'GalleryController@loadData');
 
 // Review Route
 Route::post('/houses/{house}/reviews', 'ReviewController@store');

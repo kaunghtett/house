@@ -8,6 +8,8 @@
 <script src="{{ asset('js/swiper.js') }}"></script>
 <script src="{{ asset('js/front.js') }}"></script>
 <script src="{{ asset('js/sweetalert2.all.min.js') }}"></script>
+{{-- axios --}}
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID.-->
