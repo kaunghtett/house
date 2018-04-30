@@ -43,15 +43,11 @@
                     <div class="form-group col-lg-6">
                         <label>Property Type *</label>
                         <select id="types" name="house_type_id" class="selectpicker">
-                            @if (old('region'))
-                            <option value="{{ old('house_type_id') }}">{{ old('house_type_id') }}</option>
-                            @endif
                             @foreach ($types as $type)
-                                <option value="{{ $type->id }}">{{ $type->type_name }}</option>
+                                <option value="{{ $type->id }}" {{ old('house_type_id') == $type->id ? 'selected' : '' }}>
+                                    {{ $type->type_name }}
+                                </option>
                             @endforeach
-                            {{-- <option value="houses">Houses</option>
-                            <option value="commercial">Commercial</option>
-                            <option value="lots">Lots</option> --}}
                         </select>
 
                         {{-- error msg --}}
@@ -104,14 +100,11 @@
                     <div class="form-group col-lg-3">
                         <label>Property Room *</label>
                         <select name="rooms" class="selectpicker">
-                            @if (old('rooms'))
-                            <option value="{{ old('rooms') }}">{{ old('rooms') }}</option>
-                            @endif
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="more-than-5">More than 4</option>
+                            <option value="1" {{ old('rooms') == 1 ? 'selected' : '' }}>1</option>
+                            <option value="2" {{ old('rooms') == 2 ? 'selected' : '' }}>2</option>
+                            <option value="3" {{ old('rooms') == 3 ? 'selected' : '' }}>3</option>
+                            <option value="4" {{ old('rooms') == 4 ? 'selected' : '' }}>4</option>
+                            <option value="more-than-5" {{ old('rooms') == 'more-than-5' ? 'selected' : '' }}>More than 4</option>
                         </select>
 
                         {{-- error msg --}}
@@ -226,7 +219,7 @@
                             <option value="{{ old('region') }}">{{ old('region') }}</option>
                             @endif
                             @foreach ($regions as $region)
-                                <option value="{{ $region->id }}">{{ $region->name }}</option>
+                                <option value="{{ $region->id }}" {{ old('region') == $region->id ? 'selected' : '' }}>{{ $region->name }}</option>
                             @endforeach
                         </select>
 
@@ -246,12 +239,9 @@
                     <div class="form-group col-lg-4">
                         <label>Building Year *</label>
                         <select name="building_year" class="selectpicker">
-                            @if (old('building_year'))
-                            <option value="{{ old('building_year') }}">{{ old('building_year') }}</option>
-                            @endif
-                            <option value="1990-1999">1990 - 1999</option>
-                            <option value="1999-2009">1999 - 2009</option>
-                            <option value="2009-2019">2009 - 2019</option>
+                            <option value="1990-1999" {{ old('building_year') == '1990-1999' ? 'selected' : '' }}>1990 - 1999</option>
+                            <option value="1999-2009" {{ old('building_year') == '1999-2009' ? 'selected' : '' }}>1999 - 2009</option>
+                            <option value="2009-2019" {{ old('building_year') == '2009-2019' ? 'selected' : '' }}>2009 - 2019</option>
                         </select>
 
                         {{-- error msg --}}
@@ -264,13 +254,10 @@
                     <div class="form-group col-lg-4">
                         <label>Bathrooms *</label>
                         <select name="bathrooms" class="selectpicker">
-                            @if (old('bathrooms'))
-                            <option value="{{ old('bathrooms') }}">{{ old('bathrooms') }}</option>
-                            @endif
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
+                            <option value="1" {{ old('bathrooms') == 1 ? 'selected' : '' }}>1</option>
+                            <option value="2" {{ old('bathrooms') == 2 ? 'selected' : '' }}>2</option>
+                            <option value="3" {{ old('bathrooms') == 3 ? 'selected' : '' }}>3</option>
+                            <option value="4" {{ old('bathrooms') == 4 ? 'selected' : '' }}>4</option>
                         </select>
 
                         {{-- error msg --}}
@@ -283,13 +270,10 @@
                     <div class="form-group col-lg-4">
                         <label>Bedrooms *</label>
                         <select name="bedrooms" class="selectpicker">
-                            @if (old('bedrooms'))
-                            <option value="{{ old('bedrooms') }}">{{ old('bedrooms') }}</option>
-                            @endif
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
+                            <option value="1" {{ old('bedrooms') == 1 ? 'selected' : '' }}>1</option>
+                            <option value="2" {{ old('bedrooms') == 2 ? 'selected' : '' }}>2</option>
+                            <option value="3" {{ old('bedrooms') == 3 ? 'selected' : '' }}>3</option>
+                            <option value="4" {{ old('bedrooms') == 4 ? 'selected' : '' }}>4</option>
                         </select>
 
                         {{-- error msg --}}
@@ -306,11 +290,8 @@
                     <div class="form-group col-lg-4">
                         <label>Parking *</label>
                         <select name="parking" class="selectpicker">
-                            <option value="1">Yes</option>
-                            <option value="0">No</option>
-                            @if (old('parking'))
-                            <option value="{{ old('parking') }}">{{ old('parking') }}</option>
-                            @endif
+                            <option value="1" {{ old('parking') == 1 ? 'selected' : '' }}>Yes</option>
+                            <option value="0" {{ old('parking') == 0 ? 'selected' : '' }}>No</option>
                         </select>
 
                         {{-- error msg --}}
@@ -331,11 +312,8 @@
                     <div class="form-group col-lg-4">
                         <label>Water *</label>
                         <select name="water" class="selectpicker">
-                            @if (old('water'))
-                            <option value="{{ old('water') }}">{{ old('water') }}</option>
-                            @endif
-                            <option value="1">Yes</option>
-                            <option value="0">No</option>
+                            <option value="1" {{ old('water') == 1 ? 'selected' : '' }}>Yes</option>
+                            <option value="0" {{ old('water') == 0 ? 'selected' : '' }}>No</option>
                         </select>
 
                         {{-- error msg --}}
@@ -348,11 +326,8 @@
                     <div class="form-group col-lg-4">
                         <label>Exercise Room *</label>
                         <select name="exercise_room" class="selectpicker">
-                            @if (old('exercise_room'))
-                            <option value="{{ old('exercise_room') }}">{{ old('exercise_room') }}</option>
-                            @endif
-                            <option value="1">Yes</option>
-                            <option value="0">No</option>
+                            <option value="1" {{ old('exercise_room') == 1 ? 'selected' : '' }}>Yes</option>
+                            <option value="0" {{ old('exercise_room') == 0 ? 'selected' : '' }}>No</option>
                         </select>
 
                         {{-- error msg --}}

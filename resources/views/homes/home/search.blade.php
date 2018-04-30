@@ -1,9 +1,11 @@
 <section class="search-property bg-black-4">
     <div class="container">
-        <form action="#">
+        <form action="/search" method="post">
+            {{ csrf_field() }}
+
             <div class="row justify-content-center">
                 <div class="form-group col-xl-7 col-lg-6">
-                    <input type="text" name="keyword_search" placeholder="Enter address e.g. street, city and state or zip" class="form-control">
+                    <input type="text" name="address" placeholder="Enter address e.g. street, township and region" class="form-control">
                 </div>
 
                 <div class="form-group col-xl-1 col-lg-2">

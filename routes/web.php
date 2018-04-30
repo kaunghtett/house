@@ -39,6 +39,9 @@ Route::get('/property/list', function() {
     return view('homes.property.property-list');
 });
 
+// Search Route
+Route::post('/search', 'SearchController@search');
 
-Route::get('/houses/backend/admin/guest/{user}', 'GuestController@index');
+
+// Route::get('/houses/backend/admin/guest/{user}', 'GuestController@index');
 
