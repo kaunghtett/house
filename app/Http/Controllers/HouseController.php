@@ -149,6 +149,7 @@ class HouseController extends Controller
         $reviews = $house->reviews;
         $all_features = HouseFeature::all();
         $features = explode(', ', $house->features);
+        // dd($features);
         $images = $house->galleries;
         $path = asset('/storage/photos/');
 

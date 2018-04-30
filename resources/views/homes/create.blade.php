@@ -134,7 +134,7 @@
                 <div class="row">
                     <div class="form-group col-lg-5">
                         <label class="pl-0 mb-3">Featured Image *</label>
-                        <input type="file" name="feature_image" class="form-control radius-sm" onchange="previewFile();">
+                        <input type="file" name="feature_image" class="form-control radius-sm" onchange="previewFile(event);">
 
                         {{-- error msg --}}
                         @if ($errors->has('feature_image'))
@@ -150,7 +150,7 @@
 
                     <div class="form-group col-lg-7">
                         <label class="pl-0 mb-3">All Images *</label>
-                        <input type="file" id="images" onchange="previewImages();" name="images[]" class="form-control radius-sm" multiple="multiple">
+                        <input type="file" id="images" onchange="previewImages(event);" name="images[]" class="form-control radius-sm" multiple="multiple">
 
                         {{-- error msg --}}
                         @if ($errors->has('images'))
@@ -387,7 +387,7 @@
     {{-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBu5nZKbeK-WHQ70oqOWo-_4VmwOwKP9YQ"></script>
     <script src="{{ asset('js/submit-property-map.js')}}"></script> --}}
     <script>
-        function previewFile() {
+        function previewFile(event) {
             if($('#feature_image').length) {
                 $('#feature_image').remove();
             }
@@ -395,7 +395,7 @@
             $('#image_preview').append("<img height='100px' id='feature_image' src='"+URL.createObjectURL(event.target.files[0])+"'>");
         }
 
-        function previewImages() {
+        function previewImages(event) {
             var total_file=document.getElementById("images").files.length;
             if($('.image').length) {
                 $('.image').remove();
