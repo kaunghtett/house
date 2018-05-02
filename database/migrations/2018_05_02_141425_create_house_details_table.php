@@ -15,6 +15,7 @@ class CreateHouseDetailsTable extends Migration
     {
         Schema::create('house_details', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('house_id');
             $table->string('building_year');
             $table->integer('bathrooms');
             $table->integer('bedrooms');
@@ -22,6 +23,8 @@ class CreateHouseDetailsTable extends Migration
             $table->boolean('water');
             $table->boolean('exercise_room');
             $table->timestamps();
+
+            $table->foreign('house_id')->references('id')->on('houses')->onDelete('cascade');
         });
     }
 

@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class HouseDetail extends Model
 {
-    protected $fillable = ['building_year', 'bathrooms', 'bedrooms',
-                            'parking', 'water', 'exercise_room'];
+    protected $fillable = [
+        'house_id', 'building_year', 'bathrooms', 'bedrooms', 'parking',
+        'water', 'exercise_room'
+    ];
 
 
 }

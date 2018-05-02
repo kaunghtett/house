@@ -15,11 +15,13 @@ class CreateGalleriesTable extends Migration
     {
         Schema::create('galleries', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('house_id');
+            $table->unsignedInteger('house_id');
             $table->string('image_name')->unique();
             $table->string('extension', 10);
             $table->boolean('is_featured')->default(false);
             $table->timestamps();
+
+            $table->foreign('house_id')->references('id')->on('houses')->onDelete('cascade');
         });
     }
 

@@ -15,17 +15,20 @@ class CreateHousesTable extends Migration
     {
         Schema::create('houses', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
+            $table->unsignedInteger('user_id');
             $table->string('title');
-            $table->integer('house_type_id');
-            $table->integer('house_detail_id');
-            $table->string('period');
+            $table->unsignedInteger('house_type_id');
+            $table->string('period')->default('month');
             $table->integer('price');
             $table->integer('area');
             $table->string('rooms');
             $table->text('description');
             $table->string('features');
+            $table->boolean('is_featured')->default(false);
             $table->timestamps();
+
+            $table->foreign('house_type_id')->references('id')->on('house_types')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

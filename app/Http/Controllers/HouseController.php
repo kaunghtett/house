@@ -28,7 +28,9 @@ class HouseController extends Controller
      */
     public function index()
     {
-        return view('homes.home.index');
+        $types = HouseType::all();
+        $regions = Region::all();
+        return view('homes.home.index', compact('types', 'regions'));
     }
 
     /**
@@ -53,23 +55,12 @@ class HouseController extends Controller
      */
     public function store(HouseRequest $request)
     {
-        //house details
-        $houseDetail = HouseDetail::create([
-            'building_year' => $request->building_year,
-            'bathrooms' => $request->bathrooms,
-            'bedrooms' => $request->bedrooms,
-            'parking' => $request->parking,
-            'water' => $request->water,
-            'exercise_room' => $request->exercise_room,
-        ]);
-
-        $features = implode(', ', $request->features);
         //house basic
+        $features = implode(', ', $request->features);
         $house = House::create([
             'user_id' => auth()->id(),
             'title' => $request->title,
             'house_type_id' => $request->house_type_id,
-            'house_detail_id' => $houseDetail->id,
             'period' => $request->period,
             'price' => $request->price,
             'area' => $request->area,
@@ -80,11 +71,21 @@ class HouseController extends Controller
 
         $house_id = $house->id;
 
+        //house details
+        $house->houseDetail()->create([
+            'building_year' => $request->building_year,
+            'bathrooms' => $request->bathrooms,
+            'bedrooms' => $request->bedrooms,
+            'parking' => $request->parking,
+            'water' => $request->water,
+            'exercise_room' => $request->exercise_room,
+        ]);
+
         //featured image
         $feature_image = $request->feature_image;
         $feature_extension = $feature_image->getClientOriginalExtension();
         $feature_image_name = $house_id . '-feature-image';
-        // store image in storage/public/photos/features/
+        // store image in storage/public/photos
         $feature_image->storeAs('public/photos/',
                                 $feature_image_name . '.'
                                 . $feature_extension);
@@ -95,8 +96,7 @@ class HouseController extends Controller
                             . $feature_image_name . '.' . $feature_extension));
 
          // save to database (galleries)
-        Gallery::create([
-            'house_id' => $house_id,
+        $house->galleries()->create([
             'image_name' => $feature_image_name,
             'extension' => $feature_extension,
             'is_featured' => true,
@@ -115,25 +115,25 @@ class HouseController extends Controller
                       ->save(storage_path('app/public/photos/thumbnails/'
                         . $image_name . '.' . $image_extension));
 
-            Gallery::create([
-                'house_id' => $house_id,
+            $house->galleries()->create([
+                // 'house_id' => $house_id,
                 'image_name' => $image_name,
                 'extension' => $image_extension,
             ]);
         }
 
         //locations
-        Location::create([
-            'house_id' => $house_id,
-            'address' => $request->address,
-            'street' => $request->street,
-            'township' => $request->township,
+        $house->location()->create([
+            // 'house_id' => $house_id,
+            'address' => title_case($request->address),
+            'street' => title_case($request->street),
+            'township' => title_case($request->township),
             'region_id' => $request->region,
         ]);
 
         alert()->success('Successfully', 'A New House is created successfully.');
 
-        return redirect()->route('home');
+        return redirect()->route('houses.show', compact('house_id'));
     }
 
     /**
@@ -144,7 +144,7 @@ class HouseController extends Controller
      */
     public function show(House $house)
     {
-        $house_info = $house->details()->get();
+        $house = $house->load(['houseDetail', 'houseType', 'location']);
         // dd($house_info);
         $reviews = $house->reviews;
         $all_features = HouseFeature::all();
@@ -168,7 +168,7 @@ class HouseController extends Controller
             array_push($collections, $related_house);
         }
 
-        return view('homes.show', compact('house_info', 'images', 'path', 'all_features', 'features', 'reviews', 'collections'));
+        return view('homes.show', compact('house', 'images', 'path', 'all_features', 'features', 'reviews', 'collections'));
     }
 
     /**

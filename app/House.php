@@ -6,43 +6,24 @@ use Illuminate\Database\Eloquent\Model;
 
 class House extends Model
 {
-    protected $fillable = ['user_id', 'title', 'house_type_id',
-                            'house_detail_id', 'period', 'price',
-                            'area', 'room', 'description', 'features'];
+    protected $fillable = [
+        'user_id', 'title', 'house_type_id', 'period', 'price', 'area',
+        'rooms', 'description', 'features', 'is_featured'
+    ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function scopeDetails($query)
+    public function houseDetail()
     {
-        return $query->join('house_details', 'houses.house_detail_id', '=',
-                            'house_details.id')
-                     ->join('house_types', 'houses.house_type_id', '=', 'house_types.id')
-                     ->join('locations', 'houses.id', '=', 'locations.house_id')
-                     ->where('houses.id', $this->id);
-    }
-
-    public function scopeRelatedHouse($query, $related_location)
-    {
-        return $query->join('house_details', 'houses.house_detail_id',
-                         '=', 'house_details.id')
-                    ->join('house_types', 'houses.house_type_id', '=', 'house_types.id')
-                    ->join('locations', 'houses.id', '=', 'locations.house_id')
-                    ->join('galleries', 'houses.id', '=', 'galleries.house_id')
-                    ->where('houses.id', $related_location->house->id)
-                    ->where('is_featured', 1);
+        return $this->hasOne(HouseDetail::class);
     }
 
     public function houseType()
     {
         return $this->belongsTo(HouseType::class);
-    }
-
-    public function houseDetail()
-    {
-        return $this->belongsTo(HouseDetail::class);
     }
 
     public function location()
@@ -58,5 +39,16 @@ class House extends Model
     public function galleries()
     {
         return $this->hasMany(Gallery::class);
+    }
+
+    public function scopeRelatedHouse($query, $related_location)
+    {
+        return $query->join('house_details', 'houses.house_detail_id',
+                         '=', 'house_details.id')
+                    ->join('house_types', 'houses.house_type_id', '=', 'house_types.id')
+                    ->join('locations', 'houses.id', '=', 'locations.house_id')
+                    ->join('galleries', 'houses.id', '=', 'galleries.house_id')
+                    ->where('houses.id', $related_location->house->id)
+                    ->where('is_featured', 1);
     }
 }

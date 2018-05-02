@@ -1,6 +1,6 @@
 <section class="search-property bg-black-4">
     <div class="container">
-        <form action="/search" method="post">
+        <form action="/search" method="get">
             {{ csrf_field() }}
 
             <div class="row justify-content-center">
@@ -27,10 +27,11 @@
                 </div>
                 <div class="form-group col-lg-4">
                     <select id="Types" name="types" title="Property Type" class="selectpicker">
-                        <option value="apartments">Apartments</option>
-                        <option value="houses">Houses</option>
-                        <option value="commercial">Commercial</option>
-                        <option value="lots">Lots</option>
+                        @foreach ($types as $type)
+                            <option value="{{ $type->type_name }}">
+                                {{ $type->type_name }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="form-group col-lg-4">
@@ -40,14 +41,12 @@
                     <input type="text" name="max_area-range" placeholder="Max area range [sq m]" class="form-control">
                 </div>
                 <div class="form-group col-lg-4">
-                    <select name="location" title="location" class="selectpicker">
-                        <option value="los-anglos">Los Angeles</option>
-                        <option value="san-antonio">San Antonio</option>
-                        <option value="new-orleans">New Orleans</option>
-                        <option value="victor-harbor">Victor Harbor</option>
-                        <option value="gold-cost">Gold Cost</option>
-                        <option value="murray-bridge">Murray Bridge</option>
-                        <option value="south-wales">South Wales</option>
+                    <select name="region" title="region" class="selectpicker">
+                        @foreach ($regions as $region)
+                            <option value="{{ $region->id }}">
+                                {{ $region->name }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="form group col-lg-12">

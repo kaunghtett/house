@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMessagesTable extends Migration
+class CreateReviewsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateMessagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('messages', function (Blueprint $table) {
+        Schema::create('reviews', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('house_id');
-            $table->string('guest_name');
-            $table->string('guest_email');
-            $table->string('guest_phone');
-            $table->text('guest_message');
+            $table->unsignedInteger('house_id');
+            $table->string('body');
             $table->timestamps();
+
+            $table->foreign('house_id')->references('id')->on('houses')->onDelete('cascade');
         });
     }
 
@@ -31,6 +30,6 @@ class CreateMessagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('messages');
+        Schema::dropIfExists('reviews');
     }
 }

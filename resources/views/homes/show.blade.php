@@ -2,7 +2,6 @@
 
 @section ('content')
      <!-- Property Single Section-->
-    @foreach($house_info as $house)
     <section class="property-single bg-black-2">
         <div class="container">
             <nav aria-label="breadcrumb" class="mb-3">
@@ -63,7 +62,7 @@
                             <li class="list-inline-item"><a href="#"><i class="fa fa-home"></i>{{ $house->user->address }}</a></li>
                         </ul>
                         <div class="agent-contact">
-                            <form action="/houses/{{ $house->house_id }}/message" method="post" class="agent-contact-form">
+                            <form action="/houses/{{ $house->id }}/message" method="post" class="agent-contact-form">
                                 {{ csrf_field() }}
 
                                 <div class="form-group">
@@ -93,11 +92,11 @@
                 <div class="row">
                     <div class="col-lg-3">
                         <strong>Property ID</strong>
-                        <span>{{ $house->house_id }}</span>
+                        <span>{{ $house->id }}</span>
                     </div>
                     <div class="col-lg-3">
                         <strong>Type of property</strong>
-                        <span>{{ $house->type_name }}</span>
+                        <span>{{ $house->houseType->type_name }}</span>
                     </div>
                     {{-- <div class="col-lg-3"><strong>Property status</strong><span>For sale</span></div> --}}
                     <div class="col-lg-3">
@@ -110,15 +109,15 @@
                     </div>
                     <div class="col-lg-3">
                         <strong>Bathrooms</strong>
-                        <span>{{ $house->bathrooms }}</span>
+                        <span>{{ $house->houseDetail->bathrooms }}</span>
                     </div>
                     <div class="col-lg-3">
                         <strong>Bedrooms</strong>
-                        <span>{{ $house->bedrooms }}</span>
+                        <span>{{ $house->houseDetail->bedrooms }}</span>
                     </div>
                     <div class="col-lg-3">
                         <strong>Year built</strong>
-                        <span>{{ $house->building_year }}</span>
+                        <span>{{ $house->houseDetail->building_year }}</span>
                     </div>
                 </div>
             </div>
@@ -165,7 +164,7 @@
                     </ul>
                 @endif
                 <hr class="line mt-5 mb-5">
-                <form action="/houses/{{ $house->house_id }}/reviews" method="post">
+                <form action="/houses/{{ $house->id }}/reviews" method="post">
                     {{ csrf_field() }}
 
                     <div class="form-group row">
@@ -188,7 +187,6 @@
             </div>
         </div>
     </section>
-    @endforeach
 
     <!-- Similar Properties Section-->
     @if (count($collections) > 0)

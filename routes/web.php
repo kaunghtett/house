@@ -40,7 +40,7 @@ Route::get('/property/list', function() {
 });
 
 // Search Route
-Route::post('/search', 'SearchController@search');
+Route::get('/search', 'SearchController@search');
 
 
 // Route::get('/houses/backend/admin/guest/{user}', 'GuestController@index');

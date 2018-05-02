@@ -117,7 +117,7 @@
 
                     <div class="form-group col-lg-12">
                         <label>Property Description *</label>
-                        <textarea name="description" placeholder="description" class="form-control radius-sm" value="{{ old('description') }}"></textarea>
+                        <textarea name="description" placeholder="description" class="form-control radius-sm">{{ old('description') }}</textarea>
 
                         {{-- error msg --}}
                         @if ($errors->has('description'))
@@ -237,12 +237,8 @@
                 <h2 class="h3 mb-4">Detailed Information</h2>
                 <div class="row">
                     <div class="form-group col-lg-4">
-                        <label>Building Year *</label>
-                        <select name="building_year" class="selectpicker">
-                            <option value="1990-1999" {{ old('building_year') == '1990-1999' ? 'selected' : '' }}>1990 - 1999</option>
-                            <option value="1999-2009" {{ old('building_year') == '1999-2009' ? 'selected' : '' }}>1999 - 2009</option>
-                            <option value="2009-2019" {{ old('building_year') == '2009-2019' ? 'selected' : '' }}>2009 - 2019</option>
-                        </select>
+                        <label>Building Year (Optional) *</label>
+                        <input type="text" name="building_year" class="form-control" placeholder="2016-2018" value="{{ old('building_year') }}" required>
 
                         {{-- error msg --}}
                         @if ($errors->has('building_year'))
