@@ -17,12 +17,4 @@
 @endsection
 
 
-@section ('js')
-    <script src="{{ asset('/js/imagesloaded.pkgd.min.js') }}"></script>
-    <script src="{{ asset('/js/masonry.pkgd.min.js') }}"></script>
-    <script src="{{ asset('/js/classie.js') }}"></script>
-    <script src="{{ asset('/js/cbpGridGallery.js') }}"></script>
-    <script>
-        new CBPGridGallery( document.getElementById( 'grid-gallery' ) );
-    </script>
-@endsection
+

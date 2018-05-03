@@ -43,8 +43,8 @@ class House extends Model
 
     public function scopeRelatedHouse($query, $related_location)
     {
-        return $query->join('house_details', 'houses.house_detail_id',
-                         '=', 'house_details.id')
+        return $query->join('house_details', 'houses.id',
+                         '=', 'house_details.house_id')
                     ->join('house_types', 'houses.house_type_id', '=', 'house_types.id')
                     ->join('locations', 'houses.id', '=', 'locations.house_id')
                     ->join('galleries', 'houses.id', '=', 'galleries.house_id')

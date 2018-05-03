@@ -16,7 +16,7 @@
                     <span class="text-uppercase">{{ $house->title }}</span>
                     <div class="badge badge-primary">For Rent</div>
                 </h1>
-                <p class="template-text">{{ $house->address }}</p>
+                <p class="template-text">{{ $house->location->address }}</p>
             </header>
 
             <div class="row">

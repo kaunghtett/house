@@ -11,7 +11,7 @@
 <!-- swiper carousel-->
 <link rel="stylesheet" href="{{ asset('css/swiper.css') }}">
 <!-- Gallery-->
-<link rel="stylesheet" href="{{ asset('css/gallery.css') }}">
+{{-- <link rel="stylesheet" href="{{ asset('css/gallery.css') }}"> --}}
 <!-- theme stylesheet-->
 <link rel="stylesheet" href="{{ asset('css/style.default.css') }}">
 <link rel="stylesheet" href="{{ asset('css/sweetalert2.min.css') }}">

@@ -11,10 +11,12 @@ class GalleryController extends Controller
     {
         return view('homes.gallery');
     }
+
     public function loadData($number)
     {
         $galleries = Gallery::join('houses', 'galleries.house_id', '=', 'houses.id')->where('is_featured', 1)->orderBy('galleries.created_at', 'desc')->limit($number)->get();
 
+        // dd($galleries);
         $path = asset('/storage/photos/');
 
         return response()->json([

@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Gallery;
 use App\House;
-use App\HouseDetail;
 use App\HouseFeature;
 use App\HouseType;
 use App\Http\Requests\HouseRequest;
@@ -116,7 +114,6 @@ class HouseController extends Controller
                         . $image_name . '.' . $image_extension));
 
             $house->galleries()->create([
-                // 'house_id' => $house_id,
                 'image_name' => $image_name,
                 'extension' => $image_extension,
             ]);
@@ -124,7 +121,6 @@ class HouseController extends Controller
 
         //locations
         $house->location()->create([
-            // 'house_id' => $house_id,
             'address' => title_case($request->address),
             'street' => title_case($request->street),
             'township' => title_case($request->township),
@@ -145,13 +141,15 @@ class HouseController extends Controller
     public function show(House $house)
     {
         $house = $house->load(['houseDetail', 'houseType', 'location']);
-        // dd($house_info);
-        $reviews = $house->reviews;
+
         $all_features = HouseFeature::all();
         $features = explode(', ', $house->features);
-        // dd($features);
+
         $images = $house->galleries;
         $path = asset('/storage/photos/');
+
+        // reviews
+        $reviews = $house->reviews;
 
         // related houses
         $related_township = $house->location->township;
@@ -161,6 +159,7 @@ class HouseController extends Controller
                             ->where('house_id', '!=', $house->id)
                             ->limit(3)
                             ->get();
+                            // dd($related_locations);
         $collections = [];
 
         foreach ($related_locations as $related_location) {

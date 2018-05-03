@@ -24,7 +24,7 @@ class CreateHousesTable extends Migration
             $table->string('rooms');
             $table->text('description');
             $table->string('features');
-            $table->boolean('is_featured')->default(false);
+            $table->boolean('featured_house')->default(false);
             $table->timestamps();
 
             $table->foreign('house_type_id')->references('id')->on('house_types')->onDelete('cascade');
