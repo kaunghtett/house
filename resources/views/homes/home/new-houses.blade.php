@@ -9,68 +9,43 @@
         </header>
 
         <div class="row">
-            <div class="col-lg-4">
-                <div class="property mb-5 mb-lg-0">
-                    <div class="image"><img src="img/property-1.jpeg" alt="Condo with pool view" class="img-fluid">
-                        <div class="overlay d-flex align-items-center justify-content-center"><a href="property-single.html" class="btn btn-gradient btn-sm">View Details</a></div>
-                    </div>
-                    <div class="info"><a href="property-single.html" class="no-anchor-style">
-                        <h3 class="h4 text-thin text-uppercase mb-1">Condo with pool view</h3></a>
-                        <ul class="tags list-inline">
-                            <li class="list-inline-item"><a href="#">Embarcadero,</a></li>
-                            <li class="list-inline-item"><a href="#">San Francisco</a></li>
-                        </ul>
-                        <div class="price text-primary"><strong class="mr-1">$8400</strong></div>
-                    </div>
-                    <div class="statistics d-flex justify-content-between text-center">
-                        <div class="item"><strong class="d-block">4</strong><span>Bedrooms</span></div>
-                        <div class="item"><strong class="d-block">2</strong><span>Baths</span></div>
-                        <div class="item"><strong class="d-block">120</strong><span>ft<sup>2</sup></span></div>
-                    </div>
-                </div>
-            </div>
 
+            @foreach ($recent_houses as $recent_house)
             <div class="col-lg-4">
                 <div class="property mb-5 mb-lg-0">
-                    <div class="image"><img src="img/property-2.jpeg" alt="The Chalet Estate" class="img-fluid">
-                        <div class="overlay d-flex align-items-center justify-content-center"><a href="property-single.html" class="btn btn-gradient btn-sm">View Details</a></div>
+                    <div class="image">
+                        @foreach ($recent_house->galleries as $gallery)
+                        <img src="{{ $path . '/' . $gallery->image_name . '.' . $gallery->extension }}" alt="{{ $gallery->image_name }}" class="img-fluid">
+                        @endforeach
+                        <div class="overlay d-flex align-items-center justify-content-center"><a href="houses/{{ $recent_house->id }}" class="btn btn-gradient btn-sm">View Details</a></div>
                     </div>
-                    <div class="info"><a href="property-single.html" class="no-anchor-style">
-                        <h3 class="h4 text-thin text-uppercase mb-1">The Chalet Estate</h3></a>
+                    <div class="info"><a href="houses/{{ $recent_house->id }}" class="no-anchor-style">
+                        <h3 class="h4 text-thin text-uppercase mb-1">{{ $recent_house->title }}</h3></a>
                         <ul class="tags list-inline">
-                            <li class="list-inline-item"><a href="#">Embarcadero,</a></li>
-                            <li class="list-inline-item"><a href="#">San Francisco</a></li>
+                            <li class="list-inline-item">
+                                <a href="#">
+                                    {{ $recent_house->location->township}},
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="#">
+                                    {{ $recent_house->location->region->name }}
+                                </a>
+                            </li>
                         </ul>
-                        <div class="price text-primary"><strong class="mr-1">$6900</strong></div>
+                        <div class="price text-primary">
+                            <strong class="mr-1">${{ $recent_house->price }}</strong>
+                        </div>
                     </div>
                     <div class="statistics d-flex justify-content-between text-center">
-                        <div class="item"><strong class="d-block">4</strong><span>Bedrooms</span></div>
-                        <div class="item"><strong class="d-block">2</strong><span>Baths</span></div>
-                        <div class="item"><strong class="d-block">120</strong><span>ft<sup>2</sup></span></div>
+                        <div class="item"><strong class="d-block">{{ $recent_house->houseDetail->bedrooms }}</strong><span>Bedrooms</span></div>
+                        <div class="item"><strong class="d-block">{{ $recent_house->houseDetail->bathrooms }}</strong><span>Baths</span></div>
+                        <div class="item"><strong class="d-block">{{ $recent_house->area }}</strong><span>ft<sup>2</sup></span></div>
                     </div>
                 </div>
             </div>
+            @endforeach
 
-            <div class="col-lg-4">
-                <div class="property mb-5 mb-lg-0">
-                    <div class="image"><img src="img/property-3.jpeg" alt="Asset Northern Star" class="img-fluid">
-                        <div class="overlay d-flex align-items-center justify-content-center"><a href="property-single.html" class="btn btn-gradient btn-sm">View Details</a></div>
-                    </div>
-                    <div class="info"><a href="property-single.html" class="no-anchor-style">
-                        <h3 class="h4 text-thin text-uppercase mb-1">Asset Northern Star</h3></a>
-                        <ul class="tags list-inline">
-                            <li class="list-inline-item"><a href="#">Embarcadero,</a></li>
-                            <li class="list-inline-item"><a href="#">San Francisco</a></li>
-                        </ul>
-                        <div class="price text-primary"><strong class="mr-1">$9300</strong></div>
-                    </div>
-                    <div class="statistics d-flex justify-content-between text-center">
-                        <div class="item"><strong class="d-block">4</strong><span>Bedrooms</span></div>
-                        <div class="item"><strong class="d-block">2</strong><span>Baths</span></div>
-                        <div class="item"><strong class="d-block">120</strong><span>ft<sup>2</sup></span></div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </section>

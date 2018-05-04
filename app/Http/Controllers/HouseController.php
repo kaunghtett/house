@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\House;
 use App\HouseFeature;
 use App\HouseType;
-use App\Http\Requests\HouseRequest;
-use App\Http\Requests\HouseUpdateFormRequest;
 use App\Location;
 use App\Region;
+use App\Http\Requests\HouseUpdateFormRequest;
+use App\Http\Requests\HouseRequest;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
@@ -28,7 +28,20 @@ class HouseController extends Controller
     {
         $types = HouseType::all();
         $regions = Region::all();
-        return view('homes.home.index', compact('types', 'regions'));
+
+        $recent_houses = House::withAllInfo()->recentHouses()->get();
+        $featured_house = House::withAllInfo()
+                        ->where('featured_house', 1)->get();
+
+        $apartment_id = HouseType::where('type_name', 'Apartments')
+                                 ->pluck('id');
+        $apartments = House::withAllInfo()
+                    ->where('house_type_id', $apartment_id)->get();
+        // dd($apartments);
+        $path = asset('/storage/photos/');
+
+
+        return view('homes.home.index', compact('types', 'regions', 'recent_houses', 'path', 'featured_house', 'apartments'));
     }
 
     /**

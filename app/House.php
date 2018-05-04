@@ -41,6 +41,19 @@ class House extends Model
         return $this->hasMany(Gallery::class);
     }
 
+    public function scopeWithAllInfo($query)
+    {
+        return $query->with(['houseDetail', 'location',
+            'galleries' => function ($query) {
+                $query->where('is_featured', 1);
+            }]);
+    }
+
+    public function scopeRecentHouses($query)
+    {
+        return $query->latest()->limit(3);
+    }
+
     public function scopeRelatedHouse($query, $related_location)
     {
         return $query->join('house_details', 'houses.id',

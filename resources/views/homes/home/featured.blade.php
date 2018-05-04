@@ -5,24 +5,37 @@
             <h2>Featured <span class="text-primary">Properties</span></h2>
             <div class="row">
                 <div class="col-lg-8">
-                    <p class="template-text">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias.</p>
+                    <p class="template-text">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit ab illum, quae aliquid error recusandae corrupti, non vero officiis eaque reiciendis sit cupiditate ipsum.
+                    </p>
                 </div>
             </div>
         </header>
-        <div class="row d-flex align-items-center">
-            <div class="col-lg-6 pr-lg-0">
-                <div class="image"><img src="img/featured-property.jpg" alt="..." class="img-fluid"></div>
-            </div>
-            <div class="col-lg-6 pl-lg-0">
-                <div class="text"><strong>Featured Properties</strong>
-                    <h3 class="text-transform text-thin text-uppercase has-line">Park Avenue Apartment the new style</h3>
-                    <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias usto odio dignissimos ducimus qui blanditiis praesentium.</p>
-                    <div class="price">
-                        <strong>$800</strong><small>/ Month</small>
-                    </div>
-                    <a href="#" class="btn btn-gradient">Read More</a>
+        @foreach ($featured_house as $house)
+            <div class="row d-flex align-items-center">
+                <div class="col-lg-6 pr-lg-0">
+                    @foreach ($house->galleries as $image)
+                        <div class="image">
+                            <img src="{{ $path . '/' . $image->image_name . '.' . $image->extension }}" alt="..." class="img-fluid">
+                        </div>
+                    @endforeach
                 </div>
-            </div> <!-- end col-lg-6 -->
-        </div> <!-- end row -->
+                <div class="col-lg-6 pl-lg-0">
+                    <div class="text"><strong>Featured Properties</strong>
+                        <h3 class="text-transform text-thin text-uppercase has-line">{{ $house->title }}</h3>
+                        <span class="template-text">
+                            {{ $house->location->address }}
+                        </span>
+                        <p>
+                            {{ $house->description }}
+                        </p>
+                        <div class="price text-uppercase">
+                            <strong>${{ $house->price }}</strong><small>/ {{ $house->period }}</small>
+                        </div>
+                        <a href="houses/{{$house->id}}" class="btn btn-gradient">Read More</a>
+                    </div>
+                </div> <!-- end col-lg-6 -->
+            </div> <!-- end row -->
+        @endforeach
     </div>
 </section>
