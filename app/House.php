@@ -43,15 +43,20 @@ class House extends Model
 
     public function scopeWithAllInfo($query)
     {
-        return $query->with(['houseDetail', 'location',
+        return $query->with(['houseDetail', 'location', 'user',
             'galleries' => function ($query) {
                 $query->where('is_featured', 1);
             }]);
     }
 
-    public function scopeRecentHouses($query)
+    public static function recentHouses()
     {
-        return $query->latest()->limit(3);
+        return static::withAllInfo()->latest()->limit(3);
+    }
+
+    public static function featuredHouse()
+    {
+        return static::withAllInfo()->where('featured_house', 1)->first();
     }
 
     public function scopeRelatedHouse($query, $related_location)
@@ -63,5 +68,12 @@ class House extends Model
                     ->join('galleries', 'houses.id', '=', 'galleries.house_id')
                     ->where('houses.id', $related_location->house->id)
                     ->where('is_featured', 1);
+    }
+
+    public static function featuredHouses()
+    {
+        return static::with(['location', 'galleries' => function ($query) {
+            $query->where('is_featured', 1);
+        }])->where('featured_house', 1)->get();
     }
 }

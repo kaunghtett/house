@@ -17,6 +17,9 @@ Auth::routes();
 Route::resource('houses', 'HouseController')->except('index');
 Route::get('/', 'HouseController@index')->name('home');
 
+Route::get('/houses/regions/{region}', 'HouseController@region');
+Route::get('/houses/townships/{township}', 'HouseController@township');
+
 //Gallery Route
 Route::get('/gallery', 'GalleryController@index');
 Route::get('/gallery/data/{number}', 'GalleryController@loadData');
@@ -25,19 +28,20 @@ Route::get('/gallery/data/{number}', 'GalleryController@loadData');
 Route::post('/houses/{house}/reviews', 'ReviewController@store');
 // Message Route
 Route::post('/houses/{house}/message', 'MessageController@store');
+
+// Favourite Route
+Route::get('/favourite/{house}', 'FavouriteController@store');
+Route::get('/favourite/user/{user}', 'FavouriteController@show')->name('favourite.show');
+Route::delete('/favourite/{house}', 'FavouriteController@delete')->name('favourite.delete');
+
 // About for App
 Route::get('/about', function() {
     return view('homes.about');
 });
 
 // Property route (test)
-Route::get('/property', function() {
-    return view('homes.property.property-grid');
-});
-
-Route::get('/property/list', function() {
-    return view('homes.property.property-list');
-});
+Route::get('/property', 'PropertyController@grid');
+Route::get('/property/list', 'PropertyController@list');
 
 // Search Route
 Route::get('/search', 'SearchController@search');

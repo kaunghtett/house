@@ -13,165 +13,85 @@
     </nav>
 @endsection
 
+@section ('filter')
+    <div class="sort d-flex align-items-center">
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary">Sort</button>
+            <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="/property?sort=asc">Price (Low to Heigh)</a>
+                <a class="dropdown-item" href="/property?sort=desc">Price (Heigh to Low)</a>
+            </div>
+        </div>
+    </div>
+@endsection
+
 @section ('listings')
-    <!-- Property Listings-->
-    <div class="property-listing col-lg-8">
-        <div class="row">
+<!-- Property Listings-->
+<div class="property-listing col-lg-8">
+    <div class="row">
+        @foreach ($houses as $house)
             <div class="col-lg-6">
                 <div class="property-listing-item">
                     <div class="image">
-                        <img src="img/property-listing-1.jpeg" alt=" The Chalet Estate" class="img-fluid">
-                        <div class="price">$4800/Month</div>
+                        @foreach ($house->galleries as $image)
+                            <img src="{{ $path . '/' . $image->image_name . '.' . $image->extension }}" alt="{{ $image->image_name }}" class="img-fluid">
+                        @endforeach
+                        <div class="price text-capitalize">
+                            <small>MMK {{ $house->price }}/{{$house->period}}</small>
+                        </div>
                     </div>
                     <div class="info">
-                        <div class="badge badge-primary">For Rent</div>
-                        <a href="property-single.html" class="no-anchor-style">
-                          <h2 class="h3 text-thin"> The Chalet Estate</h2>
+                        @if (today()->month == $house->created_at->month)
+                            <div class="badge badge-success">New</div>
+                        @endif
+                        <a href="/houses/{{ $house->id }}" class="no-anchor-style">
+                          <h2 class="h3 text-thin">{{ $house->title }}</h2>
                         </a>
-                        <p class="address">KT89B Hampton Court, England, United Kingdom</p>
+                        <p class="address">{{ $house->location->address }}</p>
                     </div>
                     <div class="footer d-flex align-items-center justify-content-between">
-                        <div class="left">Area <span class="area">120 </span> sq/ft</div>
+                        <div class="left">Area <span class="area">{{ $house->area }} </span> sq/ft</div>
                         <div class="right">
                             <ul class="list-inline mb-0">
-                                <li class="list-inline-item"><i class="fa fa-bed"></i>4</li>
-                                <li class="list-inline-item"><i class="fa fa-bath"></i>2</li>
-                                <li class="list-inline-item"><i class="fa fa-car"></i>1</li>
+                                <li class="list-inline-item"><i class="fa fa-bed"></i>{{ $house->houseDetail->bedrooms }}</li>
+                                <li class="list-inline-item"><i class="fa fa-bath"></i>{{ $house->houseDetail->bathrooms }}</li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
+        @endforeach
+        <div class="property-listing-footer mt-5">
+            <div class="mt-5">
+                <nav aria-label="Page navigation example">
+                    {{ $houses->links() }}
+                </nav>
+            </div>
+        </div>
+    </div> <!-- end of row -->
+</div>
+@endsection
 
-            <div class="col-lg-6">
-                <div class="property-listing-item">
-                    <div class="image">
-                        <img src="img/property-listing-2.jpeg" alt="Westbourne Terrace" class="img-fluid">
-                        <div class="price">$650,000</div>
-                    </div>
-                    <div class="info">
-                        <div class="badge badge-danger">For Sale</div>
-                        <a href="property-single.html" class="no-anchor-style">
-                            <h2 class="h3 text-thin">Westbourne Terrace</h2>
-                        </a>
-                        <p class="address">KT89B Hampton Court, England, United Kingdom</p>
-                    </div>
-                    <div class="footer d-flex align-items-center justify-content-between">
-                        <div class="left">Area <span class="area">120 </span> sq/ft</div>
-                        <div class="right">
-                            <ul class="list-inline mb-0">
-                                <li class="list-inline-item"><i class="fa fa-bed"></i>4</li>
-                                <li class="list-inline-item"><i class="fa fa-bath"></i>2</li>
-                                <li class="list-inline-item"><i class="fa fa-car"></i>1</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div> <!-- end of col -->
+@section ('js')
 
-            <div class="col-lg-6">
-                <div class="property-listing-item">
-                    <div class="image">
-                        <img src="img/property-listing-3.jpg" alt="Westbourne Terrace" class="img-fluid">
-                        <div class="price">$650,000</div>
-                    </div>
-                    <div class="info">
-                        <div class="badge badge-danger">For Sale</div>
-                        <a href="property-single.html" class="no-anchor-style">
-                            <h2 class="h3 text-thin">Westbourne Terrace</h2>
-                        </a>
-                        <p class="address">KT89B Hampton Court, England, United Kingdom</p>
-                    </div>
-                    <div class="footer d-flex align-items-center justify-content-between">
-                        <div class="left">Area <span class="area">120 </span> sq/ft</div>
-                        <div class="right">
-                            <ul class="list-inline mb-0">
-                                <li class="list-inline-item"><i class="fa fa-bed"></i>4</li>
-                                <li class="list-inline-item"><i class="fa fa-bath"></i>2</li>
-                                <li class="list-inline-item"><i class="fa fa-car"></i>1</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div> <!-- end of col -->
+<script>
+    $('#propertyFilter').on('change',function(){
+      var city_id =  $( "select option:selected" ).val();
+      var token = $(this).data('token');
+      var base_url = $(this).data('url');
+         $.ajax({
+            url:base_url+'/update_city',
+            type: 'POST',
+            data: { _token :token,city_id:city_id },
+            success:function(msg){
+               alert("success");
+            }
+         });
 
-            <div class="col-lg-6">
-                <div class="property-listing-item">
-                    <div class="image">
-                        <img src="img/property-listing-3.jpg" alt="Westbourne Terrace" class="img-fluid">
-                        <div class="price">$650,000</div>
-                    </div>
-                    <div class="info">
-                        <div class="badge badge-danger">For Sale</div>
-                        <a href="property-single.html" class="no-anchor-style">
-                            <h2 class="h3 text-thin">Westbourne Terrace</h2>
-                        </a>
-                        <p class="address">KT89B Hampton Court, England, United Kingdom</p>
-                    </div>
-                    <div class="footer d-flex align-items-center justify-content-between">
-                        <div class="left">Area <span class="area">120 </span> sq/ft</div>
-                        <div class="right">
-                            <ul class="list-inline mb-0">
-                                <li class="list-inline-item"><i class="fa fa-bed"></i>4</li>
-                                <li class="list-inline-item"><i class="fa fa-bath"></i>2</li>
-                                <li class="list-inline-item"><i class="fa fa-car"></i>1</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div> <!-- end of col -->
+    })
+</script>
 
-            <div class="col-lg-6">
-                <div class="property-listing-item">
-                    <div class="image">
-                        <img src="img/property-listing-4.jpg" alt="Westbourne Terrace" class="img-fluid">
-                        <div class="price">$650,000</div>
-                    </div>
-                    <div class="info">
-                        <div class="badge badge-danger">For Sale</div>
-                        <a href="property-single.html" class="no-anchor-style">
-                            <h2 class="h3 text-thin">Westbourne Terrace</h2>
-                        </a>
-                        <p class="address">KT89B Hampton Court, England, United Kingdom</p>
-                    </div>
-                    <div class="footer d-flex align-items-center justify-content-between">
-                        <div class="left">Area <span class="area">120 </span> sq/ft</div>
-                        <div class="right">
-                            <ul class="list-inline mb-0">
-                                <li class="list-inline-item"><i class="fa fa-bed"></i>4</li>
-                                <li class="list-inline-item"><i class="fa fa-bath"></i>2</li>
-                                <li class="list-inline-item"><i class="fa fa-car"></i>1</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div> <!-- end of col -->
-
-            <div class="col-lg-6">
-                <div class="property-listing-item">
-                    <div class="image">
-                        <img src="img/property-listing-5.jpeg" alt="Westbourne Terrace" class="img-fluid">
-                        <div class="price">$650,000</div>
-                    </div>
-                    <div class="info">
-                        <div class="badge badge-danger">For Sale</div>
-                        <a href="property-single.html" class="no-anchor-style">
-                            <h2 class="h3 text-thin">Westbourne Terrace</h2>
-                        </a>
-                        <p class="address">KT89B Hampton Court, England, United Kingdom</p>
-                    </div>
-                    <div class="footer d-flex align-items-center justify-content-between">
-                        <div class="left">Area <span class="area">120 </span> sq/ft</div>
-                        <div class="right">
-                            <ul class="list-inline mb-0">
-                                <li class="list-inline-item"><i class="fa fa-bed"></i>4</li>
-                                <li class="list-inline-item"><i class="fa fa-bath"></i>2</li>
-                                <li class="list-inline-item"><i class="fa fa-car"></i>1</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div> <!-- end of col -->
-        </div> <!-- end of row -->
-    </div>
 @endsection

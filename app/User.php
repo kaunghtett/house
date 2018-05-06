@@ -29,6 +29,6 @@ class User extends Authenticatable
 
     public function house()
     {
-        return $this->hasOne(House::class);
+        return $this->hasMany(House::class);
     }
 }

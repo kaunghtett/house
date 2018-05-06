@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Favourite;
 use App\House;
 use App\HouseFeature;
 use App\HouseType;
+use App\Http\Requests\HouseRequest;
+use App\Http\Requests\HouseUpdateFormRequest;
 use App\Location;
 use App\Region;
-use App\Http\Requests\HouseUpdateFormRequest;
-use App\Http\Requests\HouseRequest;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
@@ -17,7 +18,7 @@ class HouseController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['index', 'show']]);
+        $this->middleware('auth', ['except' => ['index', 'show', 'region', 'township']]);
     }
     /**
      * Display a listing of the resource.
@@ -29,19 +30,43 @@ class HouseController extends Controller
         $types = HouseType::all();
         $regions = Region::all();
 
-        $recent_houses = House::withAllInfo()->recentHouses()->get();
-        $featured_house = House::withAllInfo()
-                        ->where('featured_house', 1)->get();
+        $recent_houses = House::recentHouses();
+        $featured_house = House::featuredHouse();
 
+                        // dd($featured_house);
         $apartment_id = HouseType::where('type_name', 'Apartments')
                                  ->pluck('id');
         $apartments = House::withAllInfo()
                     ->where('house_type_id', $apartment_id)->get();
-        // dd($apartments);
-        $path = asset('/storage/photos/');
 
+        $countOfYangon = $this->countOfRegion('Yangon');
+        $countOfMandalay = $this->countOfRegion('Mandalay');
+        $countOfNayPyiTaw = $this->countOfRegion('Nay Pyi Taw');
+        $countOfPyiOoLwin = $this->countOfRegion('Pyi Oo Lwin');
 
-        return view('homes.home.index', compact('types', 'regions', 'recent_houses', 'path', 'featured_house', 'apartments'));
+        $yangonRegionId = $this->getHouseRegionId('Yangon');
+        $mandalayRegionId = $this->getHouseRegionId('Mandalay');
+        $naypyitawRegionId = $this->getHouseRegionId('Nay Pyi Taw');
+        $pyioolwinRegionId = $this->getHouseRegionId('Pyi Oo Lwin');
+        // dd($yangonRegionId);
+        return view('homes.home.index', compact('types', 'regions',
+            'recent_houses', 'featured_house', 'apartments', 'countOfYangon',
+            'countOfMandalay', 'countOfNayPyiTaw', 'countOfPyiOoLwin',
+            'yangonRegionId', 'mandalayRegionId', 'naypyitawRegionId',
+            'pyioolwinRegionId'));
+    }
+
+    public function countOfRegion($region_name)
+    {
+        $region_id = $this->getHouseRegionId($region_name);
+
+        return Location::where('region_id', $region_id)->count();
+    }
+
+    public function getHouseRegionId($region_name)
+    {
+        return Region::where('name', $region_name)
+                                 ->pluck('id');
     }
 
     /**
@@ -159,7 +184,6 @@ class HouseController extends Controller
         $features = explode(', ', $house->features);
 
         $images = $house->galleries;
-        $path = asset('/storage/photos/');
 
         // reviews
         $reviews = $house->reviews;
@@ -180,7 +204,22 @@ class HouseController extends Controller
             array_push($collections, $related_house);
         }
 
-        return view('homes.show', compact('house', 'images', 'path', 'all_features', 'features', 'reviews', 'collections'));
+        return view('homes.show', compact('house', 'images', 'all_features', 'features', 'reviews', 'collections'));
+    }
+
+    public function region(Region $region)
+    {
+        $locations = Location::withAllInfo('region_id', $region->id)->get();
+
+        return view('homes.regions', compact('locations', 'region'));
+    }
+
+    public function township($township)
+    {
+        $locations = Location::withAllInfo('township', $township)->get();
+        $region = Location::where('township', $township)->first()->region;
+
+        return view('homes.townships', compact('locations', 'region', 'township'));
     }
 
     /**
@@ -198,11 +237,10 @@ class HouseController extends Controller
         $location = $house->location;
         $regions = Region::all();
         $features = HouseFeature::all();
-        $path = asset('/storage/photos/');
         $feature_images = Gallery::where('house_id', $house->id)->where('is_featured', 1)->get();
         $images = Gallery::where('house_id', $house->id)->where('is_featured', 0)->get();
 
-        return view('homes.edit', compact('house', 'types', 'house_type_id', 'houseDetail', 'location', 'regions', 'features', 'feature_images', 'images', 'path'));
+        return view('homes.edit', compact('house', 'types', 'house_type_id', 'houseDetail', 'location', 'regions', 'features', 'feature_images', 'images'));
     }
 
     /**

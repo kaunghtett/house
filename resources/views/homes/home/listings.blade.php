@@ -14,37 +14,54 @@
         </header>
 
         <div class="row">
+            @if ($countOfYangon)
             <div class="col-lg-7">
-                <div class="listing-home"><img src="img/listing-bg-1.jpeg" alt="..."><a href="#" class="text no-anchor-style">
-                    <h3>San Francisco</h3>
+                <div class="listing-home"><img src="img/yangon.jpg" alt="...">
+                    @foreach ($yangonRegionId as $id)
+                        <a href="/houses/regions/{{$id}}" class="text no-anchor-style">
+                    @endforeach
+                    <h3>Yangon</h3>
                     <p>On the other hand, we denounce</p></a>
-                    <div class="ribbon text-center"><strong class="d-block">12</strong><small>Listings</small></div>
+                    <div class="ribbon text-center"><strong class="d-block">{{$countOfYangon}}</strong><small>Listings</small></div>
                 </div>
             </div>
-
+            @endif
+            @if ($countOfMandalay)
             <div class="col-lg-5">
-                <div class="listing-home"><img src="img/listing-bg-2.jpeg" alt="..."><a href="#" class="text no-anchor-style">
-                    <h3>Hunters Point</h3>
+                <div class="listing-home"><img src="img/mandalay.jpg" alt="...">
+                    @foreach ($mandalayRegionId as $id)
+                        <a href="/houses/regions/{{$id}}" class="text no-anchor-style">
+                    @endforeach
+                    <h3>Mandalay</h3>
                     <p>On the other hand, we denounce</p></a>
-                    <div class="ribbon text-center"><strong class="d-block">7</strong><small>Listings</small></div>
+                    <div class="ribbon text-center"><strong class="d-block">{{$countOfMandalay}}</strong><small>Listings</small></div>
                 </div>
             </div>
-
+            @endif
+            @if ($countOfNayPyiTaw)
             <div class="col-lg-5">
-                <div class="listing-home"><img src="img/listing-bg-3.jpeg" alt="..."><a href="#" class="text no-anchor-style">
-                    <h3>Marina</h3>
+                <div class="listing-home"><img src="img/naypyitaw.jpg" alt="...">
+                    @foreach ($naypyitawRegionId as $id)
+                        <a href="/houses/regions/{{$id}}" class="text no-anchor-style">
+                    @endforeach
+                    <h3>Nay Pyi Taw</h3>
                     <p>On the other hand, we denounce</p></a>
-                    <div class="ribbon text-center"><strong class="d-block">9</strong><small>Listings</small></div>
+                    <div class="ribbon text-center"><strong class="d-block">{{$countOfNayPyiTaw}}</strong><small>Listings</small></div>
                 </div>
             </div>
-
+            @endif
+            @if ($countOfPyiOoLwin)
             <div class="col-lg-7">
-                <div class="listing-home mb-0"><img src="img/listing-bg-4.jpeg" alt="..."><a href="#" class="text no-anchor-style">
-                    <h3>Trestel Glen</h3>
+                <div class="listing-home mb-0"><img src="img/pyioolwin.jpg" alt="...">
+                    @foreach ($pyioolwinRegionId as $id)
+                        <a href="/houses/regions/{{$id}}" class="text no-anchor-style">
+                    @endforeach
+                    <h3>Pyi Oo Lwin</h3>
                     <p>On the other hand, we denounce</p></a>
-                    <div class="ribbon text-center"><strong class="d-block">4</strong><small>Listings</small></div>
+                    <div class="ribbon text-center"><strong class="d-block">{{$countOfPyiOoLwin}}</strong><small>Listings</small></div>
                 </div>
             </div> <!-- end of col -->
+            @endif
         </div> <!-- end of row -->
     </div> <!-- end of container -->
 </section>

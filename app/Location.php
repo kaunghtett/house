@@ -19,4 +19,12 @@ class Location extends Model
     {
         return $this->belongsTo(House::class);
     }
+
+    public function scopeWithAllInfo($query,$column, $region)
+    {
+        return $query->with(['house', 'house.houseDetail', 'house.user',
+            'house.galleries' => function ($query) {
+                $query->where('is_featured', 1);
+            }])->where($column, $region);
+    }
 }

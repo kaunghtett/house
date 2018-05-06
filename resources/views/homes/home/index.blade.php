@@ -23,10 +23,10 @@
     @include ('homes.home.about')
 
     <!-- Agents Section-->
-    @include ('homes.home.agents')
+    {{-- @include ('homes.home.agents') --}}
 
     <!-- Testimonials Section-->
-    @include ('homes.home.testimonials')
+    {{-- @include ('homes.home.testimonials') --}}
 
     <!-- Clients Section -->
     @include ('homes.home.clients')
