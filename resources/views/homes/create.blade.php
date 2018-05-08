@@ -202,12 +202,12 @@
 
                     <div class="form-group col-lg-4">
                         <label>Township *</label>
-                        <input type="text" name="township" class="form-control" placeholder="eg. Kamayut" value="{{ old('twonship') }}" required>
+                        <input type="text" name="township" class="form-control" placeholder="eg. Kamayut" value="{{ old('township') }}" required>
 
                         {{-- error msg --}}
-                        @if ($errors->has('twonship'))
+                        @if ($errors->has('township'))
                             <div class="text-danger font-italic">
-                                {{ $errors->first('twonship') }}
+                                {{ $errors->first('township') }}
                             </div>
                         @endif
                     </div>

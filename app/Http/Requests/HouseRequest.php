@@ -35,7 +35,7 @@ class HouseRequest extends FormRequest
             'street' => 'required',
             'township' => 'required',
             'region' => 'required|integer',
-            'building_year' => 'required',
+            'building_year' => 'nullable',
             'bathrooms' => 'required|integer',
             'bedrooms' => 'required|integer',
             'parking' => 'required|boolean',

@@ -51,7 +51,7 @@ class House extends Model
 
     public static function recentHouses()
     {
-        return static::withAllInfo()->latest()->limit(3);
+        return static::withAllInfo()->latest()->limit(3)->get();
     }
 
     public static function featuredHouse()

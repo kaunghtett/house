@@ -7,19 +7,41 @@ use Illuminate\Http\Request;
 
 class SearchController extends Controller
 {
+    public $min_price;
+    public $max_price;
     public function search(Request $request)
     {
-        // dd(title_case($request->address));
-        $keyword = title_case($request->address);
+        $request->validate(['address' => 'required']);
+        $this->min_price = $request->min_price;
+        $this->max_price = $request->max_price;
+        // dd($min_price);
+        $keyword = $request->address;
         if ($keyword != '') {
-            $results = Location::where('address', 'LIKE', '%'.$keyword.'%')->get();
+
+            if ($this->max_price != null) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '>=', $this->min_price],
+                        ['price', '<=', $this->max_price],
+                    ]);
+                }])->where('address', 'LIKE', '%'.$keyword.'%')->get();
+
+            } else {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where('price', '>=', $this->min_price);
+                }])->where('address', 'LIKE', '%'.$keyword.'%')->get();
+
+            }
+
+
+            if ($results->count() == 0) {
+                alert()->info("No Results");
+                return back();
+            }
         }
-        dd($results->load('house'));
-        foreach ($results as $result) {
-            dd($result->house);
-        }
-        dd('no data');
-        $results = Location::where('address', 'LIKE', '%'.$keyword.'%')->get();
-        dd($results);
+
+        return view('homes.results', compact('results'));
     }
 }

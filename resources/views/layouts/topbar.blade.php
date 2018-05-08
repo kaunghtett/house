@@ -14,7 +14,7 @@
                         <li class="list-inline-item"><a href="{{ url('login') }}" class="pr-0 border-right-0""><i class="fa fa-sign-in"></i>Login In</a></li>
                     @else
                         <li class="list-inline-item">
-                            <a href="/favourite/user/{{ auth()->id() }}"><i class="fa fa-heart-o"></i>Favourites</a>
+                            <a href="/favourite"><i class="fa fa-heart-o"></i>Favourites</a>
                         </li>
                         <li class="list-inline-item"><a href="#"><i class="fa fa-user"></i>{{ Auth::user()->name }}</a></li>
                         <li class="list-inline-item"><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="pr-0 border-right-0""><i class="fa fa-sign-out"></i>Logout</a></li>

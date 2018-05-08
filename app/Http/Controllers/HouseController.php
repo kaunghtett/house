@@ -33,7 +33,7 @@ class HouseController extends Controller
         $recent_houses = House::recentHouses();
         $featured_house = House::featuredHouse();
 
-                        // dd($featured_house);
+                        // dd($recent_houses);
         $apartment_id = HouseType::where('type_name', 'Apartments')
                                  ->pluck('id');
         $apartments = House::withAllInfo()

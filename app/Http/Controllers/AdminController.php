@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
 use Illuminate\Http\Request;
 
-class GuestController extends Controller
+class AdminController extends Controller
 {
     public function __construct()
     {
@@ -16,9 +15,9 @@ class GuestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(User $user)
+    public function index()
     {
-        return view('guests.index', compact('user'));
+        return view('admin.index');
     }
 
     /**

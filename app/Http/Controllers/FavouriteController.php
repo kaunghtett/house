@@ -15,25 +15,25 @@ class FavouriteController extends Controller
         $this->middleware('auth');
     }
 
-    public function store($id)
+    public function store($house_id)
     {
-        if (Favourite::where('favourite_house_id', $id)->where('user_id', auth()->id())->count() < 1) {
+        if (Favourite::where('favourite_house_id', $house_id)->where('user_id', auth()->id())->count() < 1) {
             Favourite::create([
                 'user_id' => auth()->id(),
-                'favourite_house_id' => $id,
+                'favourite_house_id' => $house_id,
             ]);
         }
 
         $favHouseIds = Favourite::where('user_id', auth()->id())->pluck('favourite_house_id');
 
         $fav_houses = House::withAllInfo()->whereIn('id', $favHouseIds)->get();
-        // dd($fav_houses);
+
         return view('homes.favourites', compact('fav_houses'));
     }
 
-    public function show($id)
+    public function show()
     {
-        $favHouseIds = Favourite::where('user_id', $id)->pluck('favourite_house_id');
+        $favHouseIds = Favourite::where('user_id', auth()->id())->pluck('favourite_house_id');
 
         $fav_houses = House::withAllInfo()->whereIn('id', $favHouseIds)->get();
         return view('homes.favourites', compact('fav_houses'));

@@ -16,7 +16,7 @@ class CreateHouseDetailsTable extends Migration
         Schema::create('house_details', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('house_id');
-            $table->string('building_year');
+            $table->string('building_year')->nullable();
             $table->integer('bathrooms');
             $table->integer('bedrooms');
             $table->boolean('parking');

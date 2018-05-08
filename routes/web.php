@@ -30,8 +30,8 @@ Route::post('/houses/{house}/reviews', 'ReviewController@store');
 Route::post('/houses/{house}/message', 'MessageController@store');
 
 // Favourite Route
-Route::get('/favourite/{house}', 'FavouriteController@store');
-Route::get('/favourite/user/{user}', 'FavouriteController@show')->name('favourite.show');
+Route::get('/favourite/{house_id}', 'FavouriteController@store')->name('favourite.store');
+Route::get('/favourite', 'FavouriteController@show')->name('favourite.show');
 Route::delete('/favourite/{house}', 'FavouriteController@delete')->name('favourite.delete');
 
 // About for App
@@ -44,8 +44,7 @@ Route::get('/property', 'PropertyController@grid');
 Route::get('/property/list', 'PropertyController@list');
 
 // Search Route
-Route::get('/search', 'SearchController@search');
+Route::post('/search', 'SearchController@search');
 
 
-// Route::get('/houses/backend/admin/guest/{user}', 'GuestController@index');
-
+Route::resource('admin', 'AdminController');

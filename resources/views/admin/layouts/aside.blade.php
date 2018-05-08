@@ -10,7 +10,7 @@
                 <img src="{{ asset('/img/default-user.png') }}" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
-                <p>{{ $user->name }}</p>
+                <p>User Name</p>
                 <!-- Status -->
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>

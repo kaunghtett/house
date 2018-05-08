@@ -1,4 +1,4 @@
-@extends ('admin.master')
+@extends ('admin.layouts.master')
 
 @section ('page-header')
     <h1><strong>Home</strong></h1>
