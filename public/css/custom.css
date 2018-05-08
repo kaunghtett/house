@@ -8,6 +8,14 @@
     line-height:  1.5;
 }
 
+.black {
+    color: #202020 !important;
+}
+
+.fav-button:hover {
+    color: #5989e5 !important;
+}
+
 .image-preview {
     border: 2px dashed #444;
     margin-top: 20px;

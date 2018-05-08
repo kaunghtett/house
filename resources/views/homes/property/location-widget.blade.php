@@ -7,7 +7,7 @@
         <ul class="list-unstyled mb-0">
             <p class="has-line text-white"><strong>Regions</strong></p>
             @foreach ($regions as $region)
-                <li><a href="#">{{ $region->name }}</a></li>
+                <li><a href="/houses/regions/{{$region->id}}">{{ $region->name }}</a></li>
             @endforeach
         </ul>
         <ul class="list-unstyled mb-0">

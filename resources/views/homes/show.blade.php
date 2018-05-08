@@ -14,7 +14,10 @@
             <header>
                 <h1 class="h2 d-flex align-items-center">
                     <span class="text-uppercase">{{ $house->title }}</span>
-                    <div class="badge badge-primary">For Rent</div>
+                    @if ($house->featured_house == 1)
+                        <div class="badge badge-primary">Featured</div>
+                    @endif
+                    <a title="Add To Favourite" href="/favourite/{{ $house->id }}" class="fav-button pl-3 black"><i class="fa fa-heart"></i></a>
                 </h1>
                 <p class="template-text">{{ $house->location->address }}</p>
             </header>

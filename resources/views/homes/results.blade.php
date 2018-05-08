@@ -1,10 +1,9 @@
 @extends ('layouts.master')
 
 @section ('content')
- <!-- Hero Section-->
     <section class="hero-page bg-black-3">
         <div class="container">
-            <h1 class="h2">Search Found</h1>
+            <h1 class="h2">{{ ($numOfHouses == 1) ? 'Result' : 'Results' }}</h1>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/">Home</a></li>
@@ -30,10 +29,27 @@
                             </div>
                             <div class="info">
                                 <a href="property-single.html" class="no-anchor-style">
-                                    <h3 class="h4 text-thin text-uppercase mb-1">   {{ $result->house->title }}
-                                    </h3>
-                                </a>
-                                <p>{{ $result->house->title }}</p>
+                                <h3 class="h4 text-thin text-uppercase mb-1">{{ $result->house->title }}</h3></a>
+                                <ul class="tags list-inline">
+                                    <li class="list-inline-item">
+                                        <a href="/houses/townships/{{$result->township}}">
+                                            {{ $result->township}},
+                                        </a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <a href="/houses/regions/{{$result->region->id}}">
+                                            {{ $result->region->name }}
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="price text-primary">
+                                    <strong class="mr-1">${{ $result->house->price }}</strong>
+                                </div>
+                            </div>
+                            <div class="statistics d-flex justify-content-between text-center">
+                                <div class="item"><strong class="d-block">{{ $result->house->houseDetail->bedrooms }}</strong><span>Bedrooms</span></div>
+                                <div class="item"><strong class="d-block">{{ $result->house->houseDetail->bathrooms }}</strong><span>Baths</span></div>
+                                <div class="item"><strong class="d-block">{{ $result->house->area }}</strong><span>ft<sup>2</sup></span></div>
                             </div>
                         </div>
                     </div>

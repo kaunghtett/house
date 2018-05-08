@@ -2,7 +2,7 @@
 
 @section ('content')
     <!-- Slider Section -->
-    {{-- @include ('homes.home.slider') --}}
+    @include ('homes.home.slider')
 
     <!-- Search Section-->
     @include ('homes.home.search')

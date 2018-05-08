@@ -26,9 +26,9 @@
                     <input type="text" name="max_price" placeholder="Max Price [USD]" class="form-control">
                 </div>
                 <div class="form-group col-lg-4">
-                    <select id="Types" name="types" title="Property Type" class="selectpicker">
+                    <select id="Types" name="type_id" title="Property Type" class="selectpicker">
                         @foreach ($types as $type)
-                            <option value="{{ $type->type_name }}">
+                            <option value="{{ $type->id }}">
                                 {{ $type->type_name }}
                             </option>
                         @endforeach

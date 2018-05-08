@@ -33,10 +33,10 @@
                                 </a>
                                 <ul class="tags list-inline">
                                     <li class="list-inline-item">
-                                        <a href="#">{{ $location->township }},</a>
+                                        <a href="/houses/townships/{{$location->township}}">{{ $location->township }},</a>
                                     </li>
                                     <li class="list-inline-item">
-                                        <a href="#">
+                                        <a href="/houses/regions/{{$location->region_id}}">
                                             {{ $location->region->name }}
                                         </a>
                                     </li>

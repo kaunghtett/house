@@ -32,8 +32,9 @@ class HouseController extends Controller
 
         $recent_houses = House::recentHouses();
         $featured_house = House::featuredHouse();
+        $featured_houses = House::featuredHouses();
 
-                        // dd($recent_houses);
+                        // dd($featured_houses);
         $apartment_id = HouseType::where('type_name', 'Apartments')
                                  ->pluck('id');
         $apartments = House::withAllInfo()
@@ -50,10 +51,10 @@ class HouseController extends Controller
         $pyioolwinRegionId = $this->getHouseRegionId('Pyi Oo Lwin');
         // dd($yangonRegionId);
         return view('homes.home.index', compact('types', 'regions',
-            'recent_houses', 'featured_house', 'apartments', 'countOfYangon',
-            'countOfMandalay', 'countOfNayPyiTaw', 'countOfPyiOoLwin',
-            'yangonRegionId', 'mandalayRegionId', 'naypyitawRegionId',
-            'pyioolwinRegionId'));
+            'recent_houses', 'featured_house', 'featured_houses', 'apartments',
+             'countOfYangon', 'countOfMandalay', 'countOfNayPyiTaw',
+             'countOfPyiOoLwin', 'yangonRegionId', 'mandalayRegionId',
+             'naypyitawRegionId', 'pyioolwinRegionId'));
     }
 
     public function countOfRegion($region_name)
