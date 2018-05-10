@@ -14,6 +14,8 @@
 @endsection
 
 @section ('filter')
+<!-- Filters-->
+<div class="filter d-flex justify-content-between align-items-center flex-wrap">
     <div class="sort d-flex align-items-center">
         <div class="btn-group">
             <button type="button" class="btn btn-primary">Sort</button>
@@ -26,6 +28,13 @@
             </div>
         </div>
     </div>
+    <div class="view d-flex align-items-center"><strong>View</strong>
+        <ul class="list-inline mb-0">
+            <li class="list-inline-item"><a href="/property" class="{{ isActiveURL('/property') }}"><i class="fa fa-th-large"></i></a></li>
+            <li class="list-inline-item"><a href="/property/list" class="{{ isActiveURL('/property/list') }}"><i class="fa fa-th-list"></i></a></li>
+        </ul>
+    </div>
+</div>
 @endsection
 
 @section ('listings')
@@ -75,23 +84,4 @@
 </div>
 @endsection
 
-@section ('js')
 
-<script>
-    $('#propertyFilter').on('change',function(){
-      var city_id =  $( "select option:selected" ).val();
-      var token = $(this).data('token');
-      var base_url = $(this).data('url');
-         $.ajax({
-            url:base_url+'/update_city',
-            type: 'POST',
-            data: { _token :token,city_id:city_id },
-            success:function(msg){
-               alert("success");
-            }
-         });
-
-    })
-</script>
-
-@endsection

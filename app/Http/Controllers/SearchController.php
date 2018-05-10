@@ -3,26 +3,58 @@
 namespace App\Http\Controllers;
 
 use App\Location;
-use Illuminate\Http\Request;
+use App\Region;
+use App\Http\Requests\SearchRequest;
 
 class SearchController extends Controller
 {
-    public $min_price;
-    public $max_price;
-    public $type_id;
-    public $min_area_range;
+    protected $min_price;
+    protected $max_price;
+    protected $type_id;
+    protected $min_area_range;
+    protected $max_area_range;
+    protected $region_id;
 
-    public function search(Request $request)
+    public function search(SearchRequest $request)
     {
-        $request->validate(['address' => 'required']);
+        $keywords = preg_split("/[\s,]+/", $request->address);
+
+        $this->setFilterValues($request);
+
+        $results = $this->searching($request, $keywords);
+
+        $numOfHouses = 0;
+        foreach ($results as $result) {
+            if ($result->house != null) {
+                $numOfHouses++;
+            }
+        }
+
+        if ($results->count() == 0 || $numOfHouses == 0) {
+            alert()->warning("No Result Found", "Try again");
+            return back();
+        }
+
+        alert()->success(($numOfHouses == 1) ? "$numOfHouses Result Found" : "$numOfHouses Results Found");
+
+        return view('homes.results', compact('results', 'numOfHouses'));
+    }
+
+    public function setFilterValues(SearchRequest $request)
+    {
         $this->min_price = $request->min_price;
         $this->max_price = $request->max_price;
         $this->type_id = $request->type_id;
         $this->min_area_range = $request->min_area_range;
+        $this->max_area_range = $request->max_area_range;
+        $this->region_id = $request->region_id;
+    }
 
-        $keyword = $request->address;
-        if ($keyword != null) {
-            if ($request->filled('min_price') && $request->filled('max_price') && $request->filled('type_id') && $request->filled('min_area_range') && $request->filled('max_area_range')) {
+    public function searching(SearchRequest $request, Array $keywords)
+    {
+        if (count($keywords) != 0) {
+            // 6
+            if ($request->filled('min_price') && $request->filled('max_price') && $request->filled('type_id') && $request->filled('min_area_range') && $request->filled('max_area_range') && $request->filled('region_id')) {
 
                 $results = Location::with(['house' => function ($query) {
                     $query->where([
@@ -32,8 +64,103 @@ class SearchController extends Controller
                         ['area', '>=', $this->min_area_range],
                         ['area', '<=', $this->max_area_range],
                     ]);
-                }])->where('address', 'LIKE', '%'.$keyword.'%')->get();
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
+                // 5
+            } elseif ($request->filled('min_price') && $request->filled('max_price') && $request->filled('type_id') && $request->filled('min_area_range') && $request->filled('max_area_range')) {
 
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '>=', $this->min_price],
+                        ['price', '<=', $this->max_price],
+                        ['house_type_id', $this->type_id],
+                        ['area', '>=', $this->min_area_range],
+                        ['area', '<=', $this->max_area_range],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
+
+            } elseif ($request->filled('min_price') && $request->filled('max_price') && $request->filled('type_id') && $request->filled('min_area_range') && $request->filled('region_id')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '>=', $this->min_price],
+                        ['price', '<=', $this->max_price],
+                        ['house_type_id', $this->type_id],
+                        ['area', '>=', $this->min_area_range],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
+
+            } elseif ($request->filled('min_price') && $request->filled('max_price') && $request->filled('type_id') && $request->filled('region_id') && $request->filled('max_area_range')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '>=', $this->min_price],
+                        ['price', '<=', $this->max_price],
+                        ['house_type_id', $this->type_id],
+                        ['area', '<=', $this->max_area_range],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
+
+            } elseif ($request->filled('min_price') && $request->filled('region_id') && $request->filled('type_id') && $request->filled('min_area_range') && $request->filled('max_area_range')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '>=', $this->min_price],
+                        ['house_type_id', $this->type_id],
+                        ['area', '>=', $this->min_area_range],
+                        ['area', '<=', $this->max_area_range],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
+
+            } elseif ($request->filled('region_id') && $request->filled('max_price') && $request->filled('type_id') && $request->filled('min_area_range') && $request->filled('max_area_range')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '<=', $this->max_price],
+                        ['house_type_id', $this->type_id],
+                        ['area', '>=', $this->min_area_range],
+                        ['area', '<=', $this->max_area_range],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
+                //min_price, max_price, min_area, type
+            } elseif ($request->filled('min_price') && $request->filled('max_price') && $request->filled('region') && $request->filled('min_area_range') && $request->filled('max_area_range')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '>=', $this->min_price],
+                        ['price', '<=', $this->max_price],
+                        ['area', '>=', $this->min_area_range],
+                        ['area', '<=', $this->max_area_range],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
+                //4 min_price, max_price, min_area, type
             } elseif ($request->filled('min_price') && $request->filled('max_price') && $request->filled('type_id') && $request->filled('min_area_range')) {
 
                 $results = Location::with(['house' => function ($query) {
@@ -43,8 +170,198 @@ class SearchController extends Controller
                         ['house_type_id', $this->type_id],
                         ['area', '>=', $this->min_area_range],
                     ]);
-                }])->where('address', 'LIKE', '%'.$keyword.'%')->get();
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
+                //min_price, max_price, max_area, type
+            } elseif ($request->filled('min_price') && $request->filled('max_price') && $request->filled('type_id') && $request->filled('max_area_range')) {
 
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '>=', $this->min_price],
+                        ['price', '<=', $this->max_price],
+                        ['house_type_id', $this->type_id],
+                        ['area', '<=', $this->max_area_range],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
+                //min_price, max_price, type, region
+            } elseif ($request->filled('min_price') && $request->filled('max_price') && $request->filled('type_id') && $request->filled('region_id')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '>=', $this->min_price],
+                        ['price', '<=', $this->max_price],
+                        ['house_type_id', $this->type_id],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
+                //min_price, min_area, max_area, region
+            } elseif ($request->filled('min_area_range') && $request->filled('max_area_range') && $request->filled('region_id') && $request->filled('min_price')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['area', '>=', $this->min_area_range],
+                        ['area', '<=', $this->max_area_range],
+                        ['price', '>=', $this->min_price],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
+                //max_price, min_area, max_area, region
+            } elseif ($request->filled('min_area_range') && $request->filled('max_area_range') && $request->filled('region_id') && $request->filled('max_price')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['area', '>=', $this->min_area_range],
+                        ['area', '<=', $this->max_area_range],
+                        ['price', '<=', $this->max_price],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
+                //min_area, max_area, type, region
+            } elseif ($request->filled('min_area_range') && $request->filled('max_area_range') && $request->filled('region_id') && $request->filled('type_id')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['area', '>=', $this->min_area_range],
+                        ['area', '<=', $this->max_area_range],
+                        ['house_type_id', $this->type_id],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
+                //min_price, min_area, type, region
+            } elseif ($request->filled('min_price') && $request->filled('min_area_range') && $request->filled('type_id') && $request->filled('region_id')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '>=', $this->min_price],
+                        ['area', '>=', $this->min_area_range],
+                        ['house_type_id', $this->type_id],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
+                //max_price, max_area, type, region
+            } elseif ($request->filled('max_price') && $request->filled('max_area_range') && $request->filled('type_id') && $request->filled('region_id')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '<=', $this->max_price],
+                        ['area', '<=', $this->max_area_range],
+                        ['house_type_id', $this->type_id],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
+                //min_price, max_area, type, region
+            } elseif ($request->filled('min_price') && $request->filled('max_area_range') && $request->filled('type_id') && $request->filled('region_id')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '>=', $this->min_price],
+                        ['area', '<=', $this->max_area_range],
+                        ['house_type_id', $this->type_id],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
+                //max_price, min_area, type, region
+            } elseif ($request->filled('max_price') && $request->filled('min_area_range') && $request->filled('type_id') && $request->filled('region_id')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '<=', $this->max_price],
+                        ['area', '>=', $this->min_area_range],
+                        ['house_type_id', $this->type_id],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
+                //min_price, max_price, min_area, region
+            } elseif ($request->filled('min_price') && $request->filled('min_area_range') && $request->filled('max_area_range') && $request->filled('region_id')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '>=', $this->min_price],
+                        ['area', '>=', $this->min_area_range],
+                        ['area', '<=', $this->max_area_range],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
+                //min_price, max_price, min_area, max_area
+            } elseif ($request->filled('min_price') && $request->filled('max_price') && $request->filled('min_area_range') && $request->filled('max_area_range')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '>=', $this->min_price],
+                        ['price', '<=', $this->max_price],
+                        ['area', '>=', $this->min_area_range],
+                        ['area', '<=', $this->max_area_range],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
+                //min_price, min_area, max_area, type
+            } elseif ($request->filled('min_price') && $request->filled('min_area_range') && $request->filled('max_area_range') && $request->filled('type_id')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '>=', $this->min_price],
+                        ['area', '>=', $this->min_area_range],
+                        ['area', '<=', $this->max_area_range],
+                        ['house_type_id', $this->type_id],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
+                //max_price, min_area, max_area, type
+            } elseif ($request->filled('max_price') && $request->filled('min_area_range') && $request->filled('max_area_range') && $request->filled('type_id')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '<=', $this->max_price],
+                        ['area', '>=', $this->min_area_range],
+                        ['area', '<=', $this->max_area_range],
+                        ['house_type_id', $this->type_id],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
+                //3 min_price, max_price, type
             } elseif ($request->filled('min_price') && $request->filled('max_price') && $request->filled('type_id')) {
 
                 $results = Location::with(['house' => function ($query) {
@@ -53,8 +370,241 @@ class SearchController extends Controller
                         ['price', '<=', $this->max_price],
                         ['house_type_id', $this->type_id],
                     ]);
-                }])->where('address', 'LIKE', '%'.$keyword.'%')->get();
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
+                //min_price, max_price, min_area
+            } elseif ($request->filled('min_price') && $request->filled('max_price') && $request->filled('min_area_range')) {
 
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '>=', $this->min_price],
+                        ['price', '<=', $this->max_price],
+                        ['area', '>=', $this->min_area_range],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
+                // min_price, min_area, max_area
+            } elseif ($request->filled('min_price') && $request->filled('min_area_range') && $request->filled('max_area_range')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '>=', $this->min_price],
+                        ['area', '>=', $this->min_area_range],
+                        ['area', '<=', $this->max_area_range],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
+                //min_price, max_area, type
+            } elseif ($request->filled('min_price') && $request->filled('max_area_range') && $request->filled('type_id')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '>=', $this->min_price],
+                        ['area', '<=', $this->max_area_range],
+                        ['house_type_id', $this->type_id],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
+                //min_price, type, region
+            } elseif ($request->filled('min_price') && $request->filled('region_id') && $request->filled('type_id')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '>=', $this->min_price],
+                        ['house_type_id', $this->type_id],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
+                // max_price, min_area, max_area
+            } elseif ($request->filled('max_price') && $request->filled('min_area_range') && $request->filled('max_area_range')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '<=', $this->max_price],
+                        ['area', '>=', $this->min_area_range],
+                        ['area', '<=', $this->max_area_range],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
+                // max_price, max_area, type
+            } elseif ($request->filled('max_price') && $request->filled('type_id') && $request->filled('max_area_range')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '<=', $this->max_price],
+                        ['house_type_id', $this->type_id],
+                        ['area', '<=', $this->max_area_range],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
+                // max_price, type, region
+            } elseif ($request->filled('max_price') && $request->filled('type_id') && $request->filled('region_id')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '<=', $this->max_price],
+                        ['house_type_id', $this->type_id],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
+                // min_price, max_price, region
+            } elseif ($request->filled('min_price') && $request->filled('max_price') && $request->filled('region_id')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '>=', $this->min_price],
+                        ['price', '<=', $this->max_price],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
+                // min_area, max_area, type
+            } elseif ($request->filled('min_area_range') && $request->filled('max_area_range') && $request->filled('type_id')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['area', '>=', $this->min_area_range],
+                        ['area', '<=', $this->max_area_range],
+                        ['house_type_id', $this->type_id],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
+                // min_area, type, region
+            } elseif ($request->filled('min_area_range') && $request->filled('type_id') && $request->filled('region_id')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['area', '>=', $this->min_area_range],
+                        ['house_type_id', $this->type_id],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
+                // min_price, min_area, region
+            } elseif ($request->filled('min_price') && $request->filled('min_area_range') && $request->filled('region_id')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '>=', $this->min_price],
+                        ['area', '>=', $this->min_area_range],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
+                // max_area, type, region
+            } elseif ($request->filled('max_area_range') && $request->filled('type_id') && $request->filled('region_id')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['area', '<=', $this->max_area_range],
+                        ['house_type_id', $this->type_id],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
+                // min_price, max_area, region
+            } elseif ($request->filled('min_price') && $request->filled('max_area_range') && $request->filled('region_id')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '>=', $this->min_price],
+                        ['area', '<=', $this->max_area_range],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
+                // min_price, max_price, max_area
+            } elseif ($request->filled('min_price') && $request->filled('max_price') && $request->filled('max_area_range')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '>=', $this->min_price],
+                        ['price', '<=', $this->max_price],
+                        ['area', '<=', $this->max_area_range],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
+                // max_price, min_area, type
+            } elseif ($request->filled('max_price') && $request->filled('min_area_range') && $request->filled('type_id')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '<=', $this->max_price],
+                        ['area', '>=', $this->min_area_range],
+                        ['house_type_id', $this->type_id],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
+                // max_price, min_area, region
+            } elseif ($request->filled('max_price') && $request->filled('min_area_range') && $request->filled('region_id')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '<=', $this->max_price],
+                        ['area', '>=', $this->min_area_range],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
+                // min_area, max_area, region
+            } elseif ($request->filled('min_price') && $request->filled('max_price') && $request->filled('region_id')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where([
+                        ['price', '>=', $this->min_price],
+                        ['price', '<=', $this->max_price],
+                    ]);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
+                // min_price, max_price
             } elseif ($request->filled('min_price') && $request->filled('max_price')) {
 
                 $results = Location::with(['house' => function ($query) {
@@ -62,8 +612,12 @@ class SearchController extends Controller
                         ['price', '>=', $this->min_price],
                         ['price', '<=', $this->max_price],
                     ]);
-                }])->where('address', 'LIKE', '%'.$keyword.'%')->get();
-
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
+                // min_price min_area
             } elseif ($request->filled('min_price') && $request->filled('min_area_range')) {
 
                 $results = Location::with(['house' => function ($query) {
@@ -71,8 +625,12 @@ class SearchController extends Controller
                         ['price', '>=', $this->min_price],
                         ['area', '>=', $this->min_area_range],
                     ]);
-                }])->where('address', 'LIKE', '%'.$keyword.'%')->get();
-
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
+                // min_price max_area
             } elseif ($request->filled('min_price') && $request->filled('max_area_range')) {
 
                 $results = Location::with(['house' => function ($query) {
@@ -80,8 +638,12 @@ class SearchController extends Controller
                         ['price', '>=', $this->min_price],
                         ['area', '<=', $this->max_area_range],
                     ]);
-                }])->where('address', 'LIKE', '%'.$keyword.'%')->get();
-
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
+                // max_price min_area
             } elseif ($request->filled('max_price') && $request->filled('min_area_range')) {
 
                 $results = Location::with(['house' => function ($query) {
@@ -89,8 +651,12 @@ class SearchController extends Controller
                         ['price', '<=', $this->max_price],
                         ['area', '>=', $this->min_area_range],
                     ]);
-                }])->where('address', 'LIKE', '%'.$keyword.'%')->get();
-
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
+                // max_price max_area
             } elseif ($request->filled('max_price') && $request->filled('max_area_range')) {
 
                 $results = Location::with(['house' => function ($query) {
@@ -98,8 +664,12 @@ class SearchController extends Controller
                         ['price', '<=', $this->max_price],
                         ['area', '<=', $this->max_area_range],
                     ]);
-                }])->where('address', 'LIKE', '%'.$keyword.'%')->get();
-
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
+                // min_price type
             } elseif ($request->filled('min_price') && $request->filled('type_id')) {
 
                 $results = Location::with(['house' => function ($query) {
@@ -107,8 +677,12 @@ class SearchController extends Controller
                         ['price', '>=', $this->min_price],
                         ['house_type_id', $this->type_id],
                     ]);
-                }])->where('address', 'LIKE', '%'.$keyword.'%')->get();
-
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
+                // max_price type
             } elseif ($request->filled('max_price') && $request->filled('type_id')) {
 
                 $results = Location::with(['house' => function ($query) {
@@ -116,8 +690,12 @@ class SearchController extends Controller
                         ['price', '<=', $this->max_price],
                         ['house_type_id', $this->type_id],
                     ]);
-                }])->where('address', 'LIKE', '%'.$keyword.'%')->get();
-
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
+                // min_area max_area
             } elseif ($request->filled('min_area_range') && $request->filled('max_area_range')) {
 
                 $results = Location::with(['house' => function ($query) {
@@ -125,8 +703,12 @@ class SearchController extends Controller
                         ['area', '>=', $this->min_area_range],
                         ['area', '<=', $this->max_area_range],
                     ]);
-                }])->where('address', 'LIKE', '%'.$keyword.'%')->get();
-
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
+                // min_area type
             } elseif ($request->filled('min_area_range') && $request->filled('type_id')) {
 
                 $results = Location::with(['house' => function ($query) {
@@ -134,8 +716,12 @@ class SearchController extends Controller
                         ['area', '>=', $this->min_area_range],
                         ['house_type_id', '<=', $this->type_id],
                     ]);
-                }])->where('address', 'LIKE', '%'.$keyword.'%')->get();
-
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
+                // max_area type
             } elseif ($request->filled('max_area_range') && $request->filled('type_id')) {
 
                 $results = Location::with(['house' => function ($query) {
@@ -143,7 +729,51 @@ class SearchController extends Controller
                         ['area', '<=', $this->max_area_range],
                         ['house_type_id', '<=', $this->type_id],
                     ]);
-                }])->where('address', 'LIKE', '%'.$keyword.'%')->get();
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
+                // max_price region
+            } elseif ($request->filled('max_price') && $request->filled('region_id')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where('price', '<=', $this->max_price);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
+                // min_area region
+            } elseif ($request->filled('min_area_range') && $request->filled('region_id')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where('area', '>=', $this->min_area_range);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
+                // max_area region
+            } elseif ($request->filled('max_area_range') && $request->filled('region_id')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where('area', '<=', $this->max_area_range);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
+                // type region
+            } elseif ($request->filled('type_id') && $request->filled('region_id')) {
+
+                $results = Location::with(['house' => function ($query) {
+                    $query->where('house_type_id', $this->type_id);
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
 
             } elseif ($request->filled('min_price')) {
 
@@ -151,7 +781,11 @@ class SearchController extends Controller
                     $query->where([
                         ['price', '>=', $this->min_price],
                     ]);
-                }])->where('address', 'LIKE', '%'.$keyword.'%')->get();
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
 
             } elseif ($request->filled('max_price')) {
 
@@ -159,7 +793,11 @@ class SearchController extends Controller
                     $query->where([
                         ['price', '<=', $this->max_price],
                     ]);
-                }])->where('address', 'LIKE', '%'.$keyword.'%')->get();
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
 
             } elseif ($request->filled('type_id')) {
 
@@ -167,7 +805,11 @@ class SearchController extends Controller
                     $query->where([
                         ['house_type_id', $this->type_id],
                     ]);
-                }])->where('address', 'LIKE', '%'.$keyword.'%')->get();
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
 
             } elseif ($request->filled('min_area_range')) {
 
@@ -175,36 +817,44 @@ class SearchController extends Controller
                     $query->where([
                         ['area', '>=', $this->min_area_range],
                     ]);
-                }])->where('address', 'LIKE', '%'.$keyword.'%')->get();
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
 
             } elseif ($request->filled('max_area_range')) {
 
                 $results = Location::with(['house' => function ($query) {
                     $query->where([
-                        ['area', '>=', $this->max_area_range],
+                        ['area', '<=', $this->max_area_range],
                     ]);
-                }])->where('address', 'LIKE', '%'.$keyword.'%')->get();
+                }])->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
+
+            } elseif ($request->filled('region_id')) {
+
+                $results = Location::with('house')->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->where('region_id', $this->region_id)->paginate(6);
 
             } else {
 
-                $results = Location::with('house')->where('address', 'LIKE', '%'.$keyword.'%')->get();
+                $results = Location::with('house')->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where('address', 'LIKE', "%{$keyword}%");
+                    }
+                })->paginate(6);
 
             }
 
-            $numOfHouses = 0;
-            foreach ($results as $result) {
-                if ($result->house != null) {
-                    $numOfHouses++;
-                }
-            }
-
-            if ($results->count() == 0 || $numOfHouses == 0) {
-                alert()->warning("No Result Found", "Try again");
-                return back();
-            }
         }
-        // $s = ($numOfHouses == 1) ? ' Result' : ' Results';
-        alert()->success(($numOfHouses == 1) ? "$numOfHouses Result Found" : "$numOfHouses Results Found");
-        return view('homes.results', compact('results', 'numOfHouses'));
+
+        return $results;
     }
 }

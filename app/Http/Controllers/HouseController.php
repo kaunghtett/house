@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Favourite;
+use App\Gallery;
 use App\House;
 use App\HouseFeature;
 use App\HouseType;
-use App\Http\Requests\HouseRequest;
-use App\Http\Requests\HouseUpdateFormRequest;
 use App\Location;
 use App\Region;
+use App\Http\Requests\HouseRequest;
+use App\Http\Requests\HouseUpdateFormRequest;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
@@ -27,14 +28,11 @@ class HouseController extends Controller
      */
     public function index()
     {
-        $types = HouseType::all();
-        $regions = Region::all();
-
         $recent_houses = House::recentHouses();
         $featured_house = House::featuredHouse();
         $featured_houses = House::featuredHouses();
 
-                        // dd($featured_houses);
+                        // dd(is_null($featured_house));
         $apartment_id = HouseType::where('type_name', 'Apartments')
                                  ->pluck('id');
         $apartments = House::withAllInfo()
@@ -50,11 +48,11 @@ class HouseController extends Controller
         $naypyitawRegionId = $this->getHouseRegionId('Nay Pyi Taw');
         $pyioolwinRegionId = $this->getHouseRegionId('Pyi Oo Lwin');
         // dd($yangonRegionId);
-        return view('homes.home.index', compact('types', 'regions',
-            'recent_houses', 'featured_house', 'featured_houses', 'apartments',
-             'countOfYangon', 'countOfMandalay', 'countOfNayPyiTaw',
-             'countOfPyiOoLwin', 'yangonRegionId', 'mandalayRegionId',
-             'naypyitawRegionId', 'pyioolwinRegionId'));
+        return view('homes.home.index', compact('recent_houses',
+            'featured_house', 'featured_houses', 'apartments', 'countOfYangon',
+            'countOfMandalay', 'countOfNayPyiTaw', 'countOfPyiOoLwin',
+            'yangonRegionId', 'mandalayRegionId', 'naypyitawRegionId',
+            'pyioolwinRegionId'));
     }
 
     public function countOfRegion($region_name)
@@ -77,11 +75,9 @@ class HouseController extends Controller
      */
     public function create()
     {
-        $types = HouseType::all();
-        $regions = Region::all();
         $features = HouseFeature::all();
 
-        return view('homes.create', compact('types', 'regions', 'features'));
+        return view('homes.create', compact('features'));
     }
 
     /**
@@ -232,16 +228,16 @@ class HouseController extends Controller
     public function edit(House $house)
     {
         // dd($house);
-        $types = HouseType::all();
         $house_type_id = $house->HouseType->id;
         $houseDetail = $house->houseDetail;
         $location = $house->location;
-        $regions = Region::all();
         $features = HouseFeature::all();
         $feature_images = Gallery::where('house_id', $house->id)->where('is_featured', 1)->get();
         $images = Gallery::where('house_id', $house->id)->where('is_featured', 0)->get();
 
-        return view('homes.edit', compact('house', 'types', 'house_type_id', 'houseDetail', 'location', 'regions', 'features', 'feature_images', 'images'));
+        return view('homes.edit', compact('house', 'house_type_id',
+            'houseDetail', 'location', 'features', 'feature_images',
+            'images'));
     }
 
     /**

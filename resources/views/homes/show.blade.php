@@ -104,7 +104,7 @@
                     {{-- <div class="col-lg-3"><strong>Property status</strong><span>For sale</span></div> --}}
                     <div class="col-lg-3">
                         <strong>Price</strong>
-                        <span>{{ number_format($house->price, 3) }} MMK</span>
+                        <span>MMK {{ number_format($house->price, 3) }}</span>
                     </div>
                     <div class="col-lg-3">
                         <strong>Land area</strong>
@@ -121,6 +121,18 @@
                     <div class="col-lg-3">
                         <strong>Year built</strong>
                         <span>{{ $house->houseDetail->building_year }}</span>
+                    </div>
+                    <div class="col-lg-3">
+                        <strong>Parking</strong>
+                        <span>{{ $house->houseDetail->parking ? 'Yes' : 'No' }}</span>
+                    </div>
+                    <div class="col-lg-3">
+                        <strong>Water</strong>
+                        <span>{{ $house->houseDetail->water ? 'Yes' : 'No' }}</span>
+                    </div>
+                    <div class="col-lg-3">
+                        <strong>Exercise Room</strong>
+                        <span>{{ $house->houseDetail->exercise_room ? 'Yes' : 'No' }}</span>
                     </div>
                 </div>
             </div>

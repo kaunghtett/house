@@ -1,58 +1,41 @@
 <div class="widget search-widget">
     <div class="widget-header"><strong class="has-line">Search for Properties</strong></div>
 
-    <form class="sidebar-search">
-
+    <form class="sidebar-search" action="/search" method="post">
+        {{ csrf_field() }}
         <div class="form-group">
-            <input type="text" placeholder="Type your keyword..." class="form-control">
+            <input type="text" name="address" placeholder="Type your address..." class="form-control" required>
         </div>
 
         <div class="form-group">
-            <select name="location" title="location" class="selectpicker">
-                <option value="los-anglos">Los Angeles</option>
-                <option value="san-antonio">San Antonio</option>
-                <option value="new-orleans">New Orleans</option>
-                <option value="victor-harbor">Victor Harbor</option>
-                <option value="gold-cost">Gold Cost</option>
-                <option value="murray-bridge">Murray Bridge</option>
-                <option value="south-wales">South Wales</option>
+            <select name="region_id" title="Region" class="selectpicker">
+                @foreach ($regions as $region)
+                    <option value="{{$region->id}}">{{ $region->name }}</option>
+                @endforeach
             </select>
         </div>
 
         <div class="form-group">
-            <select name="type" title="Property Type" class="selectpicker">
-                <option value="apartments">Apartment</option>
-                <option value="houses">Houses</option>
-                <option value="commercial">Commercial</option>
-                <option value="lots">Lots</option>
+            <select name="type_id" title="Property Type" class="selectpicker">
+                @foreach ($types as $type)
+                    <option value="{{$type->id}}">{{ $type->type_name }}</option>
+                @endforeach
             </select>
         </div>
 
         <div class="form-group">
-            <select name="status" title="Property Status" class="selectpicker">
-                <option value="sale">Sale</option>
-                <option value="rent">Rent</option>
-            </select>
+            <input type="text" name="min_price" placeholder="Min Price [USD]" class="form-control">
+        </div>
+
+         <div class="form-group">
+            <input type="text" name="max_price" placeholder="Max Price [USD]" class="form-control">
         </div>
 
         <div class="form-group">
-            <select name="bedrooms" title="Bedrooms" class="selectpicker">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-            </select>
+            <input type="text" name="min_area_range" placeholder="Min area range [sq m]" class="form-control">
         </div>
-
         <div class="form-group">
-            <select name="bathrooms" title="Bathrooms" class="selectpicker">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-            </select>
+            <input type="text" name="max_area_range" placeholder="Max area range [sq m]" class="form-control">
         </div>
 
         <div class="form-group text-center">

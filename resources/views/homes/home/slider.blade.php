@@ -1,3 +1,4 @@
+@if (count($featured_houses) != 0)
 <section class="hero-section bg-black-3">
     <div class="swiper-container hero-slider">
         <div class="swiper-wrapper">
@@ -23,3 +24,4 @@
         <div class="swiper-pagination"></div>
     </div>
 </section>
+@endif

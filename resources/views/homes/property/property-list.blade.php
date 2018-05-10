@@ -14,6 +14,8 @@
 @endsection
 
 @section ('filter')
+<!-- Filters-->
+<div class="filter d-flex justify-content-between align-items-center flex-wrap">
     <div class="sort d-flex align-items-center">
         <div class="btn-group">
             <button type="button" class="btn btn-primary">Sort</button>
@@ -26,6 +28,13 @@
             </div>
         </div>
     </div>
+    <div class="view d-flex align-items-center"><strong>View</strong>
+        <ul class="list-inline mb-0">
+            <li class="list-inline-item"><a href="/property" class="{{ isActiveURL('/property') }}"><i class="fa fa-th-large"></i></a></li>
+            <li class="list-inline-item"><a href="/property/list" class="{{ isActiveURL('/property/list') }}"><i class="fa fa-th-list"></i></a></li>
+        </ul>
+    </div>
+</div>
 @endsection
 
 @section ('listings')

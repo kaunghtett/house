@@ -15,6 +15,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         view()->composer('*', function ($view) {
+            $view->with('regions', \App\Region::all());
+        });
+
+        view()->composer('*', function ($view) {
+            $view->with('types', \App\HouseType::all());
+        });
+
+        view()->composer('*', function ($view) {
             $view->with('path', asset('/storage/photos/'));
         });
 
@@ -22,9 +30,6 @@ class AppServiceProvider extends ServiceProvider
             $view->with('featured_houses', \App\House::featuredHouses());
         });
 
-        view()->composer('homes.property.location-widget', function ($view) {
-            $view->with('regions', \App\Region::all());
-        });
 
         view()->composer('homes.property.location-widget', function ($view) {
             $view->with('locations', \App\Location::groupBy('township')->get());

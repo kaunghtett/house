@@ -38,10 +38,10 @@
                     <input type="text" name="min_area_range" placeholder="Min area range [sq m]" class="form-control">
                 </div>
                 <div class="form-group col-lg-4">
-                    <input type="text" name="max_area-range" placeholder="Max area range [sq m]" class="form-control">
+                    <input type="text" name="max_area_range" placeholder="Max area range [sq m]" class="form-control">
                 </div>
                 <div class="form-group col-lg-4">
-                    <select name="region" title="region" class="selectpicker">
+                    <select name="region_id" title="Regions" class="selectpicker">
                         @foreach ($regions as $region)
                             <option value="{{ $region->id }}">
                                 {{ $region->name }}
@@ -49,7 +49,7 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="form group col-lg-12">
+               {{--  <div class="form group col-lg-12">
                     <label for="air_conditioning" class="label-template-checkbox">Air Conditioning
                         <input type="checkbox" name="air_conditioning" id="air_conditioning">
                     </label>
@@ -71,7 +71,7 @@
                     <label for="swimming_pool" class="label-template-checkbox">Swimming Pool
                         <input type="checkbox" name="swimming_pool" id="swimming_pool">
                     </label>
-                </div>
+                </div> --}}
             </div>
         </form>
     </div>

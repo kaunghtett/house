@@ -1,4 +1,5 @@
 <!-- Featured Properties -->
+@if (!is_null($featured_house))
 <section class="featured-properties pt-0 bg-black-3">
     <div class="container">
         <header>
@@ -37,3 +38,4 @@
         </div> <!-- end row -->
     </div>
 </section>
+@endif
