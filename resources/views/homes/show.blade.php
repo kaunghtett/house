@@ -61,8 +61,8 @@
                         </div>
                         <ul class="contact-info list-inline mb-0">
                             <li class="list-inline-item"><a href="{{ $house->user->email }}"><i class="fa fa-envelope"></i>{{ $house->user->email }}</a></li>
-                            <li class="list-inline-item"><a href="#"><i class="icon-smart-phone-2"></i>(+95) {{ $house->user->phone_no }}</a></li>
-                            <li class="list-inline-item"><a href="#"><i class="fa fa-home"></i>{{ $house->user->address }}</a></li>
+                            <li class="list-inline-item"><a href="#"><i class="icon-smart-phone-2"></i>(+95) {{ $house->user->profile->phone_no }}</a></li>
+                            <li class="list-inline-item"><a href="#"><i class="fa fa-home"></i>{{ $house->user->profile->address }}</a></li>
                         </ul>
                         <div class="agent-contact">
                             <form action="/houses/{{ $house->id }}/message" method="post" class="agent-contact-form">

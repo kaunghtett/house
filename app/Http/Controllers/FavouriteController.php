@@ -15,12 +15,17 @@ class FavouriteController extends Controller
         $this->middleware('auth');
     }
 
-    public function store($house_id)
+    public function store(House $house)
     {
-        if (Favourite::where('favourite_house_id', $house_id)->where('user_id', auth()->id())->count() < 1) {
+        if ($house->user_id == auth()->id() && auth()->user()->profile->is_host == 1) {
+            alert()->warning("This is your house, so you can not add to favourite.", "Sorry");
+            return redirect()->route('houses.show', ['id' => $house->id]);
+        }
+
+        if (Favourite::where('favourite_house_id', $house->id)->where('user_id', auth()->id())->count() < 1) {
             Favourite::create([
                 'user_id' => auth()->id(),
-                'favourite_house_id' => $house_id,
+                'favourite_house_id' => $house->id,
             ]);
         }
 
