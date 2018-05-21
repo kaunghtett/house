@@ -18,7 +18,8 @@ class CreateProfilesTable extends Migration
             $table->unsignedInteger('user_id')->unique();
             $table->string('address');
             $table->string('phone_no');
-            $table->boolean('is_host')->default(0);
+            $table->string('image_name')->default('default-user');
+            $table->string('extension', 10)->default('png');
             $table->timestamps();
         });
     }

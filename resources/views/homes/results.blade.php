@@ -18,10 +18,11 @@
 <div class="property-listing col-lg-8">
     <div class="row">
         @foreach ($results as $result)
+        @if(!empty($result->house))
             <div class="col-lg-6">
                 <div class="property-listing-item">
                     <div class="image">
-                        <img src="{{$path . '/' . $result->house->galleries()->where('is_featured', 1)->first()->image_name . '.' . $result->house->galleries()->where('is_featured', 1)->first()->extension}}" alt="{{ $result->house->galleries()->where('is_featured', 1)->first()->image_name }}" class="img-fluid">
+                        <img src="{{$path . '/' . $result->house->featuredImage()->image_name . '.' . $result->house->featuredImage()->extension}}" alt="{{ $result->house->featuredImage()->image_name }}" class="img-fluid">
                         <div class="price text-capitalize">
                             <small>MMK {{ $result->house->price }}/{{$result->house->period}}</small>
                         </div>
@@ -46,14 +47,15 @@
                     </div>
                 </div>
             </div>
+        @endif
         @endforeach
-        <div class="property-listing-footer mt-5">
-            <div class="mt-5">
-                <nav aria-label="Page navigation example">
-                    {{ $results->links() }}
-                </nav>
-            </div>
-        </div>
     </div> <!-- end of row -->
+    <div class="property-listing-footer mt-5">
+        <div class="mt-5">
+            <nav aria-label="Page navigation example">
+                {{-- {{ $results->links() }} --}}
+            </nav>
+        </div>
+    </div>
 </div>
 @endsection

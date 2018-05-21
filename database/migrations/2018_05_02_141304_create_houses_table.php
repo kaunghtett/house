@@ -16,8 +16,8 @@ class CreateHousesTable extends Migration
         Schema::create('houses', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
-            $table->string('title');
             $table->unsignedInteger('house_type_id');
+            $table->string('title');
             $table->string('period')->default('month');
             $table->integer('price');
             $table->integer('area');
@@ -25,6 +25,7 @@ class CreateHousesTable extends Migration
             $table->text('description');
             $table->string('features');
             $table->boolean('featured_house')->default(false);
+            $table->boolean('is_approved')->default(false);
             $table->timestamps();
 
             $table->foreign('house_type_id')->references('id')->on('house_types')->onDelete('cascade');

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProfileRequest;
 use App\Profile;
-use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
@@ -24,7 +24,7 @@ class ProfileController extends Controller
      */
     public function create()
     {
-        //
+        return view('profiles.create');
     }
 
     /**
@@ -33,18 +33,36 @@ class ProfileController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProfileRequest $request)
     {
-        //
+        if ($request->hasFile('image')) {
+            $profile_image = $request->image;
+            $image_name = str_slug(auth()->user()->name, '-');
+            $extension = $profile_image->getClientOriginalExtension();
+            $profile_image->storeAs('public/photos/profiles', $image_name . '.' . $extension);
+            auth()->user()->profile()->create([
+                'address' => $request->address,
+                'phone_no' => $request->phone_no,
+                'image_name' => $image_name,
+                'extension' => $extension,
+            ]);
+        } else {
+            auth()->user()->profile()->create([
+                'address' => $request->address,
+                'phone_no' => $request->phone_no,
+            ]);
+        }
+
+        return redirect()->home();
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Profile  $profile
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Profile $profile)
+    public function show($id)
     {
         //
     }
@@ -52,10 +70,10 @@ class ProfileController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Profile  $profile
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Profile $profile)
+    public function edit($id)
     {
         //
     }
@@ -64,10 +82,10 @@ class ProfileController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Profile  $profile
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Profile $profile)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -75,10 +93,10 @@ class ProfileController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Profile  $profile
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Profile $profile)
+    public function destroy($id)
     {
         //
     }

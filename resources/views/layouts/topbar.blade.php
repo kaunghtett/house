@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-lg-6 d-none d-lg-block menu-left">
                 <ul class="list-inline">
-                    <li class="list-inline-item"><a href="#">Contact Us</a></li>
+                    <li class="list-inline-item"><a href="/contact-us">Contact Us</a></li>
                 </ul>
             </div>
             <div class="col-lg-6 text-right menu-right">
@@ -16,7 +16,24 @@
                         <li class="list-inline-item">
                             <a href="/favourite"><i class="fa fa-heart-o"></i>Favourites</a>
                         </li>
-                        <li class="list-inline-item"><a href="#"><i class="fa fa-user"></i>{{ Auth::user()->name }}</a></li>
+                        <li class="list-inline-item"><a href="/backend/user/{{auth()->user()->type()}}"><i class="fa fa-user"></i>{{ Auth::user()->name }}
+                        {{-- <li class="list-inline-item"> --}}
+                            {{-- <a href="backend/user/{{auth()->user()->type()}}"> --}}
+                                {{-- <i class="fa fa-envelope"> --}}
+                                    @if (auth()->user()->type() == 'admin' && $numOfContactMessage > 0)
+                                    &nbsp;&nbsp;&nbsp;
+                                    <span class="noti">
+                                        {{$numOfContactMessage}}
+                                    </span>
+                                    @elseif (auth()->user()->type() == 'guest' && $numOfGuestMessage > 0)
+                                    &nbsp;&nbsp;&nbsp;
+                                    <span class="noti">
+                                        {{$numOfGuestMessage}}
+                                    </span>
+                                    @endif
+                                {{-- </i> --}}
+                            </a>
+                        </li>
                         <li class="list-inline-item"><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="pr-0 border-right-0""><i class="fa fa-sign-out"></i>Logout</a></li>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf

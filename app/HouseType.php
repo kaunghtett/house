@@ -12,4 +12,9 @@ class HouseType extends Model
     {
         return $this->hasMany(House::class);
     }
+
+    public function scopeApartments($query)
+    {
+        return $query->where('type_name', 'Apartments');
+    }
 }

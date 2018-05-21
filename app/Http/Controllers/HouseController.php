@@ -7,10 +7,11 @@ use App\Gallery;
 use App\House;
 use App\HouseFeature;
 use App\HouseType;
-use App\Location;
-use App\Region;
 use App\Http\Requests\HouseRequest;
 use App\Http\Requests\HouseUpdateFormRequest;
+use App\Location;
+use App\Region;
+use App\User;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
@@ -28,15 +29,13 @@ class HouseController extends Controller
      */
     public function index()
     {
-        $recent_houses = House::recentHouses();
-        $featured_house = House::featuredHouse();
-        $featured_houses = House::featuredHouses();
+        $recent_houses = House::newHouses()->get();
+        $featured_house = House::featuredHouse()->first();
+        $featured_houses = House::featuredHouse()->get();
 
-                        // dd(is_null($featured_house));
         $apartment_id = HouseType::where('type_name', 'Apartments')
-                                 ->pluck('id');
-        $apartments = House::withAllInfo()
-                    ->where('house_type_id', $apartment_id)->get();
+                                  ->pluck('id');
+        $apartments = House::apartments($apartment_id)->get();
 
         $countOfYangon = $this->countOfRegion('Yangon');
         $countOfMandalay = $this->countOfRegion('Mandalay');
@@ -59,7 +58,18 @@ class HouseController extends Controller
     {
         $region_id = $this->getHouseRegionId($region_name);
 
-        return Location::where('region_id', $region_id)->count();
+        $locations = Location::with(['house' => function ($query) {
+            $query->where('is_approved', 1);
+        }])->where('region_id', $region_id)->get();
+
+        $count = 0;
+
+        foreach ($locations as $location) {
+            if (!empty($location->house)) {
+                $count++;
+            }
+        }
+        return $count;
     }
 
     public function getHouseRegionId($region_name)
@@ -75,9 +85,18 @@ class HouseController extends Controller
      */
     public function create()
     {
-        $features = HouseFeature::all();
+        if (auth()->user()->adminOrHost()) {
+            if (empty(auth()->user()->profile)) {
+                return redirect()->route('profiles.create');
+            }
+            $features = HouseFeature::all();
 
-        return view('homes.create', compact('features'));
+            return view('homes.create', compact('features'));
+        }
+
+        alert()->warning('If you want to be a host, you should send message to our admin teams.', 'Not Allow!');
+
+        return view('homes.contact-us');
     }
 
     /**
@@ -206,17 +225,20 @@ class HouseController extends Controller
 
     public function region(Region $region)
     {
-        $locations = Location::withAllInfo('region_id', $region->id)->get();
+        $houses = House::with(['location' => function ($query) use ($region) {
+            $query->where('region_id', $region->id);
+        }])->where('is_approved', 1)->get();
 
-        return view('homes.regions', compact('locations', 'region'));
+        return view('homes.regions', compact('houses', 'region'));
     }
 
     public function township($township)
     {
-        $locations = Location::withAllInfo('township', $township)->get();
-        $region = Location::where('township', $township)->first()->region;
+        $houses = House::with(['location' => function ($query) use ($township) {
+            $query->where('township', $township);
+        }])->where('is_approved', 1)->get();
 
-        return view('homes.townships', compact('locations', 'region', 'township'));
+        return view('homes.townships', compact('houses', 'township'));
     }
 
     /**

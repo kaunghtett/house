@@ -14,6 +14,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        view()->composer(['admin-layouts.main_header', 'admin-layouts.aside'], function ($view) {
+            $view->with('user', auth()->user());
+        });
+
+        view()->composer('layouts.topbar', function ($view) {
+            $view->with('numOfContactMessage', \App\ContactMessage::all()->count());
+        });
+
+        view()->composer('layouts.topbar', function ($view) {
+            $view->with('numOfGuestMessage', \App\GuestMessage::all()->count());
+        });
+
         view()->composer('*', function ($view) {
             $view->with('regions', \App\Region::all());
         });
@@ -26,8 +38,12 @@ class AppServiceProvider extends ServiceProvider
             $view->with('path', asset('/storage/photos/'));
         });
 
+        view()->composer('*', function ($view) {
+            $view->with('thumbnails', asset('/storage/photos/thumbnails'));
+        });
+
         view()->composer('homes.property.featured-widget', function ($view) {
-            $view->with('featured_houses', \App\House::featuredHouses());
+            $view->with('featured_houses', \App\House::featuredHouse()->get());
         });
 
 

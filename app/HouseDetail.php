@@ -11,5 +11,10 @@ class HouseDetail extends Model
         'water', 'exercise_room'
     ];
 
+    public function house()
+    {
+        return $this->belongsTo(House::class);
+    }
+
 
 }

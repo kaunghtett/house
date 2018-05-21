@@ -31,4 +31,10 @@ class Location extends Model
                 $query->where('is_featured', 1);
             }])->where($column, $keyword);
     }
+
+    public function scopeFilter($query, $filters)
+    {
+        // dd($query);
+        $filters->apply($query);
+    }
 }

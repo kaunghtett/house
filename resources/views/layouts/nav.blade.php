@@ -19,9 +19,11 @@
                     <a href="/gallery" class="nav-link">Gallery</a>
                 </li>
             </ul>
-            <ul class="secondary-nav-menu list-inline ml-auto mb-0">
-                <li class="list-inline-item"><a href="/houses/create" class="btn btn-primary btn-gradient">Submit property</a></li>
-            </ul>
+            {{-- @can('create-house') --}}
+                <ul class="secondary-nav-menu list-inline ml-auto mb-0">
+                    <li class="list-inline-item"><a href="/houses/create" class="btn btn-primary btn-gradient">Submit property</a></li>
+                </ul>
+            {{-- @endcan --}}
         </div>
     </div>
 </nav>

@@ -1,5 +1,5 @@
 <!-- New house Section-->
-<section class="new-properties bg-black-3">
+<section class="new-properties bg-black-3" id="newHouse">
     <div class="container">
         <header class="text-center">
             <h2>New houses <span class="text-primary">for rent</span></h2>
@@ -14,9 +14,7 @@
             <div class="col-lg-4">
                 <div class="property mb-5 mb-lg-0">
                     <div class="image">
-                        @foreach ($recent_house->galleries as $gallery)
-                        <img src="{{ $path . '/' . $gallery->image_name . '.' . $gallery->extension }}" alt="{{ $gallery->image_name }}" class="img-fluid">
-                        @endforeach
+                        <img src="{{ $path . '/' . $recent_house->featuredImage()->image_name . '.' . $recent_house->featuredImage()->extension }}" alt="{{ $recent_house->featuredImage()->image_name }}" class="img-fluid">
                         <div class="overlay d-flex align-items-center justify-content-center"><a href="houses/{{ $recent_house->id }}" class="btn btn-gradient btn-sm">View Details</a></div>
                     </div>
                     <div class="info">

@@ -10,7 +10,8 @@ class PropertyController extends Controller
     public function grid()
     {
         $sort = request('sort');
-        $houses = House::withAllInfo()->orderBy('price', $sort)->paginate(6);
+
+        $houses = $this->orderBy($sort);
 
         return view('homes.property.property-grid', compact('houses'));
     }
@@ -18,8 +19,15 @@ class PropertyController extends Controller
     public function list()
     {
         $sort = request('sort');
-        $houses = House::withAllInfo()->orderBy('price', $sort)->paginate(5);
+
+        $houses = $this->orderBy($sort);
 
         return view('homes.property.property-list', compact('houses'));
+    }
+
+
+    public function orderBy($sort)
+    {
+        return House::where('is_approved', 1)->orderBy('price', $sort)->paginate(6);
     }
 }

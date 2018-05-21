@@ -8,14 +8,17 @@ class House extends Model
 {
     protected $fillable = [
         'user_id', 'title', 'house_type_id', 'period', 'price', 'area',
-        'rooms', 'description', 'features', 'is_featured'
+        'rooms', 'description', 'features', 'featured_house', 'is_approved'
     ];
+        // automatic eager loading
+    protected $with = ['houseDetail', 'location', 'user', 'houseType',
+                        'galleries'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-
+    // one to one relationship
     public function houseDetail()
     {
         return $this->hasOne(HouseDetail::class);
@@ -30,7 +33,7 @@ class House extends Model
     {
         return $this->hasOne(Location::class);
     }
-
+    // one to many relationship
     public function reviews()
     {
         return $this->hasMany(Review::class);
@@ -41,22 +44,14 @@ class House extends Model
         return $this->hasMany(Gallery::class);
     }
 
-    public function scopeWithAllInfo($query)
+    /**
+     * @param Query Builder instance, filters instance
+     *
+     * @return filter result
+     */
+    public function scopeFilter($query, $filters)
     {
-        return $query->with(['houseDetail', 'location', 'user',
-            'galleries' => function ($query) {
-                $query->where('is_featured', 1);
-            }]);
-    }
-
-    public static function recentHouses()
-    {
-        return static::withAllInfo()->latest()->limit(3)->get();
-    }
-
-    public static function featuredHouse()
-    {
-        return static::withAllInfo()->where('featured_house', 1)->first();
+        return $filters->apply($query);
     }
 
     public function scopeRelatedHouse($query, $related_location)
@@ -70,10 +65,38 @@ class House extends Model
                     ->where('is_featured', 1);
     }
 
-    public static function featuredHouses()
+    public function scopeNewHouses($query)
     {
-        return static::with(['location', 'galleries' => function ($query) {
-            $query->where('is_featured', 1);
-        }])->where('featured_house', 1)->get();
+        return $query->where('is_approved', 1)->latest()->limit(3);
+    }
+
+    public static function scopeFeaturedHouse($query)
+    {
+        return $query->where('is_approved', 1)->where('featured_house', 1);
+    }
+
+    public static function scopeApartments($query, $apartment_id)
+    {
+        return $query->where('is_approved', 1)->where('house_type_id', $apartment_id);
+    }
+
+    public static function scopeFavouriteHouses($query, $favHouseIds)
+    {
+        return $query->whereIn('id', $favHouseIds);
+    }
+
+    public function featuredImage()
+    {
+        return $this->galleries->where('is_featured', 1)->first();
+    }
+
+    public function showFeaturedImage($path)
+    {
+        return  $path . '/' . $this->featuredImage()->image_name . '.' . $this->featuredImage()->extension;
+    }
+
+    public function showImages($image, $thumbnails)
+    {
+        return $thumbnails . '/' . $image->image_name . '.' . $image->extension;
     }
 }

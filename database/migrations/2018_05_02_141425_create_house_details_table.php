@@ -19,9 +19,9 @@ class CreateHouseDetailsTable extends Migration
             $table->string('building_year')->nullable();
             $table->integer('bathrooms');
             $table->integer('bedrooms');
-            $table->boolean('parking');
-            $table->boolean('water');
-            $table->boolean('exercise_room');
+            $table->boolean('parking')->default(false);
+            $table->boolean('water')->default(false);
+            $table->boolean('exercise_room')->default(false);
             $table->timestamps();
 
             $table->foreign('house_id')->references('id')->on('houses')->onDelete('cascade');

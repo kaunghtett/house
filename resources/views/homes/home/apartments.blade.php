@@ -1,5 +1,5 @@
 <!-- Apartments Section-->
-<section class="apartments pt-0 bg-black-3">
+<section class="apartments pt-0 bg-black-3" id="apartments">
     <div class="container">
         <header class="text-center">
             <h2>Apartments <span class="text-primary">ready</span></h2>

@@ -1,6 +1,6 @@
 <!-- Featured Properties -->
 @if (!is_null($featured_house))
-<section class="featured-properties pt-0 bg-black-3">
+<section class="featured-properties pt-0 bg-black-3" id="featured">
     <div class="container">
         <header>
             <h2>Featured <span class="text-primary">Properties</span></h2>
@@ -14,11 +14,9 @@
         </header>
         <div class="row d-flex align-items-center">
             <div class="col-lg-6 pr-lg-0">
-                @foreach ($featured_house->galleries as $image)
-                    <div class="image">
-                        <img src="{{ $path . '/' . $image->image_name . '.' . $image->extension }}" alt="..." class="img-fluid">
-                    </div>
-                @endforeach
+                <div class="image">
+                    <img src="{{ $featured_house->showFeaturedImage($path) }}" alt="{{$featured_house->featuredImage()->image_name}}" class="img-fluid">
+                </div>
             </div>
             <div class="col-lg-6 pl-lg-0">
                 <div class="text"><strong>Featured Properties</strong>

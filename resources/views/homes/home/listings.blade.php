@@ -1,5 +1,5 @@
 <!-- Listings Section -->
-<section class="listings-home pt-0 bg-black-3">
+<section class="listings-home pt-0 bg-black-3" id="listings">
     <div class="container">
         <header class="text-center">
             <h2>
@@ -14,7 +14,6 @@
         </header>
 
         <div class="row">
-            @if ($countOfYangon)
             <div class="col-lg-7">
                 <div class="listing-home"><img src="img/yangon.jpg" alt="...">
                     @foreach ($yangonRegionId as $id)
@@ -25,8 +24,6 @@
                     <div class="ribbon text-center"><strong class="d-block">{{$countOfYangon}}</strong><small>Listings</small></div>
                 </div>
             </div>
-            @endif
-            @if ($countOfMandalay)
             <div class="col-lg-5">
                 <div class="listing-home"><img src="img/mandalay.jpg" alt="...">
                     @foreach ($mandalayRegionId as $id)
@@ -37,8 +34,6 @@
                     <div class="ribbon text-center"><strong class="d-block">{{$countOfMandalay}}</strong><small>Listings</small></div>
                 </div>
             </div>
-            @endif
-            @if ($countOfNayPyiTaw)
             <div class="col-lg-5">
                 <div class="listing-home"><img src="img/naypyitaw.jpg" alt="...">
                     @foreach ($naypyitawRegionId as $id)
@@ -49,8 +44,6 @@
                     <div class="ribbon text-center"><strong class="d-block">{{$countOfNayPyiTaw}}</strong><small>Listings</small></div>
                 </div>
             </div>
-            @endif
-            @if ($countOfPyiOoLwin)
             <div class="col-lg-7">
                 <div class="listing-home mb-0"><img src="img/pyioolwin.jpg" alt="...">
                     @foreach ($pyioolwinRegionId as $id)
@@ -61,7 +54,6 @@
                     <div class="ribbon text-center"><strong class="d-block">{{$countOfPyiOoLwin}}</strong><small>Listings</small></div>
                 </div>
             </div> <!-- end of col -->
-            @endif
         </div> <!-- end of row -->
     </div> <!-- end of container -->
 </section>

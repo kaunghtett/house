@@ -4,9 +4,7 @@
         <div class="swiper-wrapper">
             @foreach ($featured_houses as $featured_house)
             <div class="swiper-slide">
-                @foreach ($featured_house->galleries as $image)
-                <div style="background: url('{{$path . '/' .$image->image_name . '.' . $image->extension}}');" class="hero-content has-overlay-dark">
-                @endforeach
+                <div style="background: url('{{ $featured_house->showFeaturedImage($path) }}');" class="hero-content has-overlay-dark">
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-8">

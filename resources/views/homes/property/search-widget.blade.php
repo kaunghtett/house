@@ -3,6 +3,7 @@
 
     <form class="sidebar-search" action="/search" method="post">
         {{ csrf_field() }}
+
         <div class="form-group">
             <input type="text" name="address" placeholder="Type your address..." class="form-control" required>
         </div>

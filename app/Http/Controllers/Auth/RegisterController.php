@@ -51,8 +51,6 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'address' => 'required|string',
-            'phone_no' => 'required|string',
             'password' => 'required|string|min:6|confirmed',
         ]);
     }
@@ -71,11 +69,8 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
-        $user->profile()->create([
-            'address' => $data['address'],
-            'phone_no' => $data['phone_no'],
-        ]);
+        $guest = Role::where('slug', 'guest')->get();
 
-        return $user;
+        $user->roles()->attach($guest);
     }
 }

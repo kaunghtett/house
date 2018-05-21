@@ -11,7 +11,8 @@
         "laravel/framework": "5.6.*",
         "laravel/tinker": "^1.0",
         "laravelista/ekko": "^1.5",
-        "uxweb/sweet-alert": "^1.4"
+        "uxweb/sweet-alert": "^1.4",
+        "yajra/laravel-datatables-oracle": "^8.5"
     },
     "require-dev": {
         "filp/whoops": "^2.0",

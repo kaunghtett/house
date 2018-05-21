@@ -6,10 +6,13 @@ use App\Favourite;
 use App\House;
 use App\User;
 use Illuminate\Http\Request;
+use App\Http\AuthTraits\OwnRecord;
 use Illuminate\Support\Facades\Session;
 
 class FavouriteController extends Controller
 {
+    use OwnRecord;
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -17,30 +20,27 @@ class FavouriteController extends Controller
 
     public function store(House $house)
     {
-        if ($house->user_id == auth()->id() && auth()->user()->profile->is_host == 1) {
+        if ($this->currentUserOwns($house)) {
             alert()->warning("This is your house, so you can not add to favourite.", "Sorry");
             return redirect()->route('houses.show', ['id' => $house->id]);
         }
 
-        if (Favourite::where('favourite_house_id', $house->id)->where('user_id', auth()->id())->count() < 1) {
+        if (Favourite::doesNotExitInFavourite($house)) {
             Favourite::create([
                 'user_id' => auth()->id(),
                 'favourite_house_id' => $house->id,
             ]);
         }
 
-        $favHouseIds = Favourite::where('user_id', auth()->id())->pluck('favourite_house_id');
-
-        $fav_houses = House::withAllInfo()->whereIn('id', $favHouseIds)->get();
-
-        return view('homes.favourites', compact('fav_houses'));
+        return redirect()->route('favourite.show');
     }
 
     public function show()
     {
         $favHouseIds = Favourite::where('user_id', auth()->id())->pluck('favourite_house_id');
 
-        $fav_houses = House::withAllInfo()->whereIn('id', $favHouseIds)->get();
+        $fav_houses = House::favouriteHouses($favHouseIds)->get();
+
         return view('homes.favourites', compact('fav_houses'));
     }
 
@@ -49,6 +49,6 @@ class FavouriteController extends Controller
         // dd($id);
         Favourite::where('favourite_house_id', $id)->delete();
 
-        return redirect()->route('favourite.show', ['id' => auth()->id()]);
+        return redirect()->route('favourite.show');
     }
 }

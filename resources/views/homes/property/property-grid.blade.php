@@ -45,9 +45,7 @@
             <div class="col-lg-6">
                 <div class="property-listing-item">
                     <div class="image">
-                        @foreach ($house->galleries as $image)
-                            <img src="{{ $path . '/' . $image->image_name . '.' . $image->extension }}" alt="{{ $image->image_name }}" class="img-fluid">
-                        @endforeach
+                        <img src="{{ $house->showFeaturedImage($path) }}" alt="{{ $house->featuredImage()->image_name }}" class="img-fluid">
                         <div class="price text-capitalize">
                             <small>MMK {{ $house->price }}/{{$house->period}}</small>
                         </div>

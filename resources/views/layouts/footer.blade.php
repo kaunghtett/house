@@ -13,13 +13,13 @@
                 </ul>
             </div>
             <div class="col-lg-2 links">
-                <h3 class="h4 text-thin text-uppercase">Company</h3>
+                <h3 class="h4 text-thin text-uppercase">Navigation</h3>
                 <ul class="list-unstyled">
-                    <li><a href="#">Properties</a></li>
-                    <li><a href="#">Landlords</a></li>
-                    <li><a href="#">Renters</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#newHouse">New Houses</a></li>
+                    <li><a href="#listings">Listings</a></li>
+                    <li><a href="#featured">Featured</a></li>
+                    <li><a href="#apartments">Apartments</a></li>
+                    <li><a href="#about">About</a></li>
                 </ul>
             </div>
             <div class="col-lg-2 links">

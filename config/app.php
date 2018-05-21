@@ -153,6 +153,7 @@ return [
         UxWeb\SweetAlert\SweetAlertServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Laravelista\Ekko\EkkoServiceProvider::class,
+        Yajra\Datatables\DatatablesServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -214,6 +215,7 @@ return [
         'Alert' => UxWeb\SweetAlert\SweetAlert::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'Ekko' => Laravelista\Ekko\Facades\Ekko::class,
+        'Datatables' => Yajra\Datatables\Facades\Datatables::class,
 
     ],
 

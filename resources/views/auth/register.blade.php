@@ -13,7 +13,7 @@
             </nav>
         </div>
     </section>
-    <section class="customer-login bg-black-2">
+    <section class="customer-login bg-black-4">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">

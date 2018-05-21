@@ -21,6 +21,8 @@ class CreateMessagesTable extends Migration
             $table->string('guest_phone');
             $table->text('guest_message');
             $table->timestamps();
+
+            $table->foreign('house_id')->references('id')->on('houses')->onDelete('cascade');
         });
     }
 

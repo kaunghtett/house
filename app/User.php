@@ -36,4 +36,64 @@ class User extends Authenticatable
     {
         return $this->hasOne(Profile::class);
     }
+
+    public function contactMessages()
+    {
+        return $this->hasMany(ContactMessage::class);
+    }
+
+    public function guestMessages()
+    {
+        return $this->hasMany(GuestMessage::class);
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'role_users');
+    }
+
+    /**
+     * Checks if User has access to $permissions.
+     */
+    public function hasAccess(array $permissions) : bool
+    {
+        // check if the permission is available in any role
+        foreach ($this->roles as $role) {
+            if ($role->hasAccess($permissions)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the user belongs to role.
+     */
+    public function inRole(string $roleSlug)
+    {
+        return $this->roles()->where('slug', $roleSlug)->count() == 1;
+    }
+
+    public function adminOrHost()
+    {
+        return auth()->user()->inRole('host') || auth()->user()->inRole('admin');
+    }
+
+    public function type()
+    {
+        return $this->roles()->first()->slug;
+    }
+
+    public function changeRole($roleName)
+    {
+        $newRole = Role::where('slug', $roleName)->first();
+        $oldRole = $this->roles()->first();
+        $this->roles()->detach($oldRole);
+        $this->roles()->attach($newRole);
+    }
+
+    public function showImage($path)
+    {
+        return $path . '/profiles/' . $this->profile->image_name . '.' . $this->profile->extension;
+    }
 }

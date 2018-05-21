@@ -1,5 +1,5 @@
 <!-- Agents Section-->
-<section class="agents pt-0 bg-black-3">
+<section class="agents pt-0 bg-black-3" id="agent">
     <div class="container">
         <header class="text-center">
             <h2>Our <span class="text-primary">Agents</span></h2>

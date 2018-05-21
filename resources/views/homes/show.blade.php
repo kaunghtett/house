@@ -17,7 +17,9 @@
                     @if ($house->featured_house == 1)
                         <div class="badge badge-primary">Featured</div>
                     @endif
-                    <a title="Add To Favourite" href="/favourite/{{ $house->id }}" class="fav-button pl-3 black"><i class="fa fa-heart"></i></a>
+                    @can ('add-favourite', $house)
+                        <a title="Add To Favourite" href="/favourite/{{ $house->id }}" class="fav-button pl-3 black"><i class="fa fa-heart"></i></a>
+                    @endcan
                 </h1>
                 <p class="template-text">{{ $house->location->address }}</p>
             </header>
@@ -49,14 +51,7 @@
                             </div>
                             <div class="text">
                                 <strong>{{ $house->user->name }}</strong>
-                                <span>Host</span>
-                                {{-- <ul class="agent-social list-inline">
-                                    <li class="list-inline-item"><a href="#"><i class="fa fa-envelope"></i></a></li>
-                                    <li class="list-inline-item"><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                    <li class="list-inline-item"><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                    <li class="list-inline-item"><a href="#"><i class="fa fa-pinterest"></i></a></li>
-                                    <li class="list-inline-item"><a href="#"><i class="fa fa-instagram"></i></a></li>
-                                </ul> --}}
+                                <span>{{$house->user->type()}}</span>
                             </div>
                         </div>
                         <ul class="contact-info list-inline mb-0">
@@ -149,7 +144,7 @@
                 <div class="row">
                     @foreach ($all_features as $all_feature)
                     <div class="col-lg-3">
-                        <div class="label-template-checkbox {{ in_array($all_feature->name, $features) ? 'active' : '' }}">{{ $all_feature->name }}</div>
+                        <div class="label-template-checkbox text-white {{ in_array($all_feature->name, $features) ? 'active' : '' }}">{{ $all_feature->name }}</div>
                     </div>
                     @endforeach
                 </div>
