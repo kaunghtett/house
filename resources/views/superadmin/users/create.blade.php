@@ -3,17 +3,17 @@
 @section ('content')
     <section class="content">
         <h1 class="has-line mb-3">Create User</h1>
-        <form action="route(users.create)" method="post" enctype="multipart/form-data" class="form-horizontal">
+        <form action="{{route('users.store')}}" method="post" enctype="multipart/form-data" class="form-horizontal">
         {{csrf_field()}}
 
             <div class="form-group">
                 <label for="name" class="col-md-2 control-label">User Name:</label>
-                <div class="col-md-6">
-                    <input type="text" name="name" id="name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" value="{{ old('name') }}" required>
+                <div class="col-md-6 {{$errors->has('name') ? 'has-error' : ''}}">
+                    <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}" required>
 
                     {{-- error msg --}}
                     @if ($errors->has('name'))
-                        <span class="invalid-feedback">
+                        <span class="help-block">
                             <strong>{{ $errors->first('name') }}</strong>
                         </span>
                     @endif
@@ -22,12 +22,12 @@
 
             <div class="form-group">
                 <label for="email" class="col-md-2 control-label">Email:</label>
-                <div class="col-md-6">
-                    <input type="email" name="email" id="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{ old('email') }}" required>
+                <div class="col-md-6 {{$errors->has('name') ? 'has-error' : ''}}">
+                    <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}" required>
 
                     {{-- error msg --}}
                     @if ($errors->has('email'))
-                        <span class="invalid-feedback">
+                        <span class="help-block">
                             <strong>{{ $errors->first('email') }}</strong>
                         </span>
                     @endif
@@ -37,11 +37,11 @@
             <div class="form-group">
                 <label for="address" class="col-md-2 control-label">Address:</label>
                 <div class="col-md-6">
-                    <input type="text" name="address" id="address" class="form-control{{ $errors->has('address') ? ' is-invalid' : '' }}" value="{{ old('address') }}" required>
+                    <input type="text" name="address" id="address" class="form-control" value="{{ old('address') }}" required>
 
                     {{-- error msg --}}
                     @if ($errors->has('address'))
-                        <span class="invalid-feedback">
+                        <span class="help-block">
                             <strong>{{ $errors->first('address') }}</strong>
                         </span>
                     @endif
@@ -51,11 +51,11 @@
             <div class="form-group">
                 <label for="phone_no" class="col-md-2 control-label">Phone Number:</label>
                 <div class="col-md-6">
-                    <input type="text" name="phone_no" id="phone_no" class="form-control{{ $errors->has('phone_no') ? ' is-invalid' : '' }}" value="{{ old('phone_no') }}" required>
+                    <input type="text" name="phone_no" id="phone_no" class="form-control" value="{{ old('phone_no') }}" required>
 
                     {{-- error msg --}}
                     @if ($errors->has('phone_no'))
-                        <span class="invalid-feedback">
+                        <span class="help-block">
                             <strong>{{ $errors->first('phone_no') }}</strong>
                         </span>
                     @endif
@@ -65,11 +65,11 @@
             <div class="form-group">
                 <label for="password" class="col-md-2 control-label">Password:</label>
                 <div class="col-md-6">
-                    <input type="password" name="password" id="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" value="{{ old('password') }}" required>
+                    <input type="password" name="password" id="password" class="form-control" value="{{ old('password') }}" required>
 
                     {{-- error msg --}}
                     @if ($errors->has('password'))
-                        <span class="invalid-feedback">
+                        <span class="help-block">
                             <strong>{{ $errors->first('password') }}</strong>
                         </span>
                     @endif
@@ -79,11 +79,11 @@
             <div class="form-group">
                 <label for="password_confirmation" class="col-md-2 control-label">Password Confirm:</label>
                 <div class="col-md-6">
-                    <input type="text" name="password_confirmation" id="password_confirmation" class="form-control{{ $errors->has('password_confirmation') ? ' is-invalid' : '' }}" required>
+                    <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" required>
 
                     {{-- error msg --}}
                     @if ($errors->has('password_confirmation'))
-                        <span class="invalid-feedback">
+                        <span class="help-block">
                             <strong>{{ $errors->first('password_confirmation') }}</strong>
                         </span>
                     @endif
@@ -108,7 +108,7 @@
 
                     {{-- error msg --}}
                     @if ($errors->has('image'))
-                        <span class="invalid-feedback">
+                        <span class="help-block">
                             <strong>{{ $errors->first('image') }}</strong>
                         </span>
                     @endif

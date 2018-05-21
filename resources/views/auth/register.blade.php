@@ -46,28 +46,6 @@
                         </div>
 
                         <div class="form-group">
-                            <input type="text" name="address" placeholder="Type your address" class="form-control{{ $errors->has('address') ? ' is-invalid' : '' }}" value="{{ old('address') }}" required>
-
-                            {{-- error msg --}}
-                            @if ($errors->has('address'))
-                                <span class="invalid-feedback">
-                                    <strong>{{ $errors->first('address') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-
-                        <div class="form-group">
-                            <input type="text" name="phone_no" placeholder="Type your phone number" class="form-control{{ $errors->has('phone_no') ? ' is-invalid' : '' }}" value="{{ old('phone_no') }}" required>
-
-                            {{-- error msg --}}
-                            @if ($errors->has('phone_no'))
-                                <span class="invalid-feedback">
-                                    <strong>{{ $errors->first('phone_no') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-
-                        <div class="form-group">
                             <input type="password" name="password" placeholder="Password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" required>
 
                             {{-- error msg --}}

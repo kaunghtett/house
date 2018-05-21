@@ -95,13 +95,13 @@ Route::group(['middleware' => 'auth', 'prefix' => 'backend/user'],
         Route::delete('houses/{house}', 'Admin\HouseController@destroy')
               ->name('admin-houses.delete') //destroy
               ->middleware('can:delete-house');
-
-        Route::get('houses/unpublish', 'Admin\HouseController@unpublish')
+        // /backend/user/admin/unpublish
+        Route::get('unpublish', 'Admin\HouseController@unpublish')
               ->name('houses.unpublish');
         Route::get('unpublish/data', 'Admin\HouseController@unpublishData')
               ->name('houses.unpublishData');
 
-        Route::get('houses/publish', 'Admin\HouseController@publish')
+        Route::get('publish', 'Admin\HouseController@publish')
               ->name('houses.publish');
         Route::get('publish/data', 'Admin\HouseController@publishData')
               ->name('houses.publishData');

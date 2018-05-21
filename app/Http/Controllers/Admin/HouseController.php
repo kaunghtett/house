@@ -84,7 +84,7 @@ class HouseController extends Controller
                 return '<a href="' . route('admin-houses.show', $house->id) . '" class="btn btn-sm btn-success"><i class="glyphicon glyphicon-option-horizontal"></i></a>';
             })
             ->addColumn('unpublish', function($house) {
-                return '<a href="' . route('houses.block', $house->id) . '" class="btn btn-sm btn-primary">Unpublish</a>';
+                return '<a href="' . route('houses.block', $house->id) . '" class="btn btn-sm btn-warning">Unpublish</a>';
             })
             ->rawColumns(['edit','delete','detail', 'unpublish'])
             ->make(true);

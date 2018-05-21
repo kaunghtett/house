@@ -38,11 +38,11 @@
                     <li class="{{ isActiveURL('/backend/user/admin/houses') }}">
                         <a href="/backend/user/admin/houses"><i class="fa fa-circle-o"></i>&nbsp;&nbsp; All Houses</a>
                     </li>
-                    <li class="{{ isActiveURL('/backend/user/admin/houses/unpublish') }}">
-                        <a href="/backend/user/admin/houses/unpublish"><i class="fa fa-circle-o"></i>&nbsp;&nbsp; Unpublished Houses</a>
+                    <li class="{{ isActiveURL('/backend/user/admin/unpublish') }}">
+                        <a href="/backend/user/admin/unpublish"><i class="fa fa-circle-o"></i>&nbsp;&nbsp; Unpublished Houses</a>
                     </li>
-                    <li class="{{ isActiveURL('/backend/user/admin/houses/publish') }}">
-                        <a href="/backend/user/admin/houses/publish"><i class="fa fa-circle-o"></i>&nbsp;&nbsp; Published Houses</a>
+                    <li class="{{ isActiveURL('/backend/user/admin/publish') }}">
+                        <a href="/backend/user/admin/publish"><i class="fa fa-circle-o"></i>&nbsp;&nbsp; Published Houses</a>
                     </li>
                 </ul>
             </li>
