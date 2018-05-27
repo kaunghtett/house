@@ -3,7 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileRequest;
+use App\Http\Requests\ProfileUpdateRequest;
 use App\Profile;
+use App\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -64,7 +70,10 @@ class ProfileController extends Controller
      */
     public function show($id)
     {
-        //
+        $profile = Profile::where('user_id', $id)->first();
+        $user = User::findOrFail($id);
+        $role = $user->roles()->first();
+        return view('profiles.show', compact('user', 'profile', 'role'));
     }
 
     /**
@@ -73,9 +82,10 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Profile $profile)
     {
-        //
+        $user = $profile->user;
+        return view('profiles.edit', compact('profile', 'user'));
     }
 
     /**
@@ -85,9 +95,40 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ProfileUpdateRequest $request, Profile $profile)
     {
-        //
+        if (Hash::check($request->password, $profile->user->password)) {
+            if ($request->has('image')) {
+                $profile_image = $request->image;
+                $old_image_name = $profile->image_name . '.' .
+                                    $profile->extension;
+                $path = storage_path('app/public/photos/profiles/');
+                if (File::exists($path . $old_image_name)) {
+                    Storage::delete('/public/photos/profiles/' . $old_image_name);
+                }
+                $image_name = str_slug(auth()->user()->name, '-');
+                $extension = $profile_image->getClientOriginalExtension();
+                $profile_image->storeAs('public/photos/profiles', $image_name . '.' . $extension);
+                $profile->update([
+                    'address' => $request->address,
+                    'phone_no' => $request->phone_no,
+                    'image_name' => $image_name,
+                    'extension' => $extension,
+                ]);
+            } else {
+                $profile->update([
+                    'address' => $request->address,
+                    'phone_no' => $request->phone_no,
+                ]);
+            }
+
+            alert()->success('Updated Successfully');
+
+            return redirect()->route('profiles.show', $profile->user->id);
+        }
+
+        alert()->warning('Password is incorrect!');
+        return back();
     }
 
     /**

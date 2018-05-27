@@ -13,10 +13,16 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        $faker = \Faker\Factory::create();
         $guestUser = User::create([
             'name' => 'Aung Aung',
             'email' => 'aung@gmail.com',
             'password' => bcrypt('123456'),
+        ]);
+
+        $guestUser->profile()->create([
+            'address' => $faker->address,
+            'phone_no' => $faker->phoneNumber,
         ]);
 
         $guest = Role::where('slug', 'guest')->get();
@@ -27,6 +33,11 @@ class UserSeeder extends Seeder
             'name' => 'Zaw Zaw',
             'email' => 'zaw@gmail.com',
             'password' => bcrypt('123456'),
+        ]);
+
+        $hostUser->profile()->create([
+            'address' => $faker->address,
+            'phone_no' => $faker->phoneNumber,
         ]);
 
         $host = Role::where('slug', 'host')->get();

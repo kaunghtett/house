@@ -20,7 +20,7 @@
                     <h2 class="has-line">Login</h2>
                     <h4 class="text-thin">Already our user?</h4>
                     <br>
-                    <form action="#" method="post" class="login-form">
+                    <form action="{{ route('login') }}" method="post" class="login-form">
                         {{ csrf_field() }}
 
                         <div class="form-group">

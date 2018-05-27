@@ -10,6 +10,8 @@ class Location extends Model
         'house_id', 'address', 'street', 'township', 'region_id'
     ];
 
+    protected $with = ['region'];
+
     public function region()
     {
         return $this->belongsTo(Region::class);

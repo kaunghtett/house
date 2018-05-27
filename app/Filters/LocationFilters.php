@@ -15,7 +15,7 @@ class LocationFilters extends Filters
         // dd($keywords);
         return $this->builder->where(function ($query) use ($keywords) {
             foreach ($keywords as $keyword) {
-                $query->where('address', 'LIKE', "%{$keyword}%");
+                $query->orWhere('address', 'LIKE', "%{$keyword}%");
             }
         });
     }

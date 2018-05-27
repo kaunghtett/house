@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\File;
 
 class Gallery extends Model
 {
@@ -13,5 +14,16 @@ class Gallery extends Model
     public function house()
     {
         return $this->belongsTo(House::class);
+    }
+
+    public function showImages($path)
+    {
+        $image_name = $this->image_name . '.' . $this->extension;
+
+        if (File::exists(storage_path('app/public/photos/') . $image_name)) {
+            return $path . '/' . $image_name;
+        }
+
+        return  asset("img/$image_name");
     }
 }

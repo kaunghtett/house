@@ -2,10 +2,15 @@
 
 namespace App;
 
+use App\Http\AuthTraits\OwnRecord;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\File;
 
 class House extends Model
 {
+    use OwnRecord;
+
     protected $fillable = [
         'user_id', 'title', 'house_type_id', 'period', 'price', 'area',
         'rooms', 'description', 'features', 'featured_house', 'is_approved'
@@ -13,6 +18,8 @@ class House extends Model
         // automatic eager loading
     protected $with = ['houseDetail', 'location', 'user', 'houseType',
                         'galleries'];
+
+
 
     public function user()
     {
@@ -92,11 +99,18 @@ class House extends Model
 
     public function showFeaturedImage($path)
     {
-        return  $path . '/' . $this->featuredImage()->image_name . '.' . $this->featuredImage()->extension;
+        $image_name = $this->featuredImage()->image_name . '.' .
+                        $this->featuredImage()->extension;
+
+        if (File::exists(storage_path('app/public/photos/') . $image_name)) {
+            return  $path . '/' . $image_name;
+        }
+
+        return  asset("img/$image_name");
     }
 
-    public function showImages($image, $thumbnails)
+    public function isFeatured()
     {
-        return $thumbnails . '/' . $image->image_name . '.' . $image->extension;
+        return $this->featured_house == 1;
     }
 }

@@ -3,9 +3,7 @@
     @foreach ($featured_houses as $featured_house)
         <div class="property-thumb d-flex align-items-center">
             <div class="image">
-                @foreach ($featured_house->galleries as $image)
-                    <img src="{{ $path . '/thumbnails/' . $image->image_name . '.' . $image->extension }}" alt="{{ $image->image_name }}" class="img-fluid">
-                @endforeach
+                <img src="{{ $featured_house->showFeaturedImage($thumbnails) }}" alt="{{$featured_house->featuredImage()->image_name}}" class="img-fluid">
             </div>
             <div class="text">
                 <a href="/houses/{{ $featured_house->id }}" class="no-anchor-style">{{ $featured_house->title }}</a>

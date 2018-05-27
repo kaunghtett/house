@@ -16,7 +16,7 @@
                         <div class="property">
                             <div class="image">
                                 @foreach ($apartment->galleries as $image)
-                                    <img src="{{ $path . '/' . $image->image_name . '.' . $image->extension }}" alt="{{ $image->image_name }}" class="img-fluid">
+                                    <img src="{{ $apartment->showFeaturedImage($path) }}" alt="{{ $apartment->featuredImage()->image_name }}" class="img-fluid">
                                 @endforeach
                                 <div class="overlay d-flex align-items-center justify-content-center">
                                     <a href="houses/{{ $apartment->id }}" class="btn btn-gradient btn-sm">View Details</a>

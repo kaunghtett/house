@@ -14,6 +14,9 @@
             <header>
                 <h1 class="h2 d-flex align-items-center">
                     <span class="text-uppercase">{{ $house->title }}</span>
+                    @if ($house->user_id == auth()->id())
+                        <a href="{{route('houses.edit', $house->id)}}" class="pr-3"><i class="fa fa-edit"></i></a>
+                    @endif
                     @if ($house->featured_house == 1)
                         <div class="badge badge-primary">Featured</div>
                     @endif
@@ -59,9 +62,14 @@
                             <li class="list-inline-item"><a href="#"><i class="icon-smart-phone-2"></i>(+95) {{ $house->user->profile->phone_no }}</a></li>
                             <li class="list-inline-item"><a href="#"><i class="fa fa-home"></i>{{ $house->user->profile->address }}</a></li>
                         </ul>
+                    @if ($house->user_id != auth()->id())
                         <div class="agent-contact">
-                            <form action="/houses/{{ $house->id }}/message" method="post" class="agent-contact-form">
+                            <form method="POST" action="{{route('guest-messages.store', $house->id)}}" class="agent-contact-form">
                                 {{ csrf_field() }}
+
+                                <div class="form-group">
+                                    <input type="hidden" name="host_id" value="{{$house->user_id}}" class="form-control">
+                                </div>
 
                                 <div class="form-group">
                                     <input type="text" name="guest_name" placeholder="Your Name" class="form-control">
@@ -76,10 +84,11 @@
                                     <textarea name="guest_message" placeholder="Message" class="form-control radius-small"></textarea>
                                 </div>
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-gradient full-width">Send Message</button>
+                                    <button class="btn btn-gradient full-width">Send Message</button>
                                 </div>
                             </form>
                         </div>
+                    @endif
                     </div>
                 </div>
             </div>
@@ -174,7 +183,7 @@
                     </ul>
                 @endif
                 <hr class="line mt-5 mb-5">
-                <form action="/houses/{{ $house->id }}/reviews" method="post">
+                <form action="/houses/{{ $house->id }}/reviews" method="POST">
                     {{ csrf_field() }}
 
                     <div class="form-group row">

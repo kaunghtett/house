@@ -309,12 +309,9 @@ class HouseController extends Controller
             foreach ($old_feature_image as $image) {
                 $image_name = $image->image_name . '.' . $image->extension;
                 $path = storage_path('app/public/photos/');
-                $thumbnail_path = storage_path('app/public/photos/thumbnails/');
                 if (File::exists($path . $image_name)) {
 
                     Storage::delete('/public/photos/' . $image_name);
-
-                } elseif (File::exists($thumbnail_path . $image_name)) {
 
                     Storage::delete('/public/photos/thumbnails/' . $image_name);
                 }

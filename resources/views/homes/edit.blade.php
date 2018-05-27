@@ -37,13 +37,6 @@
                             </div>
                         @endif
                     </div>
-                    {{-- <div class="form-group col-lg-3">
-                        <label>Property Status *</label>
-                        <select id="searchActions" name="property_status" class="selectpicker">
-                            <option value="sale">Sale</option>
-                            <option value="rent">Ren</option>
-                        </select>
-                    </div> --}}
                     <div class="form-group col-lg-6">
                         <label>Property Type *</label>
                         <select id="types" name="house_type_id" class="selectpicker">
@@ -52,9 +45,6 @@
                                     {{ $type->type_name }}
                                 </option>
                             @endforeach
-                            {{-- <option value="houses">Houses</option>
-                            <option value="commercial">Commercial</option>
-                            <option value="lots">Lots</option> --}}
                         </select>
 
                         {{-- error msg --}}

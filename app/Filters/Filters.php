@@ -25,7 +25,7 @@ abstract class Filters
     {
         // dd($builder);
         $this->builder = $builder;
-        dd($this->getFilter());
+        // dd($this->getFilter());
         foreach ($this->getFilter() as $filter => $value) {
             if (method_exists($this, $filter)) {
                 // dd($this->$filter($value));

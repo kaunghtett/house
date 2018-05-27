@@ -14,7 +14,7 @@
             <div class="col-lg-4">
                 <div class="property mb-5 mb-lg-0">
                     <div class="image">
-                        <img src="{{ $path . '/' . $recent_house->featuredImage()->image_name . '.' . $recent_house->featuredImage()->extension }}" alt="{{ $recent_house->featuredImage()->image_name }}" class="img-fluid">
+                        <img src="{{ $recent_house->showFeaturedImage($path) }}" alt="{{ $recent_house->featuredImage()->image_name }}" class="img-fluid">
                         <div class="overlay d-flex align-items-center justify-content-center"><a href="houses/{{ $recent_house->id }}" class="btn btn-gradient btn-sm">View Details</a></div>
                     </div>
                     <div class="info">

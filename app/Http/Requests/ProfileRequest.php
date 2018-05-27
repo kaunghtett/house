@@ -26,7 +26,7 @@ class ProfileRequest extends FormRequest
         return [
             'address' => 'required',
             'phone_no' => 'required',
-            'image' => 'nullable|image|mimes:jpeg,jpg,png|max:2000',
+            'image' => 'required|image|mimes:jpeg,jpg,png|max:2000',
         ];
     }
 }

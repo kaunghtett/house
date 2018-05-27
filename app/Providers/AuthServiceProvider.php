@@ -27,6 +27,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
         $this->registerHousePolicies();
         $this->registerUserPolicies();
+        $this->registerRolePolicies();
         //
     }
 
@@ -35,11 +36,14 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('show-house', function ($user) {
             return $user->hasAccess(['show-house']);
         });
+        Gate::define('show-featuredHouse', function ($user) {
+            return $user->hasAccess(['show-featuredHouse']);
+        });
         Gate::define('create-house', function ($user) {
             return $user->hasAccess(['create-house']);
         });
-        Gate::define('update-house', function ($user, House $house) {
-            return $user->hasAccess(['update-house']) or $user->id == $house->user_id;
+        Gate::define('update-house', function ($user) {
+            return $user->hasAccess(['update-house']);
         });
         Gate::define('delete-house', function ($user) {
             return $user->hasAccess(['delete-house']);
@@ -50,6 +54,12 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('block-house', function ($user) {
             return $user->hasAccess(['block-house']);
         });
+        Gate::define('feature-house', function ($user) {
+            return $user->hasAccess(['feature-house']);
+        });
+        Gate::define('unfeature-house', function ($user) {
+            return $user->hasAccess(['unfeature-house']);
+        });
         Gate::define('add-favourite', function ($user, House $house) {
             return $user->id != $house->user_id;
         });
@@ -57,13 +67,40 @@ class AuthServiceProvider extends ServiceProvider
 
     public function registerUserPolicies()
     {
+        Gate::define('show-user', function ($user) {
+            return $user->hasAccess(['show-user']);
+        });
+
+        Gate::define('create-user', function ($user) {
+            return $user->hasAccess(['create-user']);
+        });
+
+        Gate::define('update-user', function ($user) {
+            return $user->hasAccess(['update-user']);
+        });
+
         Gate::define('delete-user', function ($user) {
             return $user->hasAccess(['delete-user']);
         });
 
-        Gate::define('create-role', function($user) {
+    }
+
+    public function registerRolePolicies()
+    {
+        Gate::define('show-role', function ($user) {
+            return $user->hasAccess(['show-role']);
+        });
+
+        Gate::define('create-role', function ($user) {
             return $user->hasAccess(['create-role']);
         });
 
+        Gate::define('update-role', function ($user) {
+            return $user->hasAccess(['update-role']);
+        });
+
+        Gate::define('delete-role', function ($user) {
+            return $user->hasAccess(['delete-role']);
+        });
     }
 }

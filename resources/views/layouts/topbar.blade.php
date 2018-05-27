@@ -16,22 +16,21 @@
                         <li class="list-inline-item">
                             <a href="/favourite"><i class="fa fa-heart-o"></i>Favourites</a>
                         </li>
-                        <li class="list-inline-item"><a href="/backend/user/{{auth()->user()->type()}}"><i class="fa fa-user"></i>{{ Auth::user()->name }}
-                        {{-- <li class="list-inline-item"> --}}
-                            {{-- <a href="backend/user/{{auth()->user()->type()}}"> --}}
-                                {{-- <i class="fa fa-envelope"> --}}
-                                    @if (auth()->user()->type() == 'admin' && $numOfContactMessage > 0)
-                                    &nbsp;&nbsp;&nbsp;
-                                    <span class="noti">
-                                        {{$numOfContactMessage}}
-                                    </span>
-                                    @elseif (auth()->user()->type() == 'guest' && $numOfGuestMessage > 0)
+                        <li class="list-inline-item"><a href="/backend/user/{{(auth()->user()->type() == 'admin' || auth()->user()->type() == 'superadmin') ? 'admin' : 'host'}}">
+                            <i class="fa fa-user"></i>{{ Auth::user()->name }}
+                                @if (auth()->user()->type() == 'admin' or 'superadmin')
+                                    @if ($numOfContactMessage > 0 || $numOfGuestMessage > 0)
+                                        &nbsp;&nbsp;&nbsp;
+                                        <span class="noti">
+                                            {{$numOfContactMessage + $numOfGuestMessage}}
+                                        </span>
+                                    @endif
+                                @elseif (auth()->user()->type() == 'host' && $numOfGuestMessage > 0)
                                     &nbsp;&nbsp;&nbsp;
                                     <span class="noti">
                                         {{$numOfGuestMessage}}
                                     </span>
-                                    @endif
-                                {{-- </i> --}}
+                                @endif
                             </a>
                         </li>
                         <li class="list-inline-item"><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="pr-0 border-right-0""><i class="fa fa-sign-out"></i>Logout</a></li>

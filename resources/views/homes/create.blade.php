@@ -143,7 +143,7 @@
                             </div>
                         @endif
                         {{-- Preview --}}
-                        <div id="image_preview" class="image-preview">
+                        <div id="image_preview" class="image-preview d-none">
                             <p class="template-text">No File Choosen</p>
                         </div>
                     </div>
@@ -159,7 +159,7 @@
                             </div>
                         @endif
                         {{-- Preview --}}
-                        <div id="images_preview" class="image-preview">
+                        <div id="images_preview" class="image-preview d-none">
                             <p class="template-text">No File Choosen</p>
                         </div>
                     </div>
@@ -384,6 +384,7 @@
     <script src="{{ asset('js/submit-property-map.js')}}"></script> --}}
     <script>
         function previewFile(event) {
+            $('#image_preview').removeClass('d-none');
             if($('#feature_image').length) {
                 $('#feature_image').remove();
             }
@@ -392,6 +393,7 @@
         }
 
         function previewImages(event) {
+            $('#images_preview').removeClass('d-none');
             var total_file=document.getElementById("images").files.length;
             if($('.image').length) {
                 $('.image').remove();

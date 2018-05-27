@@ -26,7 +26,6 @@ class ContactController extends Controller
         $user = User::where('email', request('host_email'))->first();
         // dd($user->contactMessages());
         $user->contactMessages()->create([
-            'user_id' => $user->id,
             'host_name' => request('host_name'),
             'host_email' => request('host_email'),
             'host_phone' => request('host_phone'),

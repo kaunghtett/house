@@ -22,7 +22,7 @@
             <div class="col-lg-6">
                 <div class="property-listing-item">
                     <div class="image">
-                        <img src="{{$path . '/' . $result->house->featuredImage()->image_name . '.' . $result->house->featuredImage()->extension}}" alt="{{ $result->house->featuredImage()->image_name }}" class="img-fluid">
+                        <img src="{{$result->house->showFeaturedImage($path)}}" alt="{{ $result->house->featuredImage()->image_name }}" class="img-fluid">
                         <div class="price text-capitalize">
                             <small>MMK {{ $result->house->price }}/{{$result->house->period}}</small>
                         </div>

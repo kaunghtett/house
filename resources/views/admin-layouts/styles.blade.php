@@ -19,11 +19,13 @@
 
 {{-- Datatables --}}
 <link rel="stylesheet" href="http://cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
+
+
 {{-- sweetalert --}}
 <link rel="stylesheet" href="{{ asset('css/sweetalert2.min.css') }}">
 
-{{-- select2 --}}
-<link rel="stylesheet" href="{{ asset('/bower_components/select2/dist/css/select2.min.css') }}">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
 
 <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 

@@ -16,8 +16,6 @@
                     <form action="/profiles" method="post" class="login-form" enctype="multipart/form-data">
                         {{ csrf_field() }}
 
-
-
                         <div class="form-group">
                             <label for="address">Address *</label>
                             <input type="text" id="address" name="address" placeholder="Type your address" class="form-control{{ $errors->has('address') ? ' is-invalid' : '' }}" value="{{ old('address') }}" required>

@@ -18,12 +18,16 @@ class AppServiceProvider extends ServiceProvider
             $view->with('user', auth()->user());
         });
 
+        view()->composer('admin-layouts.main_header', function ($view) {
+            $view->with('message', \App\GuestMessage::where('user_id', auth()->id())->first());
+        });
+
         view()->composer('layouts.topbar', function ($view) {
             $view->with('numOfContactMessage', \App\ContactMessage::all()->count());
         });
 
-        view()->composer('layouts.topbar', function ($view) {
-            $view->with('numOfGuestMessage', \App\GuestMessage::all()->count());
+        view()->composer(['layouts.topbar', 'admin-layouts.main_header'], function ($view) {
+            $view->with('numOfGuestMessage', \App\GuestMessage::where('user_id', auth()->id())->count());
         });
 
         view()->composer('*', function ($view) {

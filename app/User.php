@@ -2,8 +2,9 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\File;
 
 class User extends Authenticatable
 {
@@ -26,6 +27,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    protected $with = ['profile', 'roles'];
 
     public function house()
     {
@@ -94,6 +97,13 @@ class User extends Authenticatable
 
     public function showImage($path)
     {
-        return $path . '/profiles/' . $this->profile->image_name . '.' . $this->profile->extension;
+        $image_name = $this->profile->image_name . '.' .
+                        $this->profile->extension;
+
+        if (File::exists(storage_path('app/public/photos/profiles/') . $image_name)) {
+            return $path . '/profiles/' . $image_name;
+        }
+
+        return  public_path("img/$image_name");
     }
 }

@@ -8,11 +8,6 @@ use App\Http\Requests\ReviewRequest;
 
 class ReviewController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function store(ReviewRequest $request, House $house)
     {
         Review::create([

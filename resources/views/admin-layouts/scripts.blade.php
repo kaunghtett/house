@@ -12,8 +12,10 @@
 {{-- iCheck.js --}}
 <script src="{{ asset('/bower_components/iCheck/icheck.min.js') }}"></script>
 
+{{-- datatables --}}
 <script src="http://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+
 
 <script src="{{ asset('js/sweetalert2.all.min.js') }}"></script>
 
-<script src="{{ asset('/bower_components/select2/dist/js/select2.full.min.js') }}"></script>
+
