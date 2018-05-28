@@ -26,7 +26,9 @@
                         <th>Price</th>
                         <th>Area</th>
                         <th>Rooms</th>
-                        <th>Host By</th>
+                        @if (isAdminOrSuperadmin())
+                            <th>Host By</th>
+                        @endif
                         <th>Address</th>
                         <th>Region</th>
                         <th>Created</th>
@@ -54,7 +56,9 @@ $(function() {
             { data: 'price', name: 'price' },
             { data: 'area', name: 'area' },
             { data: 'rooms', name: 'rooms' },
-            { data: 'user.name', name: 'user.name' },
+            @if (isAdminOrSuperadmin())
+                { data: 'user.name', name: 'user.name' },
+            @endif
             { data: 'location.address', name: 'location.address' },
             { data: 'location.region.name', name: 'location.region.name' },
             { data: 'created_at', name: 'created_at' },

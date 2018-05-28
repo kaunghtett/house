@@ -47463,7 +47463,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             galleries: [],
             path: '',
-            num_of_data: 0
+            num_of_data: 0,
+            count: '',
+            length: ''
         };
     },
     mounted: function mounted() {
@@ -47479,6 +47481,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios.get('/gallery/data/' + this.num_of_data).then(function (response) {
                 _this.galleries = response.data.galleries;
                 _this.path = response.data.path;
+                _this.count = response.data.count;
             });
         },
         loadMore: function loadMore() {
@@ -47489,6 +47492,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this2.galleries = response.data.galleries;
                 _this2.path = response.data.path;
             });
+        }
+    },
+
+    computed: {
+        seen: function seen() {
+            return this.num_of_data < this.count; // 3 <= 5
         }
     }
 });
@@ -47511,7 +47520,7 @@ var render = function() {
             _c("div", { staticClass: "property" }, [
               _c("div", { staticClass: "image" }, [
                 _c("img", {
-                  staticClass: "img-fluid",
+                  staticClass: "img-fluid gallery",
                   attrs: {
                     src:
                       _vm.path +
@@ -47573,11 +47582,13 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("section", { staticClass: "text-center bg-black-2 pt-3" }, [
-      _c(
-        "button",
-        { staticClass: "btn btn-gradient", on: { click: _vm.loadMore } },
-        [_vm._v("Load More")]
-      )
+      _vm.seen
+        ? _c(
+            "button",
+            { staticClass: "btn btn-gradient", on: { click: _vm.loadMore } },
+            [_vm._v("Load More")]
+          )
+        : _vm._e()
     ])
   ])
 }

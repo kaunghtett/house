@@ -42,4 +42,27 @@
         </div>
     </div>
     @endif
+    @if (!empty($houses))
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-home"></i>&nbsp;&nbsp;{{$user->name}}' houses
+        </div>
+        <div class="panel-body panel-padding">
+            <div class="row">
+                @foreach ($houses as $house)
+                <div class="col-md-3">
+                    <div class="thumbnail">
+                        <img src="{{$house->showFeaturedImage($path)}}" alt="...">
+                        <div class="caption">
+                            <h4><strong>{{$house->title}}</strong></h4>
+                            <p>{{str_limit($house->description, 80)}}</p>
+                            <p><a href="{{checkRoute(route('admin-houses.show', $house->id), route('host-houses.show', $house->id))}}" class="btn btn-primary" role="button">Detail..</a></p>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+    @endif
 @endsection

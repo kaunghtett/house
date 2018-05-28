@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-lg-4 mb-5" v-for="gallery in galleries">
                     <div class="property">
-                        <div class="image"><img :src="path + '/' + gallery.image_name + '.' + gallery.extension" alt="Condo with pool view" class="img-fluid">
+                        <div class="image"><img :src="path + '/' + gallery.image_name + '.' + gallery.extension" alt="Condo with pool view" class="img-fluid gallery">
                             <div class="overlay d-flex align-items-center justify-content-center">
                                 <a :href="'/houses/' + gallery.house_id" class="btn btn-gradient btn-sm">View Details</a>
                             </div>
@@ -21,7 +21,7 @@
             </div>
         </div>
         <section class="text-center bg-black-2 pt-3">
-            <button class="btn btn-gradient" @click="loadMore">Load More</button>
+            <button class="btn btn-gradient" v-if="seen" @click="loadMore">Load More</button>
         </section>
     </section>
 </template>
@@ -33,6 +33,8 @@
                 galleries: [],
                 path: '',
                 num_of_data: 0,
+                count: '',
+                length: '',
             }
         },
 
@@ -47,6 +49,7 @@
                     .then(response => {
                         this.galleries = response.data.galleries;
                         this.path = response.data.path;
+                        this.count = response.data.count;
                     });
             },
 
@@ -57,6 +60,12 @@
                         this.galleries = response.data.galleries;
                         this.path = response.data.path;
                     });
+            },
+        },
+
+        computed: {
+            seen() {
+                return this.num_of_data < this.count; // 3 <= 5
             }
         }
     }

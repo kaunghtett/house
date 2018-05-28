@@ -44,21 +44,61 @@
                             </li>
                         @endcan
                         <li class="{{ areActiveRoutes(['houses.index', 'host-houses.index']) }}">
-                            <a href="{{ checkRoute(route('houses.index'), route('host-houses.index')) }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp; All Houses</a>
+                            <a href="{{ checkRoute(route('houses.index'), route('host-houses.index')) }}">
+                                <i class="fa fa-circle-o"></i>
+                                &nbsp;&nbsp; All Houses
+                                @if (isAdminOrSuperadmin())
+                                <span class="pull-right-container">
+                                    <span class="label label-primary pull-right">
+                                        {{$numOfHouses}}
+                                    </span>
+                                </span>
+                                @endif
+                            </a>
                         </li>
                         @can ('show-featuredHouse')
                             <li class="{{ areActiveRoutes(['houses.featureHouse', 'host-houses.featureHouse']) }}">
-                                <a href="{{ checkRoute(route('houses.featureHouse'), route('host-houses.featureHouse')) }}"><i class="fa fa-star"></i>&nbsp;&nbsp; Featured Houses</a>
+                                <a href="{{ checkRoute(route('houses.featureHouse'), route('host-houses.featureHouse')) }}">
+                                    <i class="fa fa-star"></i>
+                                    &nbsp;&nbsp; Featured Houses
+                                    @if (isAdminOrSuperadmin())
+                                    <span class="pull-right-container">
+                                        <span class="label label-warning pull-right">
+                                            {{$numOfFeaturedHouses}}
+                                        </span>
+                                    </span>
+                                    @endif
+                                </a>
                             </li>
                         @endcan
                         @can ('block-house')
                         <li class="{{ areActiveRoutes(['houses.unpublish', 'host-houses.unpublish']) }}">
-                            <a href="{{ checkRoute(route('houses.unpublish'), route('host-houses.unpublish')) }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp; Unpublished Houses</a>
+                            <a href="{{ checkRoute(route('houses.unpublish'), route('host-houses.unpublish')) }}">
+                                <i class="fa fa-circle-o"></i>
+                                &nbsp;&nbsp; Unpublished Houses
+                                @if (isAdminOrSuperadmin())
+                                    <span class="pull-right-container">
+                                        <span class="label label-danger pull-right">
+                                            {{$numOfUnpublishHouses}}
+                                        </span>
+                                    </span>
+                                @endif
+                            </a>
                         </li>
                         @endcan
                         @can ('approve-house')
                         <li class="{{ areActiveRoutes(['houses.publish', 'host-houses.publish']) }}"">
-                            <a href="{{ checkRoute(route('houses.publish'), route('host-houses.publish')) }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp; Published Houses</a>
+                            <a href="{{ checkRoute(route('houses.publish'), route('host-houses.publish')) }}">
+                                <i class="fa fa-circle-o"></i>
+                                &nbsp;&nbsp; Published Houses
+                                @if (isAdminOrSuperadmin())
+                                    <span class="pull-right-container">
+                                        <span class="label label-success pull-right">
+                                            {{$numOfPublishHouses}}
+                                        </span>
+                                    </span>
+                                @endif
+                            </a>
                         </li>
                         @endcan
                     </ul>
@@ -80,7 +120,15 @@
                         <a href="/regions/create"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp; <span>Add New Region</span></a>
                     </li>
                     <li class="{{ isActiveURL('/regions') }}">
-                        <a href="/regions"><i class="fa fa-circle-o"></i>&nbsp;&nbsp; All Regions</a>
+                        <a href="/regions">
+                            <i class="fa fa-circle-o"></i>
+                            &nbsp;&nbsp; All Regions
+                            <span class="pull-right-container">
+                                <span class="label label-primary pull-right">
+                                    {{$numOfRegion}}
+                                </span>
+                            </span>
+                        </a>
                     </li>
                     @foreach ($regions as $region)
                         <li class='{{ isActiveURL("/regions/$region->id") }}'>
@@ -105,7 +153,15 @@
                         <a href="/types/create"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp; <span>Add New Type</span></a>
                     </li>
                     <li class="{{ isActiveURL('/types') }}">
-                        <a href="/types"><i class="fa fa-circle-o"></i>&nbsp;&nbsp; All House Types</a>
+                        <a href="/types">
+                            <i class="fa fa-circle-o"></i>
+                            &nbsp;&nbsp; All House Types
+                            <span class="pull-right-container">
+                                <span class="label label-primary pull-right">
+                                    {{$numOfType}}
+                                </span>
+                            </span>
+                        </a>
                     </li>
                     @foreach ($types as $type)
                         <li class='{{ isActiveURL("/types/$type->id") }}'>
@@ -120,6 +176,11 @@
                 <a href="/features">
                     <i class="glyphicon glyphicon-list-alt"></i>
                     <span>Features</span>
+                    <span class="pull-right-container">
+                        <span class="label label-primary pull-right">
+                            {{$numOfFeature}}
+                        </span>
+                    </span>
                 </a>
             </li>
 
@@ -141,19 +202,59 @@
                             </li>
                         @endcan
                         <li class="{{ isActiveURL('/backend/user/admin/users') }}">
-                            <a href="/backend/user/admin/users"><i class="fa fa-users"></i>&nbsp;&nbsp; All User</a>
+                            <a href="/backend/user/admin/users">
+                                <i class="fa fa-users"></i>
+                                &nbsp;&nbsp; All User
+                                <span class="pull-right-container">
+                                    <span class="label label-primary pull-right">
+                                        {{$numOfUsers}}
+                                    </span>
+                                </span>
+                            </a>
                         </li>
                         <li class="{{ isActiveURL('/backend/user/admin/users/superadmin') }}">
-                            <a href="/backend/user/admin/users/superadmin"><i class="fa fa-circle-o"></i>&nbsp;&nbsp; Superadmins</a>
+                            <a href="/backend/user/admin/users/superadmin">
+                                <i class="fa fa-circle-o"></i>
+                                &nbsp;&nbsp;Superadmins
+                                <span class="pull-right-container">
+                                    <span class="label label-primary pull-right">
+                                        {{$numOfSuperAdmin}}
+                                    </span>
+                                </span>
+                            </a>
                         </li>
                         <li class="{{ isActiveURL('/backend/user/admin/users/admin') }}">
-                            <a href="/backend/user/admin/users/admin"><i class="fa fa-circle-o"></i>&nbsp;&nbsp; Admins</a>
+                            <a href="/backend/user/admin/users/admin">
+                                <i class="fa fa-circle-o"></i>
+                                &nbsp;&nbsp; Admins
+                                <span class="pull-right-container">
+                                    <span class="label label-primary pull-right">
+                                        {{$numOfAdmin}}
+                                    </span>
+                                </span>
+                            </a>
                         </li>
                         <li class="{{ isActiveURL('/backend/user/admin/users/host') }}">
-                            <a href="/backend/user/admin/users/host"><i class="fa fa-circle-o"></i>&nbsp;&nbsp; Hosts</a>
+                            <a href="/backend/user/admin/users/host">
+                                <i class="fa fa-circle-o"></i>
+                                &nbsp;&nbsp; Hosts
+                                <span class="pull-right-container">
+                                    <span class="label label-primary pull-right">
+                                        {{$numOfHost}}
+                                    </span>
+                                </span>
+                            </a>
                         </li>
                         <li class="{{ isActiveURL('/backend/user/admin/users/vistor') }}">
-                            <a href="/backend/user/admin/users/vistor"><i class="fa fa-circle-o"></i>&nbsp;&nbsp; Vistors</a>
+                            <a href="/backend/user/admin/users/vistor">
+                                <i class="fa fa-circle-o"></i>
+                                &nbsp;&nbsp; Vistors
+                                <span class="pull-right-container">
+                                    <span class="label label-primary pull-right">
+                                        {{$numOfVistor}}
+                                    </span>
+                                </span>
+                            </a>
                         </li>
                     </ul>
                 </li>
@@ -165,6 +266,13 @@
                     <a href="/backend/user/admin/roles">
                         <i class="fa fa-magic"></i>
                         <span>Roles</span>
+                        @if (isAdminOrSuperadmin())
+                        <span class="pull-right-container">
+                            <span class="label label-warning pull-right">
+                                {{$numOfRole}}
+                            </span>
+                        </span>
+                        @endif
                     </a>
                 </li>
             @endcan

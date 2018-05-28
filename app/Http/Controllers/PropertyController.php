@@ -11,7 +11,7 @@ class PropertyController extends Controller
     {
         $sort = request('sort');
 
-        $houses = $this->orderBy($sort);
+        $houses =  House::where('is_approved', 1)->orderBy('price', $sort)->paginate(6);
 
         return view('homes.property.property-grid', compact('houses'));
     }
@@ -20,14 +20,8 @@ class PropertyController extends Controller
     {
         $sort = request('sort');
 
-        $houses = $this->orderBy($sort);
+        $houses = House::where('is_approved', 1)->orderBy('price', $sort)->paginate(5);
 
         return view('homes.property.property-list', compact('houses'));
-    }
-
-
-    public function orderBy($sort)
-    {
-        return House::where('is_approved', 1)->orderBy('price', $sort)->paginate(6);
     }
 }

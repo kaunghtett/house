@@ -14,7 +14,9 @@ class GalleryController extends Controller
 
     public function loadData($number)
     {
-        $galleries = Gallery::join('houses', 'galleries.house_id', '=', 'houses.id')->where('is_featured', 1)->orderBy('galleries.created_at', 'desc')->limit($number)->get();
+        $galleries = Gallery::join('houses', 'galleries.house_id', '=', 'houses.id')->where('is_featured', 1)->where('is_approved', 1)->orderBy('galleries.created_at', 'desc')->limit($number)->get();
+
+        $count = Gallery::join('houses', 'galleries.house_id', '=', 'houses.id')->where('is_featured', 1)->where('is_approved', 1)->orderBy('galleries.created_at', 'desc')->limit($number)->count();
 
         // dd($galleries);
         $path = asset('/storage/photos/');
@@ -22,6 +24,7 @@ class GalleryController extends Controller
         return response()->json([
             'galleries' => $galleries,
             'path' => $path,
+            'count' => $count,
         ], 200);
     }
 

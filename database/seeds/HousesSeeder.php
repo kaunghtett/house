@@ -15,8 +15,8 @@ class HousesSeeder extends Seeder
         $faker = \Faker\Factory::create();
         $features = ['air conditioning', 'alarm', 'central heating', 'gym', 'internet', 'laundry room', 'swimming pool'];
         $str_features = implode(', ', $faker->randomElements($features, $count = 3));
-        $streets = [' Thein Gyi St.,', ' Yadana St.,', ' Padauk Pin St.,'];
-        $townships = [' Kyimyindine', ' Ahlone', ' Kamayut', ' Botadaung'];
+        $streets = ['Thein Gyi St.,', 'Yadana St.,', 'Padauk Pin St.,'];
+        $townships = ['Kyimyindine', 'Ahlone', 'Kamayut', 'Botadaung'];
         $period = ['month', 'year'];
         $rooms = ['1', '2', '3', '4', 'more-than-5'];
 
@@ -48,27 +48,28 @@ class HousesSeeder extends Seeder
 
              // save to database (galleries)
             $house->galleries()->create([
-                'image_name' => "default-house",
+                'image_name' => $house_id . "-feature-house",
                 'extension' => "jpeg",
                 'is_featured' => true,
             ]);
 
             for ($ii=1; $ii < 4; $ii++) {
                 $house->galleries()->create([
-                    'image_name' => $ii . "default-house",
+                    'image_name' => $house_id . "house-" . $ii,
                     'extension' => "jpeg",
                 ]);
             }
-
-            $address = "No.1, " . array_random($streets) . array_random($townships);
+            $street = array_random($streets);
+            $township = array_random($townships);
+            $address = "No.1, " . $street . $township;
             //locations
             $house->location()->create([
                 'address' => $address,
-                'street' => array_random($streets),
-                'township' => array_random($townships),
+                'street' => $street,
+                'township' => $township,
                 'region_id' => $faker->numberBetween($min = 1, $max = 4),
             ]);
-            $address = "No.1," . array_random($streets) . array_random($townships) . ", " . $house->location->region->name;
+            $address = "No.1," . $street . $township . ", " . $house->location->region->name;
 
             $house->location()->update([
                 'address' => $address,

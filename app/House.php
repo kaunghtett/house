@@ -106,7 +106,7 @@ class House extends Model
             return  $path . '/' . $image_name;
         }
 
-        return  asset("img/$image_name");
+        return  asset("img/default-house.jpeg");
     }
 
     public function isFeatured()

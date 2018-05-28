@@ -15,7 +15,7 @@
         <div class="row d-flex align-items-center">
             <div class="col-lg-6 pr-lg-0">
                 <div class="image">
-                    <img src="{{ $featured_house->showFeaturedImage($path) }}" alt="{{$featured_house->featuredImage()->image_name}}" class="img-fluid">
+                    <img src="{{ $featured_house->showFeaturedImage($path) }}" alt="{{$featured_house->featuredImage()->image_name}}" class="img-fluid" style="min-width: 100%; min-height: 100%">
                 </div>
             </div>
             <div class="col-lg-6 pl-lg-0">

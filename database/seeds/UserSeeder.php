@@ -14,20 +14,6 @@ class UserSeeder extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create();
-        $guestUser = User::create([
-            'name' => 'Aung Aung',
-            'email' => 'aung@gmail.com',
-            'password' => bcrypt('123456'),
-        ]);
-
-        $guestUser->profile()->create([
-            'address' => $faker->address,
-            'phone_no' => $faker->phoneNumber,
-        ]);
-
-        $guest = Role::where('slug', 'guest')->get();
-
-        $guestUser->roles()->attach($guest);
 
         $hostUser = User::create([
             'name' => 'Zaw Zaw',
@@ -43,5 +29,21 @@ class UserSeeder extends Seeder
         $host = Role::where('slug', 'host')->get();
 
         $hostUser->roles()->attach($host);
+
+        $guestUser = User::create([
+            'name' => 'Aung Aung',
+            'email' => 'aung@gmail.com',
+            'password' => bcrypt('123456'),
+        ]);
+
+        $guestUser->profile()->create([
+            'address' => $faker->address,
+            'phone_no' => $faker->phoneNumber,
+        ]);
+
+        $guest = Role::where('slug', 'guest')->get();
+
+        $guestUser->roles()->attach($guest);
+
     }
 }

@@ -104,6 +104,6 @@ class User extends Authenticatable
             return $path . '/profiles/' . $image_name;
         }
 
-        return  public_path("img/$image_name");
+        return  public_path("img/default-user.png");
     }
 }

@@ -33,14 +33,14 @@
                     <div class="swiper-container gallery-top">
                         <div class="swiper-wrapper">
                             @foreach ($images as $image)
-                                <div style="background: url({{ $path . '/' . $image->image_name . '.' . $image->extension }}); background-size: cover;" class="swiper-slide"></div>
+                                <div style="background: url({{ $image->showImages($path) }}); background-size: cover;" class="swiper-slide"></div>
                             @endforeach
                         </div>
                     </div>
                     <div class="swiper-container gallery-thumbs">
                         <div class="swiper-wrapper">
                             @foreach ($images as $image)
-                                <div style="background: url({{ $path . '/' . $image->image_name . '.' . $image->extension }}); background-size: cover;" class="swiper-slide"></div>
+                                <div style="background: url({{ $image->showImages($path) }}); background-size: cover;" class="swiper-slide"></div>
                             @endforeach
                         </div>
                     </div>
@@ -208,7 +208,6 @@
     </section>
 
     <!-- Similar Properties Section-->
-    @if (count($collections) > 0)
     <section class="similar-properties bg-black-3">
         <div class="container">
             <div class="container">
@@ -217,22 +216,22 @@
                     <p class="template-text">Checkout out some of our listed properties</p>
                 </header>
                 <div class="row">
-                    @foreach ($collections as $collection)
-                        @foreach ($collection as $related_house)
+                    @foreach ($related_houses as $related_house)
+                        @if ($related_house->location != null)
                             <div class="col-lg-4">
                                 <div class="property mb-5 mb-lg-0">
                                     <div class="image">
-                                        <img src="{{ $path . '/' . $related_house->image_name . '.' . $related_house->extension }}" alt="{{ $related_house->title }}" class="img-fluid">
+                                        <img src="{{ $related_house->showFeaturedImage($path) }}" alt="{{ $related_house->featuredImage()->image_name }}" class="img-fluid">
                                         <div class="overlay d-flex align-items-center justify-content-center">
-                                            <a href="/houses/{{ $related_house->house_id }}" class="btn btn-gradient btn-sm">View Details</a>
+                                            <a href="/houses/{{ $related_house->id }}" class="btn btn-gradient btn-sm">View Details</a>
                                         </div>
                                     </div>
                                     <div class="info">
-                                        <a href="/houses/{{ $related_house->house_id }}" class="no-anchor-style">
+                                        <a href="/houses/{{ $related_house->id }}" class="no-anchor-style">
                                             <h3 class="h4 text-thin text-uppercase mb-1">{{ $related_house->title }}</h3>
                                         </a>
                                         <ul class="tags list-inline">
-                                            <li class="list-inline-item"><a href="/houses/{{ $related_house->house_id }}">{{ $related_house->address }}</a></li>
+                                            <li class="list-inline-item"><a href="/houses/{{ $related_house->id }}">{{ $related_house->location->address }}</a></li>
                                         </ul>
                                         <div class="price text-primary">
                                             <strong class="mr-1">
@@ -244,13 +243,13 @@
                                     <div class="statistics d-flex justify-content-between text-center">
                                         <div class="item">
                                             <strong class="d-block">
-                                                {{ $related_house->bedrooms }}
+                                                {{ $related_house->houseDetail->bedrooms }}
                                             </strong>
                                             <span>Bedrooms</span>
                                         </div>
                                         <div class="item">
                                             <strong class="d-block">
-                                                {{ $related_house->bathrooms }}
+                                                {{ $related_house->houseDetail->bathrooms }}
                                             </strong>
                                             <span>Baths</span>
                                         </div>
@@ -263,13 +262,12 @@
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
+                        @endif
                     @endforeach
                 </div>
             </div>
         </div>
     </section>
-    @endif
 
     <!-- clients section -->
     {{-- @include ('homes.home.clients') --}}

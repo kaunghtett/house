@@ -194,7 +194,7 @@ class HouseController extends Controller
      */
     public function show(House $house)
     {
-        $house = $house->load(['houseDetail', 'houseType', 'location']);
+        // $house = $house->load(['houseDetail', 'houseType', 'location']);
 
         $all_features = HouseFeature::all();
         $features = explode(', ', $house->features);
@@ -206,21 +206,12 @@ class HouseController extends Controller
 
         // related houses
         $related_township = $house->location->township;
-        $related_region_id = $house->location->region->id;
-        $related_locations = Location::where('township', $related_township)
-                            ->where('region_id', $related_region_id)
-                            ->where('house_id', '!=', $house->id)
-                            ->limit(3)
-                            ->get();
-                            // dd($related_locations);
-        $collections = [];
+        $related_houses = House::with(['location' => function ($query) use ($related_township) {
+            $query->where('township', $related_township);
+        }])->where('is_approved', 1)->where('id', '!=', $house->id)->get();
 
-        foreach ($related_locations as $related_location) {
-            $related_house = House::relatedHouse($related_location)->get();
-            array_push($collections, $related_house);
-        }
 
-        return view('homes.show', compact('house', 'images', 'all_features', 'features', 'reviews', 'collections'));
+        return view('homes.show', compact('house', 'images', 'all_features', 'features', 'reviews', 'related_houses'));
     }
 
     public function region(Region $region)
@@ -271,10 +262,6 @@ class HouseController extends Controller
      */
     public function update(HouseUpdateFormRequest $request, House $house)
     {
-        // dd($house->houseDetail->id);
-        // dd($house->user->id);
-        // dd($request->all());
-
         $features = implode(', ', $request->features);
         //house basic
         $house->update([

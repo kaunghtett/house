@@ -50,12 +50,5 @@
         @endif
         @endforeach
     </div> <!-- end of row -->
-    <div class="property-listing-footer mt-5">
-        <div class="mt-5">
-            <nav aria-label="Page navigation example">
-                {{-- {{ $results->links() }} --}}
-            </nav>
-        </div>
-    </div>
 </div>
 @endsection

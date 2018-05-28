@@ -17,6 +17,7 @@
         <div class="container">
             <div class="row">
                 @foreach ($houses as $house)
+                @if ($house->location != null)
                     <div class="col-lg-4 pb-5">
                         <div class="property">
                             <div class="image">
@@ -71,6 +72,7 @@
                             </div>
                         </div>
                     </div>
+                @endif
                 @endforeach
             </div>
         </div>

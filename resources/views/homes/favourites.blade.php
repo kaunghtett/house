@@ -20,9 +20,7 @@
                     <div class="col-lg-4">
                         <div class="property">
                             <div class="image">
-                                @foreach ($fav_house->galleries as $image)
-                                <img src="{{ $path . '/' . $image->image_name . '.' . $image->extension }}" alt="{{ $image->image_name }}" class="img-fluid">
-                                @endforeach
+                                <img src="{{ $fav_house->showFeaturedImage($path) }}" alt="{{ $fav_house->featuredImage()->image_name }}" class="img-fluid">
                                 <div class="overlay d-flex align-items-center justify-content-center">
                                     <a href="/houses/{{ $fav_house->id }}" class="btn btn-gradient btn-sm">View Details</a>
                                     <form class="delete" action="/favourite/{{ $fav_house->id }}" method="post">

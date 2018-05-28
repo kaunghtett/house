@@ -81,9 +81,9 @@ class HouseTypeController extends Controller
     {
         if (isAdminOrSuperadmin()) {
             $houses = $type->houses;
+        } else {
+            $houses = $type->houses()->where('user_id', auth()->id())->get();
         }
-
-        $houses = $type->houses()->where('user_id', auth()->id())->get();
 
         return Datatables::of($houses)
             ->editColumn('created_at', function ($house) {

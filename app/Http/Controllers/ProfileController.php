@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\House;
 use App\Http\Requests\ProfileRequest;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Profile;
@@ -73,7 +74,8 @@ class ProfileController extends Controller
         $profile = Profile::where('user_id', $id)->first();
         $user = User::findOrFail($id);
         $role = $user->roles()->first();
-        return view('profiles.show', compact('user', 'profile', 'role'));
+        $houses = House::where('user_id', $id)->get();
+        return view('profiles.show', compact('user', 'profile', 'role', 'houses'));
     }
 
     /**

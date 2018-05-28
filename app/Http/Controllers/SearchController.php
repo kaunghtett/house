@@ -13,13 +13,10 @@ class SearchController extends Controller
 {
     public function search(SearchRequest $request, LocationFilters $locationFilters, HouseFilters $houseFilters)
     {
-        // dd($locationFilters);
         $location = Location::filter($locationFilters)->get();
 
         $results = $location->load(['house' => function ($query) use ($houseFilters) {
-            // dd($query);
-            // dd($houseFilters);
-            $houseFilters->apply($query)->paginate(6);
+            $houseFilters->apply($query)->where('is_approved', 1);
         }]);
         // dd($results);
         $numOfHouses = 0;

@@ -20,9 +20,9 @@
                     <p>I want to rent
                         <em>
                             @if (auth()->user()->type() == 'superadmin' or 'admin')
-                                <a href="{{route('admin-houses.show', $guest_message->house_id)}}">this house</a>
+                                <a href="{{checkRoute(route('admin-houses.show', $guest_message->house_id), route('host-houses.show', $guest_message->house_id))}}">this house</a>
                             @else
-                                <a href="{{route('admin-houses.show', $guest_message->house_id)}}">this house</a>
+                                <a href="{{route('houses.show', $guest_message->house_id)}}">this house</a>
                             @endif
                         </em>.
                     </p>

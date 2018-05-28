@@ -153,14 +153,14 @@ class HouseController extends Controller
     {
         $house->is_approved = true;
         $house->save();
-        return redirect()->route('houses.publish');
+        return redirect()->route('houses.unpublish');
     }
 
     public function block(House $house)
     {
         $house->is_approved = false;
         $house->save();
-        return redirect()->route('houses.unpublish');
+        return redirect()->route('houses.publish');
     }
 
     public function feature(House $house)

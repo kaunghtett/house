@@ -20,10 +20,10 @@ class Gallery extends Model
     {
         $image_name = $this->image_name . '.' . $this->extension;
 
-        if (File::exists(storage_path('app/public/photos/') . $image_name)) {
+        if (File::exists(storage_path('app/public/photos/thumbnails/') . $image_name)) {
             return $path . '/' . $image_name;
         }
 
-        return  asset("img/$image_name");
+        return  asset("img/default-house.jpeg");
     }
 }

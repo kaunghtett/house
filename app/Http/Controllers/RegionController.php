@@ -88,9 +88,10 @@ class RegionController extends Controller
         // dd($locations);
         if (isAdminOrSuperadmin()) {
             $houses = House::whereIn('id', $house_ids)->get();
+        } else {
+            $houses = House::whereIn('id', $house_ids)
+                    ->where('user_id', auth()->id())->get();
         }
-
-        $houses = House::whereIn('id', $house_ids)->where('user_id', auth()->id())->get();
 
         return Datatables::of($houses)
             ->editColumn('created_at', function ($house) {

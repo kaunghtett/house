@@ -13,9 +13,11 @@
                         <li class="list-inline-item"><a href="{{ url('register') }}"><i class="fa fa-user-plus"></i>Register</a></li>
                         <li class="list-inline-item"><a href="{{ url('login') }}" class="pr-0 border-right-0""><i class="fa fa-sign-in"></i>Login In</a></li>
                     @else
+                    @if ($numOfFavourite > 0)
                         <li class="list-inline-item">
                             <a href="/favourite"><i class="fa fa-heart-o"></i>Favourites</a>
                         </li>
+                    @endif
                         <li class="list-inline-item"><a href="/backend/user/{{(auth()->user()->type() == 'admin' || auth()->user()->type() == 'superadmin') ? 'admin' : 'host'}}">
                             <i class="fa fa-user"></i>{{ Auth::user()->name }}
                                 @if (auth()->user()->type() == 'admin' or 'superadmin')

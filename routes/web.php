@@ -152,7 +152,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'backend/user'],
               ->name('houses.approve')
               ->middleware('can:approve-house');
         // to draft
-        Route::get('houses/{house}/block', 'Admin\HouseController@saveDraft')
+        Route::get('houses/{house}/block', 'Admin\HouseController@block')
               ->name('houses.block')
               ->middleware('can:block-house');
 

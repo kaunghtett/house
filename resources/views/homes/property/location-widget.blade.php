@@ -13,7 +13,7 @@
         <ul class="list-unstyled mb-0">
             <p class="has-line text-white"><strong>Townships</strong></p>
             @foreach ($locations as $location)
-                <li><a href="/houses/townships/{{ $location->township }}">{{ $location->township }}</a></li>
+                <li><a href="/houses/townships/{{ preg_replace('/\s+/', '', $location->township) }}">{{ $location->township }}</a></li>
             @endforeach
         </ul>
     </div>

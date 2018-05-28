@@ -21,7 +21,7 @@
 
                                 <div class="info-box-content t-black">
                                     <span class="info-box-text">Message From</span>
-                                    <span class="info-box-number">Zaw Zaw</span>
+                                    <span class="info-box-number">{{$message->guest_name}}</span>
                                 </div>
                                 <!-- /.info-box-content -->
                             </div>
